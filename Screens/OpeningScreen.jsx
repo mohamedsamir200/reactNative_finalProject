@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState, useRef } from "react";
 import routes from './../utilities/Routes';
 
-import BottomNavigation from './../Navigation/BottomNavigation';
+
 import {
   View,
   Image,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: screenWidth,
-    height: screenHeight,
+    height: screenHeight + 60,
     resizeMode: "cover",
   },
   dotsContainer: {
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#fff",
     marginHorizontal: 5,
+    
   },
   textContainer: {
     position: "absolute",
