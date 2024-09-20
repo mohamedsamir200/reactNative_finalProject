@@ -2,7 +2,7 @@ import { View, Text, ScrollView, Image, StyleSheet } from "react-native";
 import React from "react";
 import Styles from "./../style";
 import WoodImage from "../Components/WoodImage";
-import Products from "../Components/Products";
+import Products from "../Components/Products/Products";
 
 export default function Home() {
   return (
@@ -59,7 +59,7 @@ export default function Home() {
           <WoodImage />
         </ScrollView>
         <ScrollView>
-          <Products/>
+          {/* <Products/> */}
         </ScrollView>
       </ScrollView>
     </>

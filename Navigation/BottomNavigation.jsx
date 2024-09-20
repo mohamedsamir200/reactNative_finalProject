@@ -2,7 +2,7 @@ import React from 'react';
 import routes from "./../utilities/Routes";
 import Profile from "./../Screens/Profile";
 import Home from "./../Screens/Home";
-import Products from './../Components/Products'; 
+import Products from './../Components/Products/Products'; 
 import Icon from 'react-native-vector-icons/MaterialIcons'; 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withTiming } from 'react-native-reanimated';
@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 
 function AnimatedTab({ focused, iconName }) {
   const scaleAnimation = useSharedValue(focused ? 1.2 : 1); 
-  const positionAnimation = useSharedValue(focused ? -10 : 0);
+  const positionAnimation = useSharedValue(focused ? -8 : 0);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
