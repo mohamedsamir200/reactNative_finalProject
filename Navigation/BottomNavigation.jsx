@@ -13,13 +13,13 @@ const Tab = createBottomTabNavigator();
 
 function AnimatedTab({ focused, iconName }) {
   const scaleAnimation = useSharedValue(focused ? 1.2 : 1); 
-  const positionAnimation = useSharedValue(focused ? -10 : 0);
+  const positionAnimation = useSharedValue(focused ? -5 : 0);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
         { scale: withSpring(scaleAnimation.value) },
-        { translateY: withTiming(positionAnimation.value, { duration: 200 }) }, 
+        { translateY: withTiming(positionAnimation.value, { duration: 400 }) }, 
       ],
     };
   });
