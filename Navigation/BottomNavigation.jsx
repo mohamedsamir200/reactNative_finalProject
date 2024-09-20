@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 
 function AnimatedTab({ focused, iconName }) {
   const scaleAnimation = useSharedValue(focused ? 1.2 : 1); 
-  const positionAnimation = useSharedValue(focused ? -5 : 0);
+  const positionAnimation = useSharedValue(focused ? -10 : 0);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -28,7 +28,7 @@ function AnimatedTab({ focused, iconName }) {
     <Animated.View style={[{ alignItems: 'center' }, animatedStyle]}>
       <View
         style={{
-          backgroundColor: focused ? 'brown' : 'gray',
+          backgroundColor: focused ? '#704F38' : '#1F2029',
           padding: 1,
           borderRadius: 25,
           width: 40,
@@ -61,7 +61,19 @@ export default function BottomNavigation() {
             }
           />
         ),
-        tabBarShowLabel: false, 
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          backgroundColor: '#1F2029', 
+          position: 'absolute', 
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 60, 
+          marginLeft:30,
+          marginBottom:3,
+          width:300,
+          borderRadius:50,
+        },
       })}
     >
       <Tab.Screen name={routes.home} component={Home} /> 
