@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withTiming } from 'react-native-reanimated';
 import { View } from 'react-native';
-import Events from '../Screens/Events';
+import Events from '../Components/Events/Events';
 
 const Tab = createBottomTabNavigator();
 

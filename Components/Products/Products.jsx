@@ -118,6 +118,7 @@ import {
 import MasonryList from "react-native-masonry-list"; 
 import PostCard from "./ProCard";
 import { Button, IconButton, Menu, Divider } from "react-native-paper"; 
+import Loader from "../../Navigation/Loader";
 
 function Posts() {
   const [artists, setArtists] = useState([]);
@@ -253,13 +254,14 @@ function Posts() {
   return (
     <ScrollView contentContainerStyle={{ padding: 10 }}>
       {loading ? (
-        // <Loader />
-        <Text>hh</Text>
-      ) : (
+   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+   {/* <Loader /> */}
+ </View>   
+) : (
         <View>
                       <Text>{filteredProducts.length} Items Found</Text>
 
-          {/* <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15 }}>
             <Button onPress={() => setIsFilterDropdownOpen(!isFilterDropdownOpen)}>
               Filter Options
             </Button>
@@ -284,7 +286,7 @@ function Posts() {
               <Button onPress={sortItemsLowest}>From Lowest to Highest</Button>
               <Button onPress={sortItemsByName}>By Name</Button>
             </View>
-          </View> */}
+          </View>
 
           <MasonryList
         images={currentProducts.map((product) => ({
@@ -296,9 +298,9 @@ function Posts() {
         }))}
         renderImage={(image) => (
           <PostCard
-            product={image} // تمرير المنتج
-            artist={image.artist} // تمرير الفنان
-            clickMe={clickMe} // تمرير دالة النقر
+            product={image} 
+            artist={image.artist} 
+            clickMe={clickMe} 
           />
         )}
       />
