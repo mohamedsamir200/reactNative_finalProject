@@ -7,13 +7,15 @@ import MainScreen from "../Screens/MainScreen";
 import OpeningScreen from "../Screens/OpeningScreen";
 import BottomNavigation from "./BottomNavigation";
 import { Text } from "react-native";
-import Products from './../Screens/Products';
+
 import { Icon, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import MyCart from "../Screens/MyCart";
+import AllProducts from "../Components/AllProducts";
+import Details from "../Components/Details";
 
 export default function StackNavigation() {
- const {navigate} = useNavigation();
+  const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
 
   return (
@@ -25,20 +27,33 @@ export default function StackNavigation() {
       />
       <Stack.Screen
         options={{
+       
           headerBackVisible: false,
-          headerTitle : "" ,
-        headerRight : ()=> {
-          return <Text style = {{fontSize:25 , fontWeight : 500}}>HandiCraft</Text>
-        }, 
-        headerLeft : ()=> {
-          return <IconButton icon={"cart"} size={30} onPress={()=>navigate(routes.cart)}/>
-        }
+          headerTitle: "",
+          headerRight: () => {
+            return (
+              <Text style={{ fontSize: 25, fontWeight: 500 }}>HandiCraft</Text>
+            );
+          },
+          headerLeft: () => {
+            return (
+              <IconButton
+                icon={"cart"}
+                size={30}
+                onPress={() => navigate(routes.cart)}
+              />
+            );
+          },
         }}
         name={routes.mainScreen}
         component={BottomNavigation}
       />
-      <Stack.Screen name= {routes.cart} component={MyCart}/> 
-      {/* <Stack.Screen  /> */}
+      <Stack.Screen name={routes.cart} component={MyCart} />
+      <Stack.Screen name={routes.allProducts} component={AllProducts} />
+      <Stack.Screen name={routes.details} component={Details}/>
+      {/* <Stack.Screen /> */}
+      {/* <Stack.Screen /> */}
+      {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
     </Stack.Navigator>
   );
