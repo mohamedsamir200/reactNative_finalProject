@@ -9,9 +9,9 @@ function Cards({ data, oneventClick }) {
     setIsExpanded(!isExpanded);
   };
 
-  const eventName = typeof data.name === "string" ? data.name : "اسم الحدث غير متوفر";
+  const eventName = typeof data.name === "string" ? data.name :"";
   const eventDate = data.date ? new Date(data.date) : new Date();
-  const eventDescription = typeof data.description === "string" ? data.description : "لا يوجد وصف متاح.";
+  const eventDescription = typeof data.description === "string" ? data.description : "";
 
   return (
     <View style={styles.card}>

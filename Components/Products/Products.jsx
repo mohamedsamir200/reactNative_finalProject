@@ -131,24 +131,24 @@ function Posts() {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(20);
 
-  useEffect(() => {
-    const q = query(
-      collection(db, "users"),
-      where("accountType", "==", "artist")
-    );
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const artistArr = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-        }));
-        setArtists(artistArr);
-      },
-      []
-    );
+  // useEffect(() => {
+  //   const q = query(
+  //     collection(db, "users"),
+  //     where("accountType", "==", "artist")
+  //   );
+  //   const unsubscribe = onSnapshot(
+  //     q,
+  //     (snapshot) => {
+  //       const artistArr = snapshot.docs.map((doc) => ({
+  //         ...doc.data(),
+  //       }));
+  //       setArtists(artistArr);
+  //     },
+  //     []
+  //   );
 
-    return () => unsubscribe();
-  }, []);
+  //   return () => unsubscribe();
+  // }, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -163,25 +163,25 @@ function Posts() {
         setLoading(false);
       }
     );
-    getUserData();
+    // getUserData();
 
     return () => unsubscribe();
   }, []);
 
-  const [UID, setUID] = useState("");
-  async function getUserData() {
-    const userCollection = collection(db, "users");
-    const q = query(
-      userCollection,
-      where("id", "==", localStorage.getItem("id"))
-    );
-    const querySnapshot = await getDocs(q);
+  // const [UID, setUID] = useState("");
+  // async function getUserData() {
+  //   const userCollection = collection(db, "users");
+  //   const q = query(
+  //     userCollection,
+  //     where("id", "==", localStorage.getItem("id"))
+  //   );
+  //   const querySnapshot = await getDocs(q);
 
-    querySnapshot.forEach((doc) => {
-      const userData = doc.data();
-      setUID(userData.id);
-    });
-  }
+  //   querySnapshot.forEach((doc) => {
+  //     const userData = doc.data();
+  //     setUID(userData.id);
+  //   });
+  // }
 
   async function clickMe(product) {
     await addDoc(collection(db, "Bag"), {
@@ -191,56 +191,56 @@ function Posts() {
       price: product.price,
       basePrice: product.price,
       quantity: 1,
-      userID: UID,
+      // userID: UID,
     });
   }
 
-  const sortItemsHighest = () => {
-    const sortedItems = [...filteredProducts].sort((a, b) => a.price - b.price);
-    setFilteredProducts(sortedItems);
-  };
+  // const sortItemsHighest = () => {
+  //   const sortedItems = [...filteredProducts].sort((a, b) => a.price - b.price);
+  //   setFilteredProducts(sortedItems);
+  // };
 
-  const sortItemsLowest = () => {
-    const sortedItems = [...filteredProducts].sort((a, b) => b.price - a.price);
-    setFilteredProducts(sortedItems);
-  };
+  // const sortItemsLowest = () => {
+  //   const sortedItems = [...filteredProducts].sort((a, b) => b.price - a.price);
+  //   setFilteredProducts(sortedItems);
+  // };
 
-  const sortItemsByName = () => {
-    const sortedItems = [...filteredProducts].sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
-    setFilteredProducts(sortedItems);
-  };
+  // const sortItemsByName = () => {
+  //   const sortedItems = [...filteredProducts].sort((a, b) =>
+  //     a.name.localeCompare(b.name)
+  //   );
+  //   setFilteredProducts(sortedItems);
+  // };
 
-  const handleFilterChange = (categories) => {
-    setSelectedCategories(categories);
-    filterProducts(categories, priceRange);
-  };
+  // const handleFilterChange = (categories) => {
+  //   setSelectedCategories(categories);
+  //   filterProducts(categories, priceRange);
+  // };
 
-  const handlePriceChange = (min, max) => {
-    setPriceRange({ min, max });
-    filterProducts(selectedCategories, { min, max });
-  };
+  // const handlePriceChange = (min, max) => {
+  //   setPriceRange({ min, max });
+  //   filterProducts(selectedCategories, { min, max });
+  // };
 
-  const filterProducts = (categories, price) => {
-    let filtered = products;
+  // const filterProducts = (categories, price) => {
+  //   let filtered = products;
 
-    if (categories.length > 0) {
-      filtered = filtered.filter((product) =>
-        categories.includes(product.typeproduct)
-      );
-    }
+  //   if (categories.length > 0) {
+  //     filtered = filtered.filter((product) =>
+  //       categories.includes(product.typeproduct)
+  //     );
+  //   }
 
-    if (price.min !== "" || price.max !== "") {
-      filtered = filtered.filter((product) => {
-        const minPrice = price.min ? parseFloat(price.min) : 0;
-        const maxPrice = price.max ? parseFloat(price.max) : Infinity;
-        return product.price >= minPrice && product.price <= maxPrice;
-      });
-    }
+  //   if (price.min !== "" || price.max !== "") {
+  //     filtered = filtered.filter((product) => {
+  //       const minPrice = price.min ? parseFloat(price.min) : 0;
+  //       const maxPrice = price.max ? parseFloat(price.max) : Infinity;
+  //       return product.price >= minPrice && product.price <= maxPrice;
+  //     });
+  //   }
 
-    setFilteredProducts(filtered);
-  };
+  //   setFilteredProducts(filtered);
+  // };
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -249,7 +249,7 @@ function Posts() {
     indexOfLastProduct
   );
 
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  // const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   return (
     <ScrollView contentContainerStyle={{ padding: 10 }}>
@@ -259,14 +259,14 @@ function Posts() {
  </View>   
 ) : (
         <View>
-                      <Text>{filteredProducts.length} Items Found</Text>
+                      {/* <Text>{filteredProducts.length} Items Found</Text> */}
 
-          <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15 }}>
+          {/* <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 15 }}>
             <Button onPress={() => setIsFilterDropdownOpen(!isFilterDropdownOpen)}>
               Filter Options
-            </Button>
+            </Button> */}
 
-            {isFilterDropdownOpen && (
+            {/* {isFilterDropdownOpen && (
               <Menu
                 visible={isFilterDropdownOpen}
                 onDismiss={() => setIsFilterDropdownOpen(false)}
@@ -278,21 +278,22 @@ function Posts() {
                 <Divider />
                 <Menu.Item onPress={() => handleFilterChange(["Category2"])} title="Category 2" />
               </Menu>
-            )}
+            )} */}
 
 
-            <View style={{ flexDirection: "row", gap: 10 }}>
+            {/* <View style={{ flexDirection: "row", gap: 10 }}>
               <Button onPress={sortItemsHighest}>From Highest to Lowest</Button>
               <Button onPress={sortItemsLowest}>From Lowest to Highest</Button>
               <Button onPress={sortItemsByName}>By Name</Button>
             </View>
-          </View>
+          </View> */}
 
           <MasonryList
+          
         images={currentProducts.map((product) => ({
           uri: product.img,
           title: product.title,
-          artist: artists.find((artist) => artist.id === product.ownerID),
+          // artist: artists.find((artist) => artist.id === product.ownerID),
           price: product.price,
           onPress: () => clickMe(product),
         }))}

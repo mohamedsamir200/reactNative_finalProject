@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity ,StyleSheet  } from "react-native";
 import ReactStars from "react-native-stars";
 
 function PostCard({ product, artist, clickMe }) {
@@ -7,25 +7,23 @@ function PostCard({ product, artist, clickMe }) {
 
   return (
     <TouchableOpacity
-      style={{
-        backgroundColor: "gray",
-        borderRadius: 10,
-        overflow: "hidden",
-        marginBottom: 10,
-        position: "relative", // لضبط وضع التفاصيل
-      }}
+      style={ styles.card
+     
+      }
       onPress={() => clickMe(product)}
-      onMouseEnter={() => setIsHovered(true)} // للمؤشر
-      onMouseLeave={() => setIsHovered(false)} // للمؤشر
-      onTouchStart={() => setIsHovered(true)} // للمس
-      onTouchEnd={() => setIsHovered(false)} // للمس
+      onMouseEnter={() => setIsHovered(true)} 
+      onMouseLeave={() => setIsHovered(false)} 
+      onTouchStart={() => setIsHovered(true)} 
+      onTouchEnd={() => setIsHovered(false)} 
+
     >
+             <View style={styles.imageContainer}>
       <Image
         source={{ uri: product.img }}
-        style={{ width: "100%", height: 200 }}
+        style={styles.img}
         resizeMode="cover"
-      />
-      {isHovered && ( // يظهر التفاصيل عند الهوفر
+      /></View>
+      {isHovered && (
         <View style={{
           position: "absolute",
           top: 0,
@@ -41,14 +39,14 @@ function PostCard({ product, artist, clickMe }) {
             {product.title}
           </Text>
           <Text style={{ color: "white", fontSize: 14 }}>
-            {product.description} {/* تأكدي من وجود خاصية الوصف */}
+            {product.description}
           </Text>
           <Text style={{ color: "white", fontSize: 12 }}>
             By: {artist?.name || "Unknown"}
           </Text>
           <ReactStars
             count={5}
-            value={product.rating} // تأكدي من وجود خاصية التقييم
+            value={product.rating}
             size={20}
             half={true}
             edit={false}
@@ -61,3 +59,27 @@ function PostCard({ product, artist, clickMe }) {
 }
 
 export default PostCard;
+
+const styles = StyleSheet.create({
+    card: {
+        backgroundColor: '#fff',
+        borderRadius: 100,
+        margin: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
+        elevation: 3,
+        overflow: 'hidden', 
+      },
+      imageContainer: {
+        width: '100%',
+        height: 200, 
+        overflow: 'hidden',
+      },
+      img: {
+        width: '100%',
+        height: '100%', 
+        borderRadius: 100, 
+      },
+  });

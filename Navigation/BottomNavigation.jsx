@@ -12,8 +12,8 @@ import Events from '../Components/Events/Events';
 const Tab = createBottomTabNavigator();
 
 function AnimatedTab({ focused, iconName }) {
-  const scaleAnimation = useSharedValue(focused ? 1.2 : 1); 
-  const positionAnimation = useSharedValue(focused ? -8 : 0);
+  const scaleAnimation = useSharedValue(focused ? 1.3 : 1); 
+  const positionAnimation = useSharedValue(focused ? -5 : 0);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
