@@ -93,7 +93,7 @@ function Events({ navigation }) {
         Events
       </Text>
 
-      <View style={{ marginVertical: 20 }}>
+      {/* <View style={{ marginVertical: 20 }}>
         <TextInput
           placeholder="Search events..."
           style={{
@@ -106,23 +106,16 @@ function Events({ navigation }) {
           value={searchTerm}
           onChangeText={(text) => setSearchTerm(text)}
         />
-      </View>
+      </View> */}
 
-      <Svg width="24" height="24" viewBox="0 0 128 128">
-        <Path
-          d="M-25,-48 C-25,-48 25,-48 25,-48 C37.702999114990234,-48 48,-37.702999114990234 48,-25 C48,-25 48,25 48,25 C48,37.702999114990234 37.702999114990234,48 25,48 C25,48 -25,48 -25,48 C-37.702999114990234,48 -48,37.702999114990234 -48,25 C-48,25 -48,-25 -48,-25 C-48,-37.702999114990234 -37.702999114990234,-48 -25,-48z"
-          stroke="black"
-          strokeWidth="7"
-          fill="none"
-        />
-      </Svg>
+ 
 
       <View style={{ marginVertical: 20 }}>
         {paginatedEvents.map((event) => (
           <Cards
             key={event.id}
-            data={event} // تمرير بيانات الحدث للكارد
-            onTicketClick={() => handleTicketClick(event)} // تمرير حدث الضغط
+            data={event} 
+      
           />
         ))}
       </View>
