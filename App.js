@@ -8,13 +8,15 @@ import MainScreen from "./Screens/MainScreen";
 import BottomNavigation from "./Navigation/BottomNavigation";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-
+import Store from './Redux/Store';
+import { Provider } from 'react-redux';
 
 export default function App() {
 
   return (
 
     <>
+      <Provider store={Store}>
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
   
@@ -24,6 +26,7 @@ export default function App() {
         {/* <TopNavigation></TopNavigation> */}
       </NavigationContainer>
       </GestureHandlerRootView>
+      </Provider>
     </>
 
   );

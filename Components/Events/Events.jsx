@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
-import { View, Text, TextInput, ScrollView, Button, Image } from "react-native";
+import { View, Text, TextInput, ScrollView, Button, TouchableOpacity } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { collection, onSnapshot } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import db from "../../Config/firebase";
-import Loader from "../../Navigation/Loader";
-import Cards from "./Cards"; 
-
+import Cards from "./Cards";
+import Icon from 'react-native-vector-icons/Ionicons'; 
 function Events({ navigation }) {
   let [events, setEvents] = useState([]);
   let [filteredEvents, setFilteredEvents] = useState([]);
+  const [allChecked, setAllChecked] = useState(false);
+  const [onlineChecked, setOnlineChecked] = useState(false);
+  const [offlineChecked, setOfflineChecked] = useState(false);
   let [filter, setFilter] = useState("All");
   let [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
 
   const storage = getStorage();
-  const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
 
   const paginatedEvents = filteredEvents.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+
   );
 
   const fetchEventData = (collectionName) => {
@@ -69,7 +68,7 @@ function Events({ navigation }) {
   useEffect(() => {
     let filtered = events;
     if (filter !== "All") {
-      filtered = filtered.filter((event) => event.eventtype === filter);
+      filtered = filtered.filter((event) => event.eventtype === filter.toLowerCase());
     }
     if (searchTerm) {
       filtered = filtered.filter((event) =>
@@ -86,14 +85,16 @@ function Events({ navigation }) {
       navigation.navigate("Ticket", { event });
     }
   };
+  const renderCheckBox = (checked) => (
+    <Icon name={checked ? "checkbox" : "ellipse-outline"} size={24} color="#D7A182" />
+  );
+  
 
   return (
     <ScrollView style={{ padding: 20 }}>
-      <Text style={{ fontSize: 30, fontFamily: "cursive", color: "#b22222" }}>
-        Events
-      </Text>
+   
 
-      {/* <View style={{ marginVertical: 20 }}>
+      <View >
         <TextInput
           placeholder="Search events..."
           style={{
@@ -106,16 +107,44 @@ function Events({ navigation }) {
           value={searchTerm}
           onChangeText={(text) => setSearchTerm(text)}
         />
-      </View> */}
+      </View>
 
- 
+      {/* Filter Buttons */}
+      <View style={{ flexDirection: "row", justifyContent: "space-around", marginBottom: 20 }}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TouchableOpacity onPress={() => setFilter("All")}>
+          {renderCheckBox(filter === "All")}
+        </TouchableOpacity>
+        <Text style={{ fontSize: 18, marginLeft: 5, color: filter === "All" ? "#b22222" : "#000" }}>
+          All Events
+        </Text>
+      </View>
 
-      <View style={{ marginVertical: 20 }}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TouchableOpacity onPress={() => setFilter("online")}>
+          {renderCheckBox(filter === "online")}
+        </TouchableOpacity>
+        <Text style={{ fontSize: 18, marginLeft: 5, color: filter === "online" ? "#b22222" : "#000" }}>
+          Online
+        </Text>
+      </View>
+
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <TouchableOpacity onPress={() => setFilter("offline")}>
+          {renderCheckBox(filter === "offline")}
+        </TouchableOpacity>
+        <Text style={{ fontSize: 18, marginLeft: 5, color: filter === "offline" ? "#b22222" : "#000" }}>
+          Offline
+        </Text>
+      </View>
+    </View>
+
+      <View style={{ }}>
         {paginatedEvents.map((event) => (
           <Cards
             key={event.id}
-            data={event} 
-      
+            data={event}
+            onPress={() => handleTicketClick(event)}
           />
         ))}
       </View>

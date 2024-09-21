@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 function Cards({ data, oneventClick }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const descriptionMaxLength = 80;
+  const descriptionMaxLength = 30;
+  const isOnline = data.eventtype === "online";
 
   const toggleDescription = () => {
     setIsExpanded(!isExpanded);
@@ -15,9 +17,14 @@ function Cards({ data, oneventClick }) {
 
   return (
     <View style={styles.card}>
+         <View style={[styles.eventType, { backgroundColor: isOnline ? '#16a34a' : '#d97706' }]}>
+         <Text style={styles.eventTypeText}>{data.eventtype}</Text>
+        </View>
       <View style={styles.eventHeader}>
-        <View style={styles.notch}></View>
-        <View style={styles.notchr}></View>
+        {/* <View style={styles.notch}></View>
+        <View style={styles.notchr}></View> */}
+      
+    
 
         <Image
           source={{ uri: data.eventImg }}
@@ -30,13 +37,16 @@ function Cards({ data, oneventClick }) {
       <View style={styles.eventDetails}>
         <Text style={styles.eventName}>{eventName}</Text>
         <View style={styles.eventMeta}>
-          <View style={styles.metaRow}>
-            <Text>{eventDate.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</Text>
-          </View>
-          <View style={styles.metaRow}>
-            <Text>{eventDate.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric" })}</Text>
-          </View>
-        </View>
+  <View style={styles.metaRow}>
+    <Icon name="calendar-outline" size={20} color="black" style={{padding:6}} />
+    <Text>{eventDate.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</Text>
+  </View>
+  <View style={styles.metaRow}>
+    <Icon name="time-outline" size={20} color="black" style={{padding:6}}/>
+    <Text>{eventDate.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric" })}</Text>
+  </View>
+</View>
+
 
         <Text style={styles.description}>
           {eventDescription.length > descriptionMaxLength && !isExpanded
@@ -48,10 +58,10 @@ function Cards({ data, oneventClick }) {
             {isExpanded ? "Show Less" : "Read More"}
           </Text>
         </TouchableOpacity>
-
+{/* 
         <TouchableOpacity onPress={oneventClick} style={styles.joinButton}>
           <Text style={styles.joinButtonText}>Join</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -68,7 +78,7 @@ const styles = StyleSheet.create({
       shadowRadius: 5,
       elevation: 5,
       padding:12,
-      marginVertical: 20,
+      marginVertical: 6,
       width: "90%",
       alignSelf: "center",
       overflow: "hidden",
@@ -79,8 +89,9 @@ const styles = StyleSheet.create({
       position: "relative",
     },
     eventImage: {
+
       width: "100%",
-      height: "120%",
+      height: "100%",
      
     },
     notch: {
@@ -150,9 +161,192 @@ const styles = StyleSheet.create({
         borderStyle: 'dotted',
         width: '100%',
         alignSelf: 'center',
-        padding:20
+        padding:4
       },
+        eventTypeText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign:"center"
+  },
+    eventType: {
+      top:14,
+    position: 'absolute',
+    left: -40,
+    padding: 5,
+    width:125,
+    textAlign:"center",
+zIndex:10,
+    transform: [{ rotate: '-45deg' }],
+  },
+  eventTypeText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign:"center"
+  },
   });
   
 
 export default Cards;
+// import React, { useState } from 'react';
+// import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+
+// function Cards({ data, onTicketClick }) {
+//   const [isExpanded, setIsExpanded] = useState(false);
+//   const isOnline = data.eventtype === "online";
+//   const descriptionMaxLength = 80;
+
+//   const toggleDescription = () => {
+//     setIsExpanded(!isExpanded);
+//   };
+
+//   return (
+//     <ScrollView contentContainerStyle={styles.cardContainer}>
+//       {/* Left Section */}
+//       <View >
+    
+//         <View style={[styles.eventType, { backgroundColor: isOnline ? '#16a34a' : '#d97706' }]}>
+//           <Text style={styles.eventTypeText}>{data.eventtype}</Text>
+//         </View>
+//       </View>
+
+//       {/* Center Section */}
+//       <View style={styles.centerSection}>
+//         <View style={styles.header}>
+//           <Text style={styles.eventName}>{data.name}</Text>
+//           {/* <Text style={styles.category}>{data.category}</Text> */}
+//         </View>
+//         {/* <Text style={styles.description}>
+//           {data.description.length > descriptionMaxLength && !isExpanded ? `${data.description.substring(0, descriptionMaxLength)}...` : data.description}
+//         </Text>
+//         <TouchableOpacity onPress={toggleDescription}>
+//           <Text style={styles.readMore}>{isExpanded ? 'Show Less' : 'Read More'}</Text>
+//         </TouchableOpacity> */}
+//         <View style={styles.media}>
+//         <Text style={styles.dayText}>{new Date(data.date).getDate()}</Text>
+//         <Text style={styles.monthText}>
+//           {new Date(data.date).toLocaleDateString("en-US", { month: 'short', year: 'numeric' })}
+//         </Text>
+//         <Text style={styles.timeText}>
+//           {new Date(data.date).toLocaleTimeString("en-US", { hour: 'numeric', minute: 'numeric' })}
+//         </Text>
+//         </View>
+           
+//         <TouchableOpacity onPress={onTicketClick} style={styles.viewDetailsButton}>
+//           <Text style={styles.buttonText}>View Details</Text>
+//         </TouchableOpacity>
+//       </View>
+
+//       {/* Right Section */}
+//       <View style={styles.rightSection}>
+//         <Image
+//           source={{ uri: data.eventImg }}
+//           style={styles.eventImage}
+//           resizeMode="cover"
+//         />
+//         <View style={styles.imageOverlay} />
+//       </View>
+//     </ScrollView>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   media:{
+//     textAlign:"center",
+//     alignContent:"center",
+//     justifyContent:"space-between",
+
+//   },
+//   cardContainer: {
+//     flexDirection: 'row',
+//     justifyContent: 'center',
+//     marginVertical: 16,
+//     padding: 10,
+//     borderRadius: 10,
+//     backgroundColor: '#fff',
+//     elevation: 5,
+//     overflow: 'hidden',
+//   },
+ 
+//   dayText: {
+//     color: '#fff',
+//     fontSize: 32,
+//     fontWeight: 'bold',
+//   },
+//   monthText: {
+//     fontSize: 16,
+//     textTransform: 'uppercase',
+//   },
+//   timeText: {
+
+//   },
+//   eventType: {
+//     position: 'absolute',
+//     left: -63,
+//     padding: 5,
+//     width:150,
+//     textAlign:"center",
+
+//     transform: [{ rotate: '-45deg' }],
+//   },
+//   eventTypeText: {
+//     color: '#fff',
+//     fontWeight: 'bold',
+//     textAlign:"center"
+//   },
+//   centerSection: {
+//     flex: 1,
+//     paddingHorizontal: 20,
+//   },
+//   header: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//   },
+//   eventName: {
+//     fontSize: 20,
+//     paddingTop:30,
+//     fontWeight: 'bold',
+//   },
+//   category: {
+//     fontSize: 12,
+//     color: '#666',
+//   },
+//   description: {
+//     marginTop: 10,
+//     color: '#333',
+//   },
+//   readMore: {
+//     color: '#3b82f6',
+//     marginTop: 5,
+//   },
+//   viewDetailsButton: {
+//     backgroundColor: '#b91c1c',
+//     paddingVertical: 10,
+//     paddingHorizontal: 16,
+//     borderRadius: 5,
+//     marginTop: 10,
+//   },
+//   buttonText: {
+//     color: '#fff',
+//     textAlign: 'center',
+//     fontWeight: 'bold',
+//   },
+//   rightSection: {
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   eventImage: {
+//     width: 100,
+//     height: 200,
+//     borderRadius: 10,
+//   },
+//   imageOverlay: {
+//     // backgroundColor: '#f9f2e6',
+//     // width: 100,
+//     // height: 40,
+//     // position: 'absolute',
+//     // bottom: 10,
+//     // borderRadius: 10,
+//   },
+// });
+
+// export default Cards;
