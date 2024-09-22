@@ -8,6 +8,9 @@ export default routes = Object.freeze({
     Products:"Products",
     allProducts: "AllProducts" , 
     details : "Details",
-    Events:"Events"
+    Events:"Events",
+    EventOnline: 'EventOnline',
+    EventOffline: 'EventOffline',
+
 
 });

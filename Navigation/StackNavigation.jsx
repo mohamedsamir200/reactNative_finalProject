@@ -13,6 +13,8 @@ import { useNavigation } from "@react-navigation/native";
 import MyCart from "../Screens/MyCart";
 import AllProducts from "../Components/AllProducts";
 import Details from "../Components/Details";
+import EventOffline from "../Components/Events/EventOffline";
+import EventOnline from "../Components/Events/EventOnline";
 
 export default function StackNavigation() {
   const { navigate } = useNavigation();
@@ -51,6 +53,8 @@ export default function StackNavigation() {
       <Stack.Screen name={routes.cart} component={MyCart} />
       <Stack.Screen name={routes.allProducts} component={AllProducts} />
       <Stack.Screen name={routes.details} component={Details}/>
+      <Stack.Screen name={routes.EventOnline} component={EventOnline} />
+      <Stack.Screen name={routes.EventOffline} component={EventOffline} />
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}

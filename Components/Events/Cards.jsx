@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 
-function Cards({ data, oneventClick }) {
+function Cards({ data, onEventClick }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const descriptionMaxLength = 30;
   const isOnline = data.eventtype === "online";
@@ -11,59 +11,54 @@ function Cards({ data, oneventClick }) {
     setIsExpanded(!isExpanded);
   };
 
-  const eventName = typeof data.name === "string" ? data.name :"";
+  const eventName = typeof data.name === "string" ? data.name : "";
   const eventDate = data.date ? new Date(data.date) : new Date();
   const eventDescription = typeof data.description === "string" ? data.description : "";
 
   return (
-    <View style={styles.card}>
-         <View style={[styles.eventType, { backgroundColor: isOnline ? '#16a34a' : '#d97706' }]}>
-         <Text style={styles.eventTypeText}>{data.eventtype}</Text>
-        </View>
-      <View style={styles.eventHeader}>
-        {/* <View style={styles.notch}></View>
-        <View style={styles.notchr}></View> */}
-      
-    
+    <TouchableOpacity style={styles.card} onPress={() => onEventClick(data)}>
+      <View style={[styles.eventType, { backgroundColor: isOnline ? '#16a34a' : '#d97706' }]}>
+        <Text style={styles.eventTypeText}>{data.eventtype}</Text>
+      </View>
 
+      <View style={styles.eventHeader}>
         <Image
           source={{ uri: data.eventImg }}
           style={styles.eventImage}
           resizeMode="cover"
         />
       </View>
+      
       <View style={styles.dottedLine} />
 
       <View style={styles.eventDetails}>
         <Text style={styles.eventName}>{eventName}</Text>
-        <View style={styles.eventMeta}>
-  <View style={styles.metaRow}>
-    <Icon name="calendar-outline" size={20} color="black" style={{padding:6}} />
-    <Text>{eventDate.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</Text>
-  </View>
-  <View style={styles.metaRow}>
-    <Icon name="time-outline" size={20} color="black" style={{padding:6}}/>
-    <Text>{eventDate.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric" })}</Text>
-  </View>
-</View>
 
+        <View style={styles.eventMeta}>
+          <View style={styles.metaRow}>
+            <Icon name="calendar-outline" size={20} color="black" style={styles.iconPadding} />
+            <Text>{eventDate.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}</Text>
+          </View>
+          <View style={styles.metaRow}>
+            <Icon name="time-outline" size={20} color="black" style={styles.iconPadding} />
+            <Text>{eventDate.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric" })}</Text>
+          </View>
+        </View>
 
         <Text style={styles.description}>
           {eventDescription.length > descriptionMaxLength && !isExpanded
             ? `${eventDescription.substring(0, descriptionMaxLength)}...`
             : eventDescription}
         </Text>
-        <TouchableOpacity onPress={toggleDescription}>
-          <Text style={styles.readMoreText}>
-            {isExpanded ? "Show Less" : "Read More"}
-          </Text>
-        </TouchableOpacity>
-{/* 
-        <TouchableOpacity onPress={oneventClick} style={styles.joinButton}>
-          <Text style={styles.joinButtonText}>Join</Text>
-        </TouchableOpacity> */}
+        {eventDescription.length > descriptionMaxLength && (
+          <TouchableOpacity onPress={toggleDescription}>
+            <Text style={styles.readMoreText}>
+              {isExpanded ? "Show Less" : "Read More"}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -92,6 +87,7 @@ const styles = StyleSheet.create({
 
       width: "100%",
       height: "100%",
+      borderRadius:20
      
     },
     notch: {

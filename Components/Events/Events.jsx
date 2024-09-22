@@ -53,9 +53,9 @@ function Events({ navigation }) {
     async function fetchEvents() {
       try {
         const addEventData = await fetchEventData("add event");
-        const onlineEventData = await fetchEventData("online event");
 
-        const allEvents = [...addEventData, ...onlineEventData];
+
+        const allEvents = [...addEventData];
         setEvents(allEvents);
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -81,10 +81,13 @@ function Events({ navigation }) {
   const handleTicketClick = (event) => {
     if (event.eventtype === "online") {
       navigation.navigate("EventOnline", { event });
+    } else if (event.eventtype === "offline") {
+      navigation.navigate("EventOffline", { event });
     } else {
-      navigation.navigate("Ticket", { event });
+      console.log("Unknown event type:", event.eventtype);
     }
   };
+  
   const renderCheckBox = (checked) => (
     <Icon name={checked ? "checkbox" : "ellipse-outline"} size={24} color="#D7A182" />
   );
@@ -144,7 +147,7 @@ function Events({ navigation }) {
           <Cards
             key={event.id}
             data={event}
-            onPress={() => handleTicketClick(event)}
+            onEventClick={() => handleTicketClick(event)}
           />
         ))}
       </View>
