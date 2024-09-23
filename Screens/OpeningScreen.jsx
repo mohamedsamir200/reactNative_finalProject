@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import routes from "./../utilities/Routes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -21,6 +22,7 @@ const images = [
 ];
 
 export default function OpeningScreen() {
+  // AsyncStorage.clear();
   const { navigate } = useNavigation();
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
@@ -46,9 +48,11 @@ export default function OpeningScreen() {
 
   return (
     <View style={styles.container}>
-       <View style={styles.textContainer}>
-                  <Text style={styles.text} onPress={()=>navigate(routes.mainScreen)}>Let's Start</Text>
-                </View>
+      <View style={styles.textContainer}>
+        <Text style={styles.text} onPress={() => navigate(routes.mainScreen)}>
+          Let's Start
+        </Text>
+      </View>
       <FlatList
         data={images}
         renderItem={({ item, index }) => (

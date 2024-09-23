@@ -10,8 +10,12 @@ import {
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Feather"; // Feather icons
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../Config/firebase"; // Your Firebase config
+import {
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+  signInWithPopup,
+} from "firebase/auth";
+import db, { auth, provider } from "../../Config/firebase";
 import { useNavigation } from "@react-navigation/native"; // Navigation
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -63,7 +67,11 @@ export default function LoginScreen() {
         Alert.alert("Login Failed", err.message);
       });
   };
-
+  function loginWithGoolge() {
+    signInWithPopup(auth, provider).then((data) => {
+      storeUserID(data.user.uid);
+    });
+  } //functions
   return (
     <View style={styles.container}>
       {/* Sign In Text */}
@@ -138,8 +146,7 @@ export default function LoginScreen() {
         <TouchableOpacity
           style={styles.socialButton}
           onPress={() => {
-            // Google sign-in logic should go here
-            console.log(AsyncStorage.getItem("id"));
+            loginWithGoolge();
           }}
         >
           <Image
