@@ -46,6 +46,9 @@ export default function OpeningScreen() {
 
   return (
     <View style={styles.container}>
+       <View style={styles.textContainer}>
+                  <Text style={styles.text} onPress={()=>navigate(routes.mainScreen)}>Let's Start</Text>
+                </View>
       <FlatList
         data={images}
         renderItem={({ item, index }) => (

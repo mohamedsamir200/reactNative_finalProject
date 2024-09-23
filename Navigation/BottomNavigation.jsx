@@ -63,17 +63,18 @@ export default function BottomNavigation() {
         ),
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: '#1F2029', 
-          position: 'absolute', 
+          backgroundColor: '#1F2029',
+          position: 'absolute',
           bottom: 0,
-          left: 0,
-          right: 0,
-          height: 60, 
-          marginLeft:30,
-          marginBottom:3,
-          width:300,
-          borderRadius:50,
+          height: 60,
+          marginBottom: 3,
+         marginLeft:30,
+          borderRadius: 50,
+          width: 300, 
         },
+    
+        
+        
       })}
     >
       <Tab.Screen name={routes.home} component={Home} /> 

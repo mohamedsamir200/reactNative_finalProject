@@ -6,20 +6,25 @@ import DrawerNavigation from "./Navigation/DrawerNavigation";
 import TopNavigation from "./Navigation/TopNavigation";
 import MainScreen from "./Screens/MainScreen";
 import BottomNavigation from "./Navigation/BottomNavigation";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { onAuthStateChanged } from "firebase/auth";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Store from './Redux/Store';
+import { Provider } from 'react-redux';
+
 
 export default function App() {
   return (
     <>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <NavigationContainer>
-          <StackNavigation></StackNavigation>
-          {/* <BottomNavigation></BottomNavigation> */}
-          {/* <DrawerNavigation></DrawerNavigation> */}
-          {/* <TopNavigation></TopNavigation> */}
-        </NavigationContainer>
+   <Provider store={Store}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+  
+        <StackNavigation ></StackNavigation>
+        {/* <BottomNavigation></BottomNavigation> */}
+        {/* <DrawerNavigation></DrawerNavigation> */}
+        {/* <TopNavigation></TopNavigation> */}
+      </NavigationContainer>
       </GestureHandlerRootView>
+      </Provider>
     </>
   );
 }
