@@ -10,12 +10,19 @@ import {
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Feather"; // Feather icons
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../Config/firebase"; // Your Firebase config
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signInWithPopup,
+} from "firebase/auth";
+import db, { auth, provider } from "../../Config/firebase";
 import { useNavigation } from "@react-navigation/native"; // Navigation
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { collection, addDoc } from "firebase/firestore";
 
 export default function LoginScreen() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -24,25 +31,64 @@ export default function LoginScreen() {
 
   const navigation = useNavigation();
 
-  // Validate inputs
+  // Function to validate the email format
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Function to validate the password strength (at least 6 characters)
+  const isValidPassword = (password) => {
+    return password.length >= 6;
+  };
+
+  // Function to validate that names don't contain special characters or numbers
+  const isValidName = (name) => {
+    const nameRegex = /^[a-zA-Z]+$/;
+    return nameRegex.test(name);
+  };
+
+  // Function to validate all fields
   const validateInputs = () => {
-    if (!email.trim() || !password.trim()) {
-      setError("Email and password are required");
+    if (!firstName.trim() || !lastName.trim()) {
+      setError("First and Last Name are required");
+      return false;
+    }
+    if (!isValidName(firstName) || !isValidName(lastName)) {
+      setError("Names can only contain letters");
+      return false;
+    }
+    if (!email.trim()) {
+      setError("Email is required");
+      return false;
+    }
+    if (!isValidEmail(email.trim())) {
+      setError("Please enter a valid email address");
+      return false;
+    }
+    if (!password.trim()) {
+      setError("Password is required");
+      return false;
+    }
+    if (!isValidPassword(password.trim())) {
+      setError("Password should be at least 6 characters");
       return false;
     }
     return true;
   };
+
+  // Store user ID
   const storeUserID = async (userID) => {
     try {
       await AsyncStorage.setItem("id", userID);
       console.log("User UID stored successfully");
-      console.log(AsyncStorage.getItem("id"));
     } catch (error) {
       console.log("Error storing UID:", error);
     }
   };
-  // Login Function
-  const loginAcc = () => {
+
+  // Register function
+  async function registerUser() {
     setError(""); // Clear previous errors
     if (!validateInputs()) return;
 
@@ -50,53 +96,83 @@ export default function LoginScreen() {
     const trimmedPassword = password.trim();
 
     setLoading(true);
-    signInWithEmailAndPassword(auth, trimmedEmail, trimmedPassword)
-      .then((res) => {
-        setLoading(false);
-        console.log("Logged in:", res.user.uid);
-        storeUserID(res.user.uid);
-        navigation.replace("OpeningScreen"); // Navigate after login
-      })
-      .catch((err) => {
-        setLoading(false);
-        setError(err.message);
-        Alert.alert("Login Failed", err.message);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        trimmedEmail,
+        trimmedPassword
+      );
+      const user = userCredential.user;
+
+      await addDoc(collection(db, "users"), {
+        firstname: firstName,
+        lastname: lastName,
+        email: trimmedEmail,
+        id: user.uid,
+        accountType: "artist",
+        profilePic: "",
+        about: "",
+        notifications: [],
       });
-  };
+
+      storeUserID(user.uid);
+      navigation.replace("OpeningScreen");
+    } catch (error) {
+      console.error("Error creating user:", error.message);
+      setError("Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+  function signupWithGoolge() {
+    signInWithPopup(auth, provider).then(async (data) => {
+      let fullname = data.user.displayName.split(" ");
+      await addDoc(collection(db, "users"), {
+        firstname: fullname[0],
+        lastname: fullname[1],
+        email: data.user.email,
+        id: data.user.uid,
+        accountType: "customer",
+        profilePic: "", // Add account type to Firestore
+      });
+      storeUserID(data.user.uid);
+
+      navigation.replace("OpeningScreen");
+    });
+  }
 
   return (
     <View style={styles.container}>
-      {/* Sign In Text */}
       <Text style={styles.signInText}>Create Account</Text>
       <Text style={styles.welcomeText}>
         Fill your information below or register with your social account
       </Text>
-
-      {/* Error Message */}
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-      {/* Email Input */}
       <TextInput
         style={styles.input}
-        placeholder="example@gmail.com"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
+        placeholder="First Name"
+        value={firstName}
+        onChangeText={setFirstName}
         placeholderTextColor="#999"
       />
       <TextInput
         style={styles.input}
-        placeholder="example@gmail.com"
+        placeholder="Last Name"
+        value={lastName}
+        onChangeText={setLastName}
+        placeholderTextColor="#999"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="E-mail"
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
       />
-      {/* Password Input */}
       <View style={styles.passwordContainer}>
         <TextInput
           style={styles.inputPassword}
-          placeholder="**********"
+          placeholder="Password"
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!showPassword}
@@ -113,13 +189,9 @@ export default function LoginScreen() {
           />
         </TouchableOpacity>
       </View>
-
-      {/* Forgot Password */}
-
-      {/* Sign In Button */}
       <TouchableOpacity
         style={[styles.signInButton, loading && { opacity: 0.7 }]}
-        onPress={loginAcc}
+        onPress={registerUser}
         disabled={loading}
       >
         {loading ? (
@@ -128,8 +200,6 @@ export default function LoginScreen() {
           <Text style={styles.signInButtonText}>Sign Up</Text>
         )}
       </TouchableOpacity>
-
-      {/* Or sign in with */}
       <View style={styles.orContainer}>
         <View style={styles.line} />
         <Text style={styles.orText}>Or sign in with</Text>
@@ -140,10 +210,7 @@ export default function LoginScreen() {
       <View style={styles.socialContainer}>
         <TouchableOpacity
           style={styles.socialButton}
-          onPress={() => {
-            // Google sign-in logic should go here
-            console.log(AsyncStorage.getItem("id"));
-          }}
+          onPress={signupWithGoolge}
         >
           <Image
             source={require("../../assets/google.png")}
@@ -155,7 +222,7 @@ export default function LoginScreen() {
 
       {/* Sign Up Text */}
       <Text style={styles.signUpText}>
-        Already have an account?
+        Already have an account?{" "}
         <Text
           onPress={() => {
             navigation.replace("LoginScreen");

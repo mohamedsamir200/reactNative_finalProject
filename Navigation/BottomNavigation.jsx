@@ -68,7 +68,7 @@ export default function BottomNavigation() {
           bottom: 0,
           height: 60,
           marginBottom: 3,
-         marginLeft:30,
+         marginLeft:60,
           borderRadius: 50,
           width: 300, 
         },
