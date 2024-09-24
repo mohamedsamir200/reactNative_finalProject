@@ -25,7 +25,7 @@ function AnimatedTab({ focused, iconName }) {
   });
 
   return (
-    <Animated.View style={[{ alignItems: 'center' }, animatedStyle]}>
+    <Animated.View style={[{ alignItems: 'center'  }, animatedStyle]}>
       <View
         style={{
           backgroundColor: focused ? '#704F38' : '#1F2029',
@@ -35,7 +35,7 @@ function AnimatedTab({ focused, iconName }) {
           height: 40,
           justifyContent: 'center',
           alignItems: 'center',
-          
+          margin:'auto'
         }}>
         <Icon name={iconName} size={24} color="white" />
       </View>
@@ -68,8 +68,10 @@ export default function BottomNavigation() {
           bottom: 0,
           height: 60,
           marginBottom: 3,
-         marginLeft:60,
+          marginHorizontal:"9%",
           borderRadius: 50,
+          justifyContent:"center",
+          alignContent:"center",
           width: 300, 
         },
     
