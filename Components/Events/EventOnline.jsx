@@ -117,7 +117,7 @@ function EventOnline({ route }) {
   const Payment = async () => {
     try {
       const token = await paypalApi.generateToken();
-      const res = await paypalApi.createOrder(token, event.name, event.pricetTcket);  // تمرير اسم الحدث وسعر التذكرة
+      const res = await paypalApi.createOrder(token, event.name, event.pricetTcket);  
       setAccessToken(token);
       
       if (res?.links) {

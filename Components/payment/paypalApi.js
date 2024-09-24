@@ -10,7 +10,7 @@ const createOrder = (token = '', eventName = 'Event Ticket', ticketPrice = '') =
         "purchase_units": [
           {
             "amount": {
-              "currency_code": "EGP",  
+              "currency_code": "USD",  
               "value": ticketPrice  
             },
             "description": eventName 
