@@ -18,6 +18,7 @@ import EventOnline from "../Components/Events/EventOnline";
 import LoginScreen from "../Screens/Auth/LoginScreen";
 import IntroScreen from "../Screens/Auth/IntroScreen";
 import RegistrationScreen from "../Screens/Auth/RegistrationScreen";
+import ProductsScreen from "../Screens/ProductsScreen/ProductsScreen";
 export default function StackNavigation() {
   const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
@@ -44,6 +45,11 @@ export default function StackNavigation() {
         options={{ header: () => null }}
         name={routes.openingScreen}
         component={OpeningScreen}
+      />
+      <Stack.Screen
+        options={{ headerTitle: "Products", headerTitleAlign: "center" }}
+        name={routes.ProductsScreen}
+        component={ProductsScreen}
       />
       <Stack.Screen
         options={{
