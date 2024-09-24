@@ -1,3 +1,4 @@
+import LoginScreen from "../Screens/Auth/LoginScreen";
 
 export default routes = Object.freeze({
     mainScreen: "MainScreen",
@@ -8,9 +9,9 @@ export default routes = Object.freeze({
     Products:"Products",
     allProducts: "AllProducts" , 
     details : "Details",
-    Events:"Events",
-    EventOnline: 'EventOnline',
-    EventOffline: 'EventOffline',
-
+    Events:"Events",EventOnline: 'EventOnline',
+    EventOffline: 'EventOffline',LoginScreen: "LoginScreen",
+    IntroScreen: "IntroScreen",
+    RegistrationScreen: "RegistrationScreen",
 
 });

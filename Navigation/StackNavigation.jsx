@@ -15,13 +15,31 @@ import AllProducts from "../Components/AllProducts";
 import Details from "../Components/Details";
 import EventOffline from "../Components/Events/EventOffline";
 import EventOnline from "../Components/Events/EventOnline";
-
+import LoginScreen from "../Screens/Auth/LoginScreen";
+import IntroScreen from "../Screens/Auth/IntroScreen";
+import RegistrationScreen from "../Screens/Auth/RegistrationScreen";
 export default function StackNavigation() {
   const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
+  console.log(LoginScreen); // Should not be 'undefined'
 
   return (
-    <Stack.Navigator initialRouteName={routes.openingScreen}>
+    <Stack.Navigator initialRouteName={routes.IntroScreen}>
+      <Stack.Screen
+        name={routes.LoginScreen}
+        component={LoginScreen}
+        options={{ header: () => null }}
+      />
+      <Stack.Screen
+        name={routes.RegistrationScreen}
+        component={RegistrationScreen}
+        options={{ header: () => null }}
+      />
+      <Stack.Screen
+        name={routes.IntroScreen}
+        component={IntroScreen}
+        options={{ header: () => null }}
+      />
       <Stack.Screen
         options={{ header: () => null }}
         name={routes.openingScreen}
@@ -29,7 +47,6 @@ export default function StackNavigation() {
       />
       <Stack.Screen
         options={{
-       
           headerBackVisible: false,
           headerTitle: "",
           headerRight: () => {
@@ -52,7 +69,7 @@ export default function StackNavigation() {
       />
       <Stack.Screen name={routes.cart} component={MyCart} />
       <Stack.Screen name={routes.allProducts} component={AllProducts} />
-      <Stack.Screen name={routes.details} component={Details}/>
+      <Stack.Screen name={routes.details} component={Details} />
       <Stack.Screen name={routes.EventOnline} component={EventOnline} />
       <Stack.Screen name={routes.EventOffline} component={EventOffline} />
       {/* <Stack.Screen /> */}

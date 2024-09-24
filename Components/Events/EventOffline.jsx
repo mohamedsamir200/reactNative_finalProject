@@ -13,24 +13,23 @@
 // }
 
 // export default EventOffline;
-import React, { useState, useEffect } from "react";
-import { View, Text, Button, TextInput, Alert, Modal, StyleSheet } from "react-native"; // تأكد من وجود Modal هنا
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from "firebase/firestore";
-import PayPalCheckout from 'react-native-paypal-checkout';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, Modal, TextInput, Image, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from 'firebase/firestore';
+import PayPalPayment from './Payment';
 
-export default function EventOffline() {
-  const navigation = useNavigation();
+function EventOffline() {
   const route = useRoute();
   const event = route.params?.event || {};
   const ticketPrice = event.pricetacket;
   const [count, setCount] = useState(1);
   const [total, setTotal] = useState(ticketPrice);
   const [showModal, setShowModal] = useState(false);
-  const [email, setEmail] = useState(""); 
-  const [emailError, setEmailError] = useState("");
-  const [otherEvents, setOtherEvents] = useState([]);
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [soldOut, setSoldOut] = useState(false);
+  const navigation = useNavigation();
   const db = getFirestore();
 
   useEffect(() => {
@@ -76,7 +75,7 @@ export default function EventOffline() {
         setTotal(newCount * ticketPrice);
         return newCount;
       } else {
-        Alert.alert("خطأ", "لا يمكنك اختيار تذاكر أكثر من المتاحة.");
+        Alert.alert("Cannot select more tickets than available.");
         return prevCount;
       }
     });
@@ -97,7 +96,7 @@ export default function EventOffline() {
 
   const handleEmailSubmission = async () => {
     if (!validateEmail(email)) {
-      setEmailError("يرجى إدخال بريد إلكتروني صحيح.");
+      setEmailError("Please enter a valid email.");
       return false;
     }
     try {
@@ -115,47 +114,37 @@ export default function EventOffline() {
 
   const handlePayment = async () => {
     if (soldOut) {
-      Alert.alert("الحدث مكتمل", "هذا الحدث قد تم بيع كل تذاكره.");
+      Alert.alert("This event is sold out.");
       return;
     }
-    
+
     const emailSubmitted = await handleEmailSubmission();
     if (!emailSubmitted) return;
 
-    console.log(`Paying ${total} EGP with PayPal`);
+    console.log(`Paying ${total} with Visa`);
     setShowModal(false);
-    navigation.navigate('TicketConfirmation', { eventId: event.id });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.eventName}>{event.name}</Text>
-      <Text>{event.description}</Text>
-
-      <View style={styles.ticketControls}>
-        <Button title="-" onPress={decreaseCount} disabled={soldOut} />
-        <Text style={styles.ticketCount}>{count}</Text>
-        <Button title="+" onPress={increaseCount} disabled={soldOut} />
+      <View style={styles.ticketCard}>
+        <Image source={{ uri: event.eventImg }} style={styles.eventImage} />
+        <Text style={styles.eventTitle}>{event.name}</Text>
+        <Text>{event.description}</Text>
+        <View style={styles.counter}>
+          <Button title="-" onPress={decreaseCount} disabled={soldOut} />
+          <Text style={styles.countText}>{count}</Text>
+          <Button title="+" onPress={increaseCount} disabled={soldOut} />
+        </View>
+        <Text style={styles.totalPrice}>{soldOut ? "Sold Out" : `${total} EGP`}</Text>
+        <TouchableOpacity onPress={() => setShowModal(true)} style={styles.payButton}>
+          <Text style={styles.payButtonText}>Pay</Text>
+        </TouchableOpacity>
       </View>
 
-      <Text style={styles.totalPrice}>{total} EGP</Text>
-      <Button title="دفع" onPress={() => setShowModal(true)} />
-
-      {/* Modal for Payment */}
+      {/* Modal */}
       {showModal && (
-        <Modal visible={showModal} transparent={true}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>دفع</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="أدخل بريدك الإلكتروني"
-              value={email}
-              onChangeText={setEmail}
-            />
-            {emailError ? <Text style={styles.error}>{emailError}</Text> : null}
-            <Button title={`دفع ${total} EGP`} onPress={handlePayment} />
-          </View>
-        </Modal>
+    <PayPalPayment/>
       )}
     </View>
   );
@@ -163,45 +152,75 @@ export default function EventOffline() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    flex: 1,
+    padding: 16,
+    justifyContent: 'center',
   },
-  eventName: {
-    fontSize: 24,
-    fontWeight: "bold",
+  ticketCard: {
+    padding: 16,
+    backgroundColor: '#fff',
+    borderRadius: 10,
   },
-  ticketControls: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  eventImage: {
+    width: '100%',
+    height: 200,
+  },
+  eventTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  counter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginVertical: 10,
   },
-  ticketCount: {
+  countText: {
     fontSize: 18,
   },
   totalPrice: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  payButton: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  payButtonText: {
+    color: '#fff',
     fontSize: 18,
-    fontWeight: "bold",
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  modalTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 20,
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   input: {
-    width: "80%",
+    width: '100%',
     padding: 10,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 10,
   },
-  error: {
-    color: "red",
-  },
 });
+
+export default EventOffline;

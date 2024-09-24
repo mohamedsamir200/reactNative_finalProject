@@ -1,8 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useRef } from "react";
-import routes from './../utilities/Routes';
-
-
 import {
   View,
   Image,
@@ -11,7 +8,9 @@ import {
   Dimensions,
   Animated,
   Text,
+  TouchableOpacity,
 } from "react-native";
+import routes from "./../utilities/Routes";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -22,13 +21,13 @@ const images = [
 ];
 
 export default function OpeningScreen() {
-    const {navigate}=useNavigation();
+  const { navigate } = useNavigation();
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const handleScroll = (event) => {
     const offsetX = event.nativeEvent.contentOffset.x;
-    const index = Math.floor(offsetX / screenWidth);
+    const index = Math.round(offsetX / screenWidth); // Using Math.round for better rounding
     setActiveIndex(index);
   };
 
@@ -58,7 +57,9 @@ export default function OpeningScreen() {
             {index === images.length - 1 &&
               activeIndex === images.length - 1 && (
                 <View style={styles.textContainer}>
-                  <Text style={styles.text} onPress={()=>navigate(routes.mainScreen)}>Let's Start</Text>
+                  <TouchableOpacity onPress={() => navigate(routes.mainScreen)}>
+                    <Text style={styles.text}>Let's Start</Text>
+                  </TouchableOpacity>
                 </View>
               )}
           </View>
@@ -67,7 +68,10 @@ export default function OpeningScreen() {
         horizontal={true}
         pagingEnabled={true}
         showsHorizontalScrollIndicator={false}
-        onScroll={handleScroll}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: false, listener: handleScroll } // Keep listener for state updates
+        )}
         scrollEventThrottle={16}
       />
       {renderDots()}
@@ -83,14 +87,14 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: screenWidth,
-    height: screenHeight,
+    height: screenHeight, // Keeping this as screenHeight
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
   },
   image: {
     width: screenWidth,
-    height: screenHeight + 60,
+    height: screenHeight + 60, // Restoring original height
     resizeMode: "cover",
   },
   dotsContainer: {
@@ -107,7 +111,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#fff",
     marginHorizontal: 5,
-    
   },
   textContainer: {
     position: "absolute",
