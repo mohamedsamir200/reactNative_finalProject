@@ -8,8 +8,8 @@ export default function TopNavigation() {
 
   return (
     <Tab.Navigator style={{marginVertical:30 }}>
-      <Tab.Screen />
-      <Tab.Screen />
+      {/* <Tab.Screen />
+      <Tab.Screen /> */}
   
     </Tab.Navigator>
   );

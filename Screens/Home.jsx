@@ -3,11 +3,15 @@ import React from "react";
 import Styles from "./../style";
 import WoodImage from "../Components/WoodImage";
 import Products from "../Components/Products/Products";
+import AllProducts from "../Components/AllProducts";
 
 export default function Home() {
   return (
     <>
-      <ScrollView style={Styles.mainContainer} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={[ ]}
+        showsVerticalScrollIndicator={false}
+      >
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={{ flexDirection: "row", alignContent: "space-between" }}>
             <View style={style.viewStyles}>
@@ -58,9 +62,8 @@ export default function Home() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <WoodImage />
         </ScrollView>
-        <ScrollView>
-          {/* <Products/> */}
-        </ScrollView>
+        {/* <ScrollView><Products/></ScrollView> */}
+        <ScrollView><AllProducts/></ScrollView>
       </ScrollView>
     </>
   );

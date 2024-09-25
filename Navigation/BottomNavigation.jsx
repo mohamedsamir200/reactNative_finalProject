@@ -31,8 +31,8 @@ function AnimatedTab({ focused, iconName }) {
           backgroundColor: focused ? '#704F38' : '#1F2029',
           padding: 1,
           borderRadius: 25,
-          width: 40,
-          height: 40,
+          width: 30,
+          height: 30,
           justifyContent: 'center',
           alignItems: 'center',
           margin:'auto'
@@ -64,8 +64,8 @@ export default function BottomNavigation() {
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: '#1F2029',
-          position: 'absolute',
-          bottom: 0,
+          // position: 'absolute',
+          bottom:0,
           height: 60,
           marginBottom: 3,
           marginHorizontal:"9%",
@@ -73,15 +73,16 @@ export default function BottomNavigation() {
           justifyContent:"center",
           alignContent:"center",
           width: 300, 
+          // marginVertical:100
         },
     
         
         
       })}
     >
-      <Tab.Screen name={routes.home} component={Home} /> 
+      <Tab.Screen name={routes.home} component={Home} options={{header : ()=> null}}/> 
       <Tab.Screen name={routes.Products} component={Products} /> 
-      <Tab.Screen name={routes.Events} component={Events} /> 
+      <Tab.Screen name={routes.Events} component={Events}  options={{header : ()=> null}}/> 
 
 
       <Tab.Screen name={routes.profile} component={Profile} /> 

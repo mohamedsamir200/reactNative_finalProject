@@ -19,22 +19,25 @@ import LoginScreen from "../Screens/Auth/LoginScreen";
 import IntroScreen from "../Screens/Auth/IntroScreen";
 import RegistrationScreen from "../Screens/Auth/RegistrationScreen";
 import ProductsScreen from "../Screens/ProductsScreen/ProductsScreen";
+import Home from "../Screens/Home";
 export default function StackNavigation() {
   const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
-  console.log(LoginScreen); // Should not be 'undefined'
+  // console.log(LoginScreen); // Should not be 'undefined'
 
   return (
-    <Stack.Navigator initialRouteName={routes.IntroScreen}>
+    <Stack.Navigator initialRouteName={routes.IntroScreen} >
+
       <Stack.Screen
         name={routes.LoginScreen}
         component={LoginScreen}
         options={{ header: () => null }}
       />
+        
       <Stack.Screen
         name={routes.RegistrationScreen}
         component={RegistrationScreen}
-        options={{ header: () => null }}
+        options={{ header: () => null  }}
       />
       <Stack.Screen
         name={routes.IntroScreen}
@@ -57,7 +60,7 @@ export default function StackNavigation() {
           headerTitle: "",
           headerRight: () => {
             return (
-              <Text style={{ fontSize: 25, fontWeight: 500 }}>HandiCraft</Text>
+              <Text style={{ fontSize: 25, fontWeight: 500 }}>Mashrabiya</Text>
             );
           },
           headerLeft: () => {
@@ -74,7 +77,7 @@ export default function StackNavigation() {
         component={BottomNavigation}
       />
       <Stack.Screen name={routes.cart} component={MyCart} />
-      <Stack.Screen name={routes.allProducts} component={AllProducts} />
+      <Stack.Screen name={routes.allProducts} component={AllProducts}  />
       <Stack.Screen name={routes.details} component={Details} />
       <Stack.Screen name={routes.EventOnline} component={EventOnline} />
       <Stack.Screen name={routes.EventOffline} component={EventOffline} />

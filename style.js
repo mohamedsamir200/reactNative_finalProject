@@ -5,6 +5,7 @@ export default  Styles = StyleSheet.create({
     width: "95%",
     marginHorizontal: "auto",
     marginVertical: 15,
+  
     
  }
 }) 

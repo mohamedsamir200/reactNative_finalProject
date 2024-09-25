@@ -15,25 +15,26 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MD2Colors } from "react-native-paper";
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+// const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-const images = [
-  require("../assets/openingImages/opening-1.jpg"),
-  require("../assets/openingImages/opening-2.jpg"),
-  require("../assets/openingImages/opening-3.jpg"),
-];
+// const images = [
+//   require("../assets/openingImages/opening-1.jpg"),
+//   require("../assets/openingImages/opening-2.jpg"),
+//   require("../assets/openingImages/opening-3.jpg"),
+// ];
 
 export default function OpeningScreen() {
   // AsyncStorage.clear();
   const { navigate } = useNavigation();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const scrollX = useRef(new Animated.Value(0)).current;
 
-  const handleScroll = (event) => {
-    const offsetX = event.nativeEvent.contentOffset.x;
-    const index = Math.round(offsetX / screenWidth); // Using Math.round for better rounding
-    setActiveIndex(index);
-  };
+  // const [activeIndex, setActiveIndex] = useState(0);
+  // const scrollX = useRef(new Animated.Value(0)).current;
+
+  // const handleScroll = (event) => {
+  //   const offsetX = event.nativeEvent.contentOffset.x;
+  //   const index = Math.round(offsetX / screenWidth); // Using Math.round for better rounding
+  //   setActiveIndex(index);
+  // };
 
   // const renderDots = () => {
   //   return (
@@ -104,7 +105,7 @@ export default function OpeningScreen() {
           </View>
         </View>
         <Text style={styles.text} className="bg-red-500">
-          {" "}
+        
           <Text style={{ backgroundColor: "#704F38", color: "white" }}>M</Text>
           ashrabiya
         </Text>
