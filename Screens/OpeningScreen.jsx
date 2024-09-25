@@ -106,8 +106,8 @@ export default function OpeningScreen() {
         </View>
         <Text style={styles.text} className="bg-red-500">
         
-          <Text style={{ backgroundColor: "#704F38", color: "white" }}>M</Text>
-          ashrabiya
+          <Text style={{ backgroundColor: "#704F38", color: "white" }}>A</Text>
+          rtistain <Text> <Text style={{ backgroundColor: "#704F38", color: "white" }}>C</Text>orner</Text>
         </Text>
         <TouchableOpacity onPress={() => navigate(routes.mainScreen)}>
           <Text style={styles.btn}>Let's Get Started</Text>
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 20,
     fontSize: 25,
-    letterSpacing: 10,
+    // letterSpacing: 10,
     fontWeight: "bold",
   },
   btn: {
