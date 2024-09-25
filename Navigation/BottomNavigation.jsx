@@ -1,6 +1,6 @@
 import React from 'react';
 import routes from "./../utilities/Routes";
-import Profile from "./../Screens/Profile";
+import Profile from "../Screens/ProductsScreen/profile/Profile";
 import Home from "./../Screens/Home";
 import Products from './../Components/Products/Products'; 
 import Icon from 'react-native-vector-icons/MaterialIcons'; 
