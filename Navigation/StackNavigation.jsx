@@ -60,7 +60,7 @@ export default function StackNavigation() {
           headerTitle: "",
           headerRight: () => {
             return (
-              <Text style={{ fontSize: 25, fontWeight: 500 }}>Mashrabiya</Text>
+              <Text style={{ fontSize: 25, fontWeight: 500 }}>Artistain Corner</Text>
             );
           },
           headerLeft: () => {

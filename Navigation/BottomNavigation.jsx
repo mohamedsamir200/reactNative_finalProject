@@ -8,6 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withTiming } from 'react-native-reanimated';
 import { View } from 'react-native';
 import Events from '../Components/Events/Events';
+import AllProducts from '../Components/AllProducts';
 
 const Tab = createBottomTabNavigator();
 
@@ -52,12 +53,14 @@ export default function BottomNavigation() {
             focused={focused}
             iconName={
               route.name === routes.home
-              ? 'home'
-              : route.name === routes.profile
-              ? 'person'
-              : route.name === routes.Products
-              ? 'shopping-cart'
-              : 'event' 
+                ? 'home'
+                : route.name === routes.profile
+                ? 'person'
+                : route.name === routes.Products
+                ? 'shopping-cart'
+                : route.name === routes.allProducts
+                ? 'shopping-cart'
+                : 'event'  
             }
           />
         ),
@@ -81,7 +84,8 @@ export default function BottomNavigation() {
       })}
     >
       <Tab.Screen name={routes.home} component={Home} options={{header : ()=> null}}/> 
-      <Tab.Screen name={routes.Products} component={Products} /> 
+      {/* <Tab.Screen name={routes.Products} component={Products} />  */}
+      <Tab.Screen name={routes.allProducts} component={AllProducts} options={{header : ()=> null}}/> 
       <Tab.Screen name={routes.Events} component={Events}  options={{header : ()=> null}}/> 
 
 
