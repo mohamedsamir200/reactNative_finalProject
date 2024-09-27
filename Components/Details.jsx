@@ -7,7 +7,7 @@ import {
   MD2Colors,
   Snackbar,
 } from "react-native-paper";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Styles from "./../style";
 import {
   onSnapshot,
@@ -19,6 +19,8 @@ import {
 } from "firebase/firestore";
 import db from "../Config/firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import routes from './../utilities/Routes';
+import ProductBag from './../Screens/ProductBag';
 
 export default function Details() {
   const route = useRoute();
@@ -27,6 +29,7 @@ export default function Details() {
   const [userId, setUserId] = useState("");
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const {navigate} = useNavigation()
   //==== snackBar ==== //
   const [visible, setVisible] = React.useState(false);
   const onToggleSnackBar = () => setVisible(!visible);
@@ -123,6 +126,7 @@ export default function Details() {
             mode="outlined"
             contentStyle={styles.goToBagButtonContent}
             style={styles.goToBagButton}
+            onPress={()=>navigate(routes.productBag)}
           >
             Go To Bag
           </Button>

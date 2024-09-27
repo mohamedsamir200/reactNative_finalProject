@@ -21,6 +21,7 @@ import RegistrationScreen from "../Screens/Auth/RegistrationScreen";
 import ProductsScreen from "../Screens/ProductsScreen/ProductsScreen";
 import Home from "../Screens/Home";
 import Profile from "../Screens/ProductsScreen/profile/Profile";
+import ProductBag from "../Screens/ProductBag";
 export default function StackNavigation() {
   const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
@@ -69,7 +70,7 @@ export default function StackNavigation() {
               <IconButton
                 icon={"cart"}
                 size={30}
-                onPress={() => navigate(routes.cart)}
+                onPress={() => navigate(routes.productBag)}
               />
             );
           },
@@ -83,6 +84,7 @@ export default function StackNavigation() {
       <Stack.Screen name={routes.EventOnline} component={EventOnline} />
       <Stack.Screen name={routes.EventOffline} component={EventOffline} />
       <Stack.Screen name={routes.profile} component={Profile} />
+      <Stack.Screen name={routes.productBag} component={ProductBag} />
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
