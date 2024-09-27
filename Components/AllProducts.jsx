@@ -71,8 +71,21 @@ export default function AllProducts() {
         {products.map((item) => (
           <View key={item.id}>
             <Card
-              style={{ width: 165, backgroundColor: "white" , marginVertical:5}}
-              onPress={() => navigate(routes.details)}
+              style={{
+                width: 165,
+                backgroundColor: "white",
+                marginVertical: 5,
+              }}
+              onPress={() =>
+                navigate(routes.details, {
+                  state: {
+                    image : item.img , 
+                    title : item.title , 
+                    desc : item.description , 
+                    price : item.price
+                  },
+                })
+              }
             >
               <Card.Cover source={{ uri: item.img }} />
               <View style={{ marginTop: 5, padding: 10 }}>

@@ -10,7 +10,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Store from './Redux/Store';
 import { Provider } from 'react-redux';
 
-
 export default function App() {
   return (
     <>
@@ -24,6 +23,7 @@ export default function App() {
         {/* <TopNavigation></TopNavigation> */}
       </NavigationContainer>
       </GestureHandlerRootView>
+  
       </Provider>
     </>
   );

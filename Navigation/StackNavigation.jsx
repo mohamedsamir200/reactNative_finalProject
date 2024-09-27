@@ -70,7 +70,7 @@ export default function StackNavigation() {
               <IconButton
                 icon={"cart"}
                 size={30}
-                onPress={() => navigate(routes.cart)}
+                onPress={() => navigate(routes.productBag)}
               />
             );
           },
