@@ -5,7 +5,8 @@ import { collection, onSnapshot, query, where, getDocs, getDoc, doc } from "fire
 import db from "../../../Config/firebase";
 import Icon from 'react-native-vector-icons/FontAwesome'; // لاستخدام الأيقونات
 import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage
-
+import AddDeitalsprofile from "./AddDeitalsprofile";
+import Cards2 from "./Cards2";
 import Counter from "./Counter";
 // import AddProduct from "./AddProduct";
 // import EventUser from "./EventUser";
@@ -106,7 +107,8 @@ function Profile() {
               {data.length > 0 && data.map((item, index) => (
                 <View key={index} style={styles.profileContainer}>
                   <Image
-                    source={{ uri: item.profilePic || "avatar-1299805_1280.png" }}
+                    // source={{ uri: item.profilePic || "avatar-1299805_1280.png" }}
+                    source={{ uri: item.profilePic || "avatar-1299805_1280.png"}}
                     style={styles.profilePic}
                   />
                   <Text style={styles.name}>
@@ -161,6 +163,30 @@ function Profile() {
               )}
             </View>
           )}
+            {activeItem === "products" && accountType !== "Customer" && (
+  <View>
+    {data.length > 0 && data[0].accountType !== "Customer" && (
+      <>
+        <View style={{ marginTop: 16, marginLeft: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Products</Text>
+          {/* <AddProduct /> */}
+        </View>
+
+        <ScrollView style={{ marginTop: 20 }}>
+          {products.length ? (
+               <View style={styles.cardsContainer}>
+              {products.map((item, index) => (
+                <Cards2 data={item} key={index} style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, borderRadius: 10 }} />
+              ))}
+             </View>
+          ) : (
+            <Text>No products available</Text>
+          )}
+        </ScrollView>
+      </>
+    )}
+  </View>
+)}
            {activeItem === "settings" && <AddDeitalsprofile />}
            {activeItem === "Events" && <Eventuser />}
         </View>
@@ -219,7 +245,7 @@ const styles = StyleSheet.create({
   socialLinks: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '50%',
+    width: '40%',
     margin:10,
   },
   reviewsContainer: {

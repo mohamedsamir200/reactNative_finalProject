@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { View, Text, Image, Button, StyleSheet, Alert } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import db from "../../../Config/firebase";
 import { doc, deleteDoc } from "firebase/firestore";
+import Icon from 'react-native-vector-icons/FontAwesome'; // لاستخدام الأيقونات
+
 // import Editeevent from "./Editeevent";
 
 function Cards({ data }) {
@@ -46,8 +48,10 @@ function Cards({ data }) {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button title="Delete" onPress={() => deleteItem(data.id)} />
-        {/* <Editeevent data={data} /> */}
+      <TouchableOpacity onPress={() => deleteItem(data.id)}>
+            <Icon name="trash" size={30} color="red" />
+          </TouchableOpacity>      
+            {/* <Editeevent data={data} /> */}
       </View>
     </View>
   );
@@ -98,6 +102,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
+  marginLeft:250
   },
 });
 

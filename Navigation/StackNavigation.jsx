@@ -20,6 +20,7 @@ import IntroScreen from "../Screens/Auth/IntroScreen";
 import RegistrationScreen from "../Screens/Auth/RegistrationScreen";
 import ProductsScreen from "../Screens/ProductsScreen/ProductsScreen";
 import Home from "../Screens/Home";
+import Profile from "../Screens/ProductsScreen/profile/Profile";
 export default function StackNavigation() {
   const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
@@ -81,7 +82,7 @@ export default function StackNavigation() {
       <Stack.Screen name={routes.details} component={Details} />
       <Stack.Screen name={routes.EventOnline} component={EventOnline} />
       <Stack.Screen name={routes.EventOffline} component={EventOffline} />
-      {/* <Stack.Screen /> */}
+      <Stack.Screen name={routes.profile} component={Profile} />
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
