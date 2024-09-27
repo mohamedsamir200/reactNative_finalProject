@@ -21,24 +21,25 @@ import RegistrationScreen from "../Screens/Auth/RegistrationScreen";
 import ProductsScreen from "../Screens/ProductsScreen/ProductsScreen";
 import Home from "../Screens/Home";
 import Profile from "../Screens/ProductsScreen/profile/Profile";
+import AuctionScreen from "../Screens/Auctions/AuctionScreen";
+import ProposalsScreen from "../Screens/Auctions/components/ProposalsScreen";
 export default function StackNavigation() {
   const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
   // console.log(LoginScreen); // Should not be 'undefined'
 
   return (
-    <Stack.Navigator initialRouteName={routes.IntroScreen} >
-
+    <Stack.Navigator initialRouteName={routes.IntroScreen}>
       <Stack.Screen
         name={routes.LoginScreen}
         component={LoginScreen}
         options={{ header: () => null }}
       />
-        
+
       <Stack.Screen
         name={routes.RegistrationScreen}
         component={RegistrationScreen}
-        options={{ header: () => null  }}
+        options={{ header: () => null }}
       />
       <Stack.Screen
         name={routes.IntroScreen}
@@ -51,6 +52,12 @@ export default function StackNavigation() {
         component={OpeningScreen}
       />
       <Stack.Screen
+        options={{ header: () => null }}
+        name={routes.AuctionScreen}
+        component={AuctionScreen}
+      />
+      <Stack.Screen name={routes.ProposalsScreen} component={ProposalsScreen} />
+      <Stack.Screen
         options={{ headerTitle: "Products", headerTitleAlign: "center" }}
         name={routes.ProductsScreen}
         component={ProductsScreen}
@@ -61,7 +68,9 @@ export default function StackNavigation() {
           headerTitle: "",
           headerRight: () => {
             return (
-              <Text style={{ fontSize: 25, fontWeight: 500 }}>Artistain Corner</Text>
+              <Text style={{ fontSize: 25, fontWeight: 500 }}>
+                Artistain Corner
+              </Text>
             );
           },
           headerLeft: () => {
@@ -78,7 +87,7 @@ export default function StackNavigation() {
         component={BottomNavigation}
       />
       <Stack.Screen name={routes.cart} component={MyCart} />
-      <Stack.Screen name={routes.allProducts} component={AllProducts}  />
+      <Stack.Screen name={routes.allProducts} component={AllProducts} />
       <Stack.Screen name={routes.details} component={Details} />
       <Stack.Screen name={routes.EventOnline} component={EventOnline} />
       <Stack.Screen name={routes.EventOffline} component={EventOffline} />
