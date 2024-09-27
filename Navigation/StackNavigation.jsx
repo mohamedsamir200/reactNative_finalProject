@@ -21,6 +21,7 @@ import RegistrationScreen from "../Screens/Auth/RegistrationScreen";
 import ProductsScreen from "../Screens/ProductsScreen/ProductsScreen";
 import Home from "../Screens/Home";
 import Profile from "../Screens/ProductsScreen/profile/Profile";
+import Addproduct from "../Screens/ProductsScreen/profile/Addproduct";
 import AuctionScreen from "../Screens/Auctions/AuctionScreen";
 import ProposalsScreen from "../Screens/Auctions/components/ProposalsScreen";
 export default function StackNavigation() {
@@ -78,7 +79,7 @@ export default function StackNavigation() {
               <IconButton
                 icon={"cart"}
                 size={30}
-                onPress={() => navigate(routes.cart)}
+                onPress={() => navigate(routes.productBag)}
               />
             );
           },
@@ -92,6 +93,7 @@ export default function StackNavigation() {
       <Stack.Screen name={routes.EventOnline} component={EventOnline} />
       <Stack.Screen name={routes.EventOffline} component={EventOffline} />
       <Stack.Screen name={routes.profile} component={Profile} />
+      <Stack.Screen name={routes.addproduct} component={Addproduct} />
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}

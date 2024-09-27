@@ -1,18 +1,18 @@
-
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, ScrollView, StyleSheet, ActivityIndicator, Linking, TouchableOpacity } from "react-native";
 import { collection, onSnapshot, query, where, getDocs, getDoc, doc } from "firebase/firestore";
 import db from "../../../Config/firebase";
-import Icon from 'react-native-vector-icons/FontAwesome'; // لاستخدام الأيقونات
-import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage
+import Icon from 'react-native-vector-icons/FontAwesome'; 
+import AsyncStorage from "@react-native-async-storage/async-storage"; 
 import AddDeitalsprofile from "./AddDeitalsprofile";
 import Cards2 from "./Cards2";
 import Counter from "./Counter";
-// import AddProduct from "./AddProduct";
-// import EventUser from "./EventUser";
+import AddProduct from "./Addproduct";
 import ReactStars from "react-native-stars";
 import Side from "./Side";
 import Eventuser from "./Eventuser";
+import { FAB } from 'react-native-paper';
+
 function Profile() {
   const [activeItem, setActiveItem] = useState("profile");
   const [products, setProducts] = useState([]);
@@ -21,16 +21,19 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const [reviewsData, setReviewsData] = useState([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
+
   const handleItemClick = (item) => {
-    setActiveItem(item);}
+    setActiveItem(item);
+  }
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userUID = await AsyncStorage.getItem("id"); // استرجاع معرف المستخدم
-        if (userUID ) {
-          setUserId(userUID );
+        const userUID = await AsyncStorage.getItem("id");
+        if (userUID) {
+          setUserId(userUID);
           const usersCollection = collection(db, "users");
-          const q = query(usersCollection, where("id", "==", userUID ));
+          const q = query(usersCollection, where("id", "==", userUID));
           const querySnapshot = await getDocs(q);
 
           if (!querySnapshot.empty) {
@@ -66,7 +69,7 @@ function Profile() {
     if (userId) {
       setLoadingReviews(true);
       const reviewsQuery = query(collection(db, "userReviews"), where("userID", "==", userId));
-  
+
       const unsubscribeReviews = onSnapshot(reviewsQuery, async (snapshot) => {
         const reviewsList = await Promise.all(
           snapshot.docs.map(async (reviewDoc) => {
@@ -83,10 +86,11 @@ function Profile() {
         setReviewsData(reviewsList);
         setLoadingReviews(false);
       });
-  
+
       return () => unsubscribeReviews();
     }
   }, [userId]);
+
   const accountType = data.length > 0 ? data[0].accountType : "";
 
   return (
@@ -95,11 +99,10 @@ function Profile() {
         {/* Sidebar */}
         {accountType !== "Customer" && (
           <View style={styles.sideContainer}>
-                <Side activeItem={activeItem} onItemClick={handleItemClick} />
-
+            <Side activeItem={activeItem} onItemClick={handleItemClick} />
           </View>
         )}
-  
+
         {/* Profile Section */}
         <View style={styles.profileSection}>
           {activeItem === "profile" && (
@@ -107,7 +110,6 @@ function Profile() {
               {data.length > 0 && data.map((item, index) => (
                 <View key={index} style={styles.profileContainer}>
                   <Image
-                    // source={{ uri: item.profilePic || "avatar-1299805_1280.png" }}
                     source={{ uri: item.profilePic || "avatar-1299805_1280.png"}}
                     style={styles.profilePic}
                   />
@@ -128,13 +130,10 @@ function Profile() {
                     </TouchableOpacity>
                   </View>
                   <Text style={styles.about}>{item.about}</Text>
-  
-                  {/* Social Links */}
                   {accountType !== "Customer" && <Counter />}
                 </View>
               ))}
-  
-  
+
               {/* Reviews Section */}
               {accountType !== "Customer" && (
                 <View style={styles.reviewsContainer}>
@@ -163,58 +162,65 @@ function Profile() {
               )}
             </View>
           )}
-            {activeItem === "products" && accountType !== "Customer" && (
-  <View>
-    {data.length > 0 && data[0].accountType !== "Customer" && (
-      <>
-        <View style={{ marginTop: 16, marginLeft: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Products</Text>
-          {/* <AddProduct /> */}
-        </View>
+          
+          {/* Products Section */}
+          {activeItem === "products" && accountType !== "Customer" && (
+            <View style={{backgroundColor:'#fff'}}>
+              {data.length > 0 && data[0].accountType !== "Customer" && (
+                <>
+                  <View style={{ marginTop: 16, marginLeft: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Products</Text>
+                  </View>
 
-        <ScrollView style={{ marginTop: 20 }}>
-          {products.length ? (
-               <View style={styles.cardsContainer}>
-              {products.map((item, index) => (
-                <Cards2 data={item} key={index} style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, borderRadius: 10 }} />
-              ))}
-             </View>
-          ) : (
-            <Text>No products available</Text>
+                  <ScrollView style={{ marginTop: 20 }}>
+                    {products.length ? (
+                      <View style={styles.cardsContainer}>
+                        {products.map((item, index) => (
+                          <Cards2 data={item} key={index} style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, borderRadius: 10 }} />
+                        ))}
+                      </View>
+                    ) : (
+                      <Text>No products available</Text>
+                    )}
+                  </ScrollView>
+
+                  {/* Floating Action Button (FAB) for Add Product */}
+                  <FAB
+                    icon="plus"
+                    style={styles.fab}
+                    onPress={() => {/* هنا يجب استخدام التنقل */}}
+                  />
+                </>
+              )}
+            </View>
           )}
-        </ScrollView>
-      </>
-    )}
-  </View>
-)}
-           {activeItem === "settings" && <AddDeitalsprofile />}
-           {activeItem === "Events" && <Eventuser />}
+
+          {activeItem === "settings" && <AddDeitalsprofile />}
+          {activeItem === "events" && <Eventuser />}
         </View>
       </View>
     </ScrollView>
   );
-  
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', // جعل العناصر جنباً إلى جنب
+    flexDirection: 'column',
     flex: 1,
   },
   sideContainer: {
-   height:700,
-    flex: 1, // حجم الـ Side أصغر
+    height: 60,
+    flex: 1,
   },
   profileSection: {
-    flex: 9, // حجم الـ Profile أكبر
-  padding:5,
+    flex: 9,
+    padding: 5,
   },
   profileContainer: {
     backgroundColor: '#fff',
     padding: 30,
     borderRadius: 10,
-    marginBottom: 15,
-    alignItems:"center"
+    alignItems: "center",
   },
   profilePic: {
     width: 100,
@@ -224,35 +230,34 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     fontWeight: 'bold',
-    // marginVertical: 5,
-    margin:5,
+    margin: 5,
   },
   email: {
     fontSize: 16,
     color: 'gray',
-    margin:5,
+    margin: 5,
   },
   accountType: {
     fontSize: 14,
     color: 'black',
-    margin:5,
+    margin: 5,
   },
   about: {
     fontSize: 14,
     marginVertical: 10,
-    textAlign:"center"
+    textAlign: "center",
   },
   socialLinks: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '40%',
-    margin:10,
+    margin: 10,
   },
   reviewsContainer: {
     marginTop: 20,
   },
   reviewsTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   review: {
@@ -261,7 +266,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 5,
   },
+  fab: {
+    position: 'absolute',
+    right: 0,
+    bottom: 5,
+  },
 });
-
 
 export default Profile;

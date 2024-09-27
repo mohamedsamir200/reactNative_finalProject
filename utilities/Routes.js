@@ -14,6 +14,7 @@ export default routes = Object.freeze({
   IntroScreen: "IntroScreen",
   RegistrationScreen: "RegistrationScreen",
   ProductsScreen: "ProductsScreen",
+  productBag: "productBag",
   AuctionScreen: "AuctionScreen",
   ProposalsScreen: "ProposalsScreen",
 });

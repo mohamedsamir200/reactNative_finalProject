@@ -230,7 +230,7 @@ function AddDetailsProfile() {
   </Picker>
 </View>
           {/* <Button title="DONE" onPress={save} style={{backgroundColor:"green"}}/> */}
-          <TouchableOpacity onPress={save} style={{borderWidth: 1, borderRadius:50,width:60,alignItems:"center",marginLeft:250,marginTop:30}}>
+          <TouchableOpacity onPress={save} style={{borderWidth: 1, borderRadius:50,width:90,alignItems:"center",marginLeft:250,marginTop:40}}>
             <Icon name="check" size={40} color="black" />
           </TouchableOpacity>
         </View>
