@@ -3,11 +3,12 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 function Side({ activeItem, onItemClick }) {
   return (
-    <View style={styles.sidebar}>
+    <View style={styles.topNavigation}>
       <View style={styles.menuItems}>
-        
+
         {/* Profile */}
         <TouchableOpacity
           style={[
@@ -16,7 +17,7 @@ function Side({ activeItem, onItemClick }) {
           ]}
           onPress={() => onItemClick("profile")}
         >
-          <Ionicons name="home-outline" size={20} color="rgba(130, 59, 16, 1)" />
+          <Ionicons name="home-outline" size={24} color="rgba(130, 59, 16, 1)" />
         </TouchableOpacity>
 
         {/* Products */}
@@ -27,18 +28,18 @@ function Side({ activeItem, onItemClick }) {
           ]}
           onPress={() => onItemClick("products")}
         >
-          <MaterialIcons name="production-quantity-limits" size={20} color="rgba(130, 59, 16, 1)" />
+          <MaterialIcons name="production-quantity-limits" size={24} color="rgba(130, 59, 16, 1)" />
         </TouchableOpacity>
 
         {/* Events */}
         <TouchableOpacity
           style={[
             styles.menuItem,
-            activeItem === "Events" ? styles.activeItem : null,
+            activeItem === "events" ? styles.activeItem : null,
           ]}
-          onPress={() => onItemClick("Events")}
+          onPress={() => onItemClick("events")}
         >
-          <FontAwesome name="calendar" size={20} color="rgba(130, 59, 16, 1)" />
+          <FontAwesome name="calendar" size={24} color="rgba(130, 59, 16, 1)" />
         </TouchableOpacity>
 
         {/* Settings */}
@@ -49,7 +50,7 @@ function Side({ activeItem, onItemClick }) {
           ]}
           onPress={() => onItemClick("settings")}
         >
-          <Ionicons name="settings-outline" size={20} color="rgba(130, 59, 16, 1)" />
+          <Ionicons name="settings-outline" size={24} color="rgba(130, 59, 16, 1)" />
         </TouchableOpacity>
       </View>
     </View>
@@ -57,23 +58,27 @@ function Side({ activeItem, onItemClick }) {
 }
 
 const styles = StyleSheet.create({
-  sidebar: {
-    width: 40,
-    height: '90%',
+  topNavigation: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 60,
     backgroundColor: '#fff',
-    paddingTop: 50,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
   },
   menuItems: {
-    marginTop: 20,
+    flexDirection: 'row',
   },
   menuItem: {
-    flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    backgroundColor: 'transparent',
+    width:100,
   },
   activeItem: {
     backgroundColor: 'rgba(211, 211, 211, 0.5)',
+    borderRadius: 10,
   },
 });
 

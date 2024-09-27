@@ -89,7 +89,7 @@ export default function BottomNavigation() {
       <Tab.Screen name={routes.Events} component={Events}  options={{header : ()=> null}}/> 
 
 
-      <Tab.Screen name={routes.profile} component={Profile} /> 
+      <Tab.Screen options={{header : ()=> null}}   name={routes.profile} component={Profile} /> 
     </Tab.Navigator>
   );
 }

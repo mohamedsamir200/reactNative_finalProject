@@ -5,6 +5,7 @@ import Cards from "./Cards";
 import db from "../../../Config/firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FAB } from 'react-native-paper';
 
 function Eventuser() {
   const [events, setEvents] = useState([]);
@@ -51,7 +52,13 @@ function Eventuser() {
           </View>
         )}
       </View>
+      <FAB
+        icon="plus"
+        style={styles.fab}
+        onPress={() =>   <Addproduct />}
+      />
     </ScrollView>
+
   );
 }
 
@@ -61,6 +68,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#fff',
   },
   headerContainer: {
     flexDirection: "row",
@@ -81,5 +89,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 50,
+  },
+  fab: {
+    position: 'absolute',
+    right: 0, // لتثبيت الزر على يسار الشاشة
+    bottom: 5, // لتثبيت الزر في أسفل الشاشة
   },
 });
