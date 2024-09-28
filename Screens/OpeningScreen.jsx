@@ -105,9 +105,27 @@ export default function OpeningScreen() {
           </View>
         </View>
         <Text style={styles.text} className="bg-red-500">
-        
           <Text style={{ backgroundColor: "#704F38", color: "white" }}>A</Text>
-          rtistain <Text> <Text style={{ backgroundColor: "#704F38", color: "white" }}>C</Text>orner</Text>
+          rtistain
+          <Text>
+            <Text style={{ backgroundColor: "#704F38", color: "white" ,}}>
+               C
+             </Text>
+            orner
+          </Text>
+        </Text>
+        <Text
+          style={{
+            textAlign: "center",
+            padding: 5,
+            marginVertical: 25,
+           
+            lineHeight: 20,
+          }}
+        >
+          Welcome to Artistain Corner! Artistain Corner is a hub for creativity,
+          showcasing unique handmade artworks from talented artisans. Discover,
+          connect, and celebrate artistry with us!
         </Text>
         <TouchableOpacity onPress={() => navigate(routes.mainScreen)}>
           <Text style={styles.btn}>Let's Get Started</Text>
@@ -202,9 +220,10 @@ const styles = StyleSheet.create({
 
   text: {
     textAlign: "center",
-    marginVertical: 20,
+    marginTop: 40,
     fontSize: 25,
-    // letterSpacing: 10,
+    letterSpacing: 3,
+   
     fontWeight: "bold",
   },
   btn: {
@@ -215,7 +234,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
-    color:"white", 
-   
+    color: "white",
   },
 });
