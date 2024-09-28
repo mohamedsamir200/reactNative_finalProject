@@ -30,6 +30,7 @@ export default function Details() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const {navigate} = useNavigation()
+  
   //==== snackBar ==== //
   const [visible, setVisible] = React.useState(false);
   const onToggleSnackBar = () => setVisible(!visible);

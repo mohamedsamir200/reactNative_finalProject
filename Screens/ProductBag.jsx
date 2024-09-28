@@ -117,7 +117,7 @@ export default function ProductBag() {
                 <View>
                   <Text>{item.name}</Text>
                   <Text style={{ marginVertical: 10 }}>
-                    Total Price : {item.price} $
+                  {item.price} $
                   </Text>
 
                   <View

@@ -1,14 +1,7 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  Image,
-} from "react-native";
+import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import Styles from "./../style";
-import { Button, Card, MD2Colors } from "react-native-paper";
+import { Button, Card, Icon, MD2Colors, Snackbar } from "react-native-paper"; // إضافة Snackbar
 import { useNavigation } from "@react-navigation/native";
 import routes from "./../utilities/Routes";
 import {
@@ -18,29 +11,62 @@ import {
   query,
   where,
   getDocs,
+  doc,
+  deleteDoc,
 } from "firebase/firestore";
 import db from "../Config/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../Redux/Slices/productSlice";
-
+import { TouchableOpacity } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from 'react-native-toast-message';
 export default function AllProducts() {
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.products);
 
+  //==== get user ID  ====//
+  const [userId, setUserId] = useState("");
+  const [data, setData] = useState([]);
+  const fetchUser = async () => {
+    try {
+      const userUID = await AsyncStorage.getItem("id");
+      if (userUID) {
+        setUserId(userUID);
+        const usersCollection = collection(db, "users");
+        const q = query(usersCollection, where("id", "==", userUID));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          setData(userData);
+        } else {
+          console.error("No user found!");
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching user data: ", error);
+    }
+  };
+
+
+  //==== get user ID  ====//
+
   // ==== fun Expended ==== //
   const [isExpanded, setIsExpanded] = useState(false);
-
   const toggleDescription = (id) => {
     setIsExpanded((prevState) => ({
       ...prevState,
       [id]: !prevState[id],
     }));
   };
-
   // ==== fun Expended ==== //
 
   useEffect(() => {
+    fetchUser();
     getProduct();
   }, []);
 
@@ -55,8 +81,35 @@ export default function AllProducts() {
     });
   }
 
+  //=== fun add To Bag ==//
+  async function addToBag(item) {
+    try {
+      const collectionRef = collection(db, "Bag");
+      await addDoc(collectionRef, {
+        image: item.img,
+        quantity: 1,
+        name: item.title,
+        description: item.description,
+        basePrice: item.price,
+        price: item.price,
+        userID: userId,
+      });
+
+      Toast.show({
+        text1: "Product added successfully Go to cart",
+        text2: item.title,
+        position: "top",
+        visibilityTime: 3000,
+        autoHide: true,
+      });
+    
+    } catch (error) {
+      console.error("Error adding to bag: ", error);
+    }
+  }
+  //=== fun add To Bag ==//
+
   return (
-    // showsVerticalScrollIndicator={false}
     <ScrollView
       style={Styles.mainContainer}
       showsVerticalScrollIndicator={false}
@@ -76,18 +129,21 @@ export default function AllProducts() {
                 backgroundColor: "white",
                 marginVertical: 5,
               }}
-              onPress={() =>
-                navigate(routes.details, {
-                  state: {
-                    image : item.img , 
-                    title : item.title , 
-                    desc : item.description , 
-                    price : item.price
-                  },
-                })
-              }
             >
-              <Card.Cover source={{ uri: item.img }} />
+              <TouchableOpacity
+                onPress={() =>
+                  navigate(routes.details, {
+                    state: {
+                      image: item.img,
+                      title: item.title,
+                      desc: item.description,
+                      price: item.price,
+                    },
+                  })
+                }
+              >
+                <Card.Cover source={{ uri: item.img }} />
+              </TouchableOpacity>
               <View style={{ marginTop: 5, padding: 10 }}>
                 <Text>{item.title}</Text>
                 <Text
@@ -105,12 +161,25 @@ export default function AllProducts() {
                 >
                   {isExpanded[item.id] ? "Show Less" : "Show More"}
                 </Text>
-                <Text>{item.price} $</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text>{item.price} $</Text>
+                  <TouchableOpacity onPress={() => addToBag(item)}>
+                    <Icon source={"cart"} size={25} />
+                  </TouchableOpacity>
+                </View>
               </View>
             </Card>
           </View>
         ))}
       </View>
+
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </ScrollView>
   );
 }
