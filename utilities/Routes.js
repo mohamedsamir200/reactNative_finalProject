@@ -17,4 +17,5 @@ export default routes = Object.freeze({
   productBag: "productBag",
   AuctionScreen: "AuctionScreen",
   ProposalsScreen: "ProposalsScreen",
+  addroduct : "addproduct"
 });

@@ -18,12 +18,14 @@ import EventOnline from "../Components/Events/EventOnline";
 import LoginScreen from "../Screens/Auth/LoginScreen";
 import IntroScreen from "../Screens/Auth/IntroScreen";
 import RegistrationScreen from "../Screens/Auth/RegistrationScreen";
-import ProductsScreen from "../Screens/ProductsScreen/ProductsScreen";
 import Home from "../Screens/Home";
 import Profile from "../Screens/ProductsScreen/profile/Profile";
 import Addproduct from "../Screens/ProductsScreen/profile/Addproduct";
 import AuctionScreen from "../Screens/Auctions/AuctionScreen";
 import ProposalsScreen from "../Screens/Auctions/components/ProposalsScreen";
+import ProductsScreen from './../Screens/ProductsScreen/ProductsScreen';
+import ProductBag from "../Screens/ProductBag";
+
 export default function StackNavigation() {
   const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
@@ -90,10 +92,11 @@ export default function StackNavigation() {
       <Stack.Screen name={routes.cart} component={MyCart} />
       <Stack.Screen name={routes.allProducts} component={AllProducts} />
       <Stack.Screen name={routes.details} component={Details} />
+      <Stack.Screen name={routes.productBag} component={ProductBag} />
       <Stack.Screen name={routes.EventOnline} component={EventOnline} />
       <Stack.Screen name={routes.EventOffline} component={EventOffline} />
       <Stack.Screen name={routes.profile} component={Profile} />
-      <Stack.Screen name={routes.addproduct} component={Addproduct} />
+      <Stack.Screen name={routes.addroduct} component={Addproduct} />
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
