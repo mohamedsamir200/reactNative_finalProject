@@ -25,7 +25,7 @@ import AuctionScreen from "../Screens/Auctions/AuctionScreen";
 import ProposalsScreen from "../Screens/Auctions/components/ProposalsScreen";
 import ProductsScreen from './../Screens/ProductsScreen/ProductsScreen';
 import ProductBag from "../Screens/ProductBag";
-
+import Addausproduct from "../Screens/ProductsScreen/profile/Addausproduct";
 export default function StackNavigation() {
   const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
@@ -95,8 +95,9 @@ export default function StackNavigation() {
       <Stack.Screen name={routes.productBag} component={ProductBag} />
       <Stack.Screen name={routes.EventOnline} component={EventOnline} />
       <Stack.Screen name={routes.EventOffline} component={EventOffline} />
-      <Stack.Screen name={routes.profile} component={Profile} />
-      <Stack.Screen name={routes.addroduct} component={Addproduct} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Addproduct" component={Addproduct} />
+      <Stack.Screen name="Addausproduct" component={Addausproduct} />
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
