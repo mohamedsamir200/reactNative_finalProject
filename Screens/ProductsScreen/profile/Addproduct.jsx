@@ -3,17 +3,16 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   ScrollView,
   Alert,
+  TouchableOpacity,
 } from "react-native";
-import { FileSystem } from "expo-file-system"; // تأكد من تثبيت expo-file-system
 import { collection, addDoc } from "firebase/firestore";
-import { storage } from "../../../Config/firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import db from "../../../Config/firebase";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import db, { storage } from "../../../Config/firebase";
+import { Picker } from "@react-native-picker/picker"; // استيراد Picker
 
 function AddProduct() {
   const [data1, setData1] = useState({
@@ -23,31 +22,8 @@ function AddProduct() {
     typeproduct: "",
     productquantity: 0,
   });
-  const [aucData, setAucData] = useState({
-    title: "",
-    description: "",
-    initPrice: "",
-    startDate: "",
-    endDate: "",
-  });
   const [imgurl, setImgurl] = useState(null);
   const [percent, setPercent] = useState(0);
-
-  const getData = (e) => {
-    const { name, value } = e.target;
-    setData1((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const getAucData = (e) => {
-    const { name, value } = e.target;
-    setAucData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
 
   const save = async () => {
     if (imgurl) {
@@ -70,7 +46,7 @@ function AddProduct() {
           const ownerID = await AsyncStorage.getItem("id");
 
           if (data1.title && data1.description) {
-            const collectionRef = collection(db, "tempProducts");
+            const collectionRef = collection(db, "add product");
             await addDoc(collectionRef, {
               title: data1.title,
               description: data1.description,
@@ -81,20 +57,7 @@ function AddProduct() {
               typeproduct: data1.typeproduct,
               ownerID,
             });
-          } else if (aucData.title && aucData.description) {
-            const collectionRef = collection(db, "auctionProduct");
-            await addDoc(collectionRef, {
-              title: aucData.title,
-              description: aucData.description,
-              initPrice: Number(aucData.initPrice),
-              img: downloadURL,
-              ownerID,
-              startDate: aucData.startDate,
-              endDate: aucData.endDate,
-              members: [],
-              proposals: [],
-            });
-          }
+          } 
         }
       );
 
@@ -105,13 +68,6 @@ function AddProduct() {
         price: "",
         typeproduct: "",
         productquantity: 0,
-      });
-      setAucData({
-        title: "",
-        description: "",
-        initPrice: "",
-        startDate: "",
-        endDate: "",
       });
       setImgurl(null);
     } else {
@@ -141,22 +97,46 @@ function AddProduct() {
         keyboardType="numeric"
         onChangeText={(text) => setData1({ ...data1, price: text })}
       />
-      <TextInput
-        placeholder="Type Product"
-        style={styles.input}
-        value={data1.typeproduct}
-        onChangeText={(text) => setData1({ ...data1, typeproduct: text })}
-      />
+       <View style={styles.container}>
+      <Text style={styles.label}>Type Product</Text>
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={selectedType}
+          onValueChange={(itemValue, itemIndex) =>setData1(itemValue)}
+          style={styles.picker}
+        >
+          <Picker.Item label="Select" value="" />
+          <Picker.Item label="Macramé" value="Macramé" />
+          <Picker.Item label="Painting" value="Painting" />
+          <Picker.Item label="Wood carving" value="Wood carving" />
+          <Picker.Item label="Pottery" value="Pottery" />
+        </Picker>
+      </View>
+    </View>
       <TextInput
         placeholder="Product Quantity"
         style={styles.input}
         value={String(data1.productquantity)}
         keyboardType="numeric"
-        onChangeText={(text) => setData1({ ...data1, productquantity: Number(text) })}
+        onChangeText={(text) =>
+          setData1({ ...data1, productquantity: Number(text) })
+        }
       />
-      <Button title="Upload Product Image" onPress={() => {/* Upload image logic */}} />
-      <Button title="Done" onPress={save} />
-      <Button title="Cancel" onPress={() => {/* Handle cancel logic */}} />
+
+      {/* زر لرفع الصورة */}
+      <TouchableOpacity style={styles.bott} onPress={() => {/* Upload image logic */}}>
+        <Text style={styles.bottText}>Upload Product Image</Text>
+      </TouchableOpacity>
+
+      {/* زر الحفظ */}
+      <TouchableOpacity style={styles.bott} onPress={save}>
+        <Text style={styles.bottText}>Done</Text>
+      </TouchableOpacity>
+
+      {/* زر الإلغاء */}
+      <TouchableOpacity style={styles.bott} onPress={() => {/* Handle cancel logic */}}>
+        <Text style={styles.bottText}>Cancel</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -165,19 +145,51 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
     fontSize: 24,
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
+    height: 50,
+    borderColor: "gray",
     borderWidth: 1,
     marginBottom: 15,
     paddingHorizontal: 10,
+    borderRadius: 10,
+  },
+  bott: {
+    backgroundColor: "red",
+    padding: 5,
+    borderRadius: 10,
+    alignItems: "center",
+    marginVertical: 10,
+    width:90,
+    marginLeft:260,
+  },
+  bottText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  container: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  picker: {
+    height: 50,
+    width: '100%',
   },
 });
 

@@ -1,3 +1,4 @@
+
 export default routes = Object.freeze({
   mainScreen: "MainScreen",
   openingScreen: "OpeningScreen",
@@ -17,5 +18,6 @@ export default routes = Object.freeze({
   productBag: "productBag",
   AuctionScreen: "AuctionScreen",
   ProposalsScreen: "ProposalsScreen",
-  addroduct : "addproduct"
+  addproduct: "Addproduct",
+  addausproduct:"Addausproduct",
 });

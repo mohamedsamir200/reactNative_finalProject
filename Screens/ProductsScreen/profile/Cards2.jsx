@@ -57,6 +57,9 @@ function Cards2({ data, onDelete }) {
           <TouchableOpacity onPress={() => deleteItem(data.id)}>
             <Icon name="trash" size={30} color="red" />
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => deleteItem(data.id)}>
+            <Icon name="trash" size={30} color="red" />
+          </TouchableOpacity>
           {/* <Editproduct data={data} /> */}
         </View>
       </View>
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 5,
-    width:300,
+    width:280,
     marginLeft:30
   },
   cardImage: {
@@ -104,10 +107,8 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     marginTop: 10,
-  marginLeft:250
-
   },
 });
 
