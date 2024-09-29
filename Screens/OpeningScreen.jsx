@@ -14,6 +14,7 @@ import routes from "./../utilities/Routes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MD2Colors } from "react-native-paper";
+import { ScrollView } from "react-native-gesture-handler";
 
 // const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -83,7 +84,7 @@ export default function OpeningScreen() {
     //   />
     //   {renderDots()}
     // </View>
-    <>
+    <ScrollView>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
           <View style={styles.imageWrapper}>
@@ -131,7 +132,7 @@ export default function OpeningScreen() {
           <Text style={styles.btn}>Let's Get Started</Text>
         </TouchableOpacity>
       </SafeAreaView>
-    </>
+    </ScrollView>
   );
 }
 
