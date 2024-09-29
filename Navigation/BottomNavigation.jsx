@@ -79,12 +79,12 @@ export default function BottomNavigation() {
         
       })}
     >
-      <Tab.Screen name={routes.home} component={Home} /> 
-      <Tab.Screen name={routes.Products} component={Products} /> 
-      <Tab.Screen name={routes.Events} component={Events} /> 
+      <Tab.Screen name={routes.home} component={Home}   options={{ header: () => null }}/> 
+      <Tab.Screen name={routes.Products} component={Products}   options={{ header: () => null }} /> 
+      <Tab.Screen name={routes.Events} component={Events}   options={{ header: () => null }} /> 
 
 
-      <Tab.Screen name={routes.profile} component={Profile} /> 
+      <Tab.Screen name={routes.profile} component={Profile}   options={{ header: () => null }}/> 
     </Tab.Navigator>
   );
 }
