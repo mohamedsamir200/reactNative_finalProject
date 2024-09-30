@@ -3,6 +3,7 @@
     "name": "test",
     "slug": "test",
     "plugins": ["@react-native-google-signin/google-signin"],
+    "scheme": "Artisan Corner",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,23 +14,33 @@ import Icon from "react-native-vector-icons/Feather";
 //   GoogleSignin,
 //   statusCodes,
 // } from "@react-native-google-signin/google-signin";
-import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
-import auth from "@react-native-firebase/auth";
+// import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+// import auth from "@react-native-firebase/auth";
 
 // Feather icons
 import {
   signInWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-// import db, { auth, provider } from "../../Config/firebase";
+import db, { auth, provider } from "../../Config/firebase";
 import { useNavigation } from "@react-navigation/native"; // Navigation
 import AsyncStorage from "@react-native-async-storage/async-storage";
+//////////////////////
+import * as WebBrowser from "expo-web-browser"; //auth_Testing
+import * as Google from "expo-auth-session/providers/google"; //auth_Testing
 
+WebBrowser.maybeCompleteAuthSession(); //auth_Testing
 export default function LoginScreen() {
   // GoogleSignin.configure({
   //   webClientId:
   //     "95741196127-tobu2n4u03mimd29r9ld07rjr73p0g70.apps.googleusercontent.com", // Get this from Firebase
   // });
+  const [userInfo, setUserInfo] = useState(null);
+  const [request, response, prompAsync] = Google.useAuthRequest({
+    androidClientId:
+      "95741196127-tobu2n4u03mimd29r9ld07rjr73p0g70.apps.googleusercontent.com",
+  });
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -120,6 +130,34 @@ export default function LoginScreen() {
   //   }
   // };
   //functions
+
+  useEffect(() => {
+    handeSignInWithGoogle();
+  }, [response]);
+  async function handeSignInWithGoogle() {
+    const userID = await AsyncStorage.getItem("@user");
+    if (!userID) {
+      if (response.type === "success") {
+        await getUserInfo(response.authentication.accessToken);
+      }
+    } else {
+      setUserInfo(userID);
+    }
+  }
+  const getUserInfo = async (token) => {
+    if (!token) return;
+    try {
+      const response = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        { headers: { authorization: `Bearer ${token}` } }
+      );
+      const user = await response.json();
+      await AsyncStorage.setItem("@user", JSON.stringify(user));
+      setUserInfo(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <View style={styles.container}>
       {/* Sign In Text */}
@@ -194,7 +232,8 @@ export default function LoginScreen() {
         <TouchableOpacity
           style={styles.socialButton}
           onPress={() => {
-            onGoogleButtonPress();
+            // onGoogleButtonPress();}
+            prompAsync();
           }}
         >
           <Image
@@ -217,6 +256,7 @@ export default function LoginScreen() {
           Sign Up
         </Text>
       </Text>
+      <Text>{JSON.stringify(userInfo)}</Text>
     </View>
   );
 }
