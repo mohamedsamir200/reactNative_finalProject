@@ -105,7 +105,7 @@ function EditProduct() {
         <Text style={{ color: "#fff", textAlign: 'center' }}>Choose New Image</Text>
       </TouchableOpacity>
 
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: 20 , paddingBottom:40 }}>
         <Button title="Update Product" onPress={handleUpdate} />
       </View>
     </ScrollView>

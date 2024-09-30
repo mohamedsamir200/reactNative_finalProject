@@ -103,14 +103,14 @@ function Addausproduct() {
         onChangeText={(text) => setAucData({ ...aucData, initPrice: text })}
       />
       <TextInput
-        placeholder="startDate"
+        placeholder="startDate  YYYY-MM-DD"
         style={styles.input}
         value={aucData.startDate}
         keyboardType="numeric"
         onChangeText={(text) => setAucData({ ...aucData, startDate: text })}
       />
      <TextInput
-        placeholder=" endDate"
+        placeholder=" endDate  YYYY-MM-DD"
         style={styles.input}
         value={aucData. endDate}
         keyboardType="numeric"

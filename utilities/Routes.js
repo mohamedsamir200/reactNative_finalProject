@@ -20,5 +20,6 @@ export default routes = Object.freeze({
   ProposalsScreen: "ProposalsScreen",
   addproduct: "Addproduct",
   addausproduct:"Addausproduct",
-  editProduct:" EditProduct"
+  editProduct:"EditProduct",
+  addevent:"Addevent",
 });
