@@ -1,77 +1,29 @@
 import { View, Text, ScrollView, Image, StyleSheet } from "react-native";
 import React from "react";
 import Styles from "./../style";
-import WoodImage from "../Components/WoodImage";
+import CategoryImage from "../Components/CategoryImage";
 import Products from "../Components/Products/Products";
+import AllProducts from "../Components/AllProducts";
+import { Button } from "react-native-paper";
+import styles from "./../style";
+import { useNavigation } from "@react-navigation/native";
+import routes from "./../utilities/Routes";
+import { TouchableOpacity } from "react-native";
+import SomeProducts from "../Components/SomeProducts";
+
+import EventHome from "./EventHome";
 
 export default function Home() {
   return (
     <>
-      <ScrollView style={Styles.mainContainer} showsVerticalScrollIndicator={false}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={{ flexDirection: "row", alignContent: "space-between" }}>
-            <View style={style.viewStyles}>
-              <Image
-                style={{ width: 90, height: 90, marginVertical: 7 }}
-                source={require("../assets/roundedImages/Roundimg1.png")}
-              />
-              <Text>Handicraft</Text>
-            </View>
-            <View style={style.viewStyles}>
-              <Image
-                style={{ width: 90, height: 90, marginVertical: 7 }}
-                source={require("../assets/roundedImages/Roundimg2.png")}
-              />
-              <Text>Clocks</Text>
-            </View>
-            <View style={style.viewStyles}>
-              <Image
-                style={{ width: 90, height: 90, marginVertical: 7 }}
-                source={require("../assets/roundedImages/Roundimg1.png")}
-              />
-              <Text>Handicraft</Text>
-            </View>
-            <View style={style.viewStyles}>
-              <Image
-                style={{ width: 90, height: 90, marginVertical: 7 }}
-                source={require("../assets/roundedImages/Roundimg2.png")}
-              />
-              <Text>Clocks</Text>
-            </View>
-            <View style={style.viewStyles}>
-              <Image
-                style={{ width: 90, height: 90, marginVertical: 7 }}
-                source={require("../assets/roundedImages/Roundimg1.png")}
-              />
-              <Text>Handicraft</Text>
-            </View>
-            <View style={style.viewStyles}>
-              <Image
-                style={{ width: 90, height: 90, marginVertical: 7 }}
-                source={require("../assets/roundedImages/Roundimg2.png")}
-              />
-              <Text>Clocks</Text>
-            </View>
-          </View>
-        </ScrollView>
-
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <WoodImage />
-        </ScrollView>
-        <ScrollView>
-          {/* <Products/> */}
-        </ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <CategoryImage />
+        <SomeProducts />
+       <EventHome/>
+        {/* <ScrollView><Products/></ScrollView> */}
       </ScrollView>
     </>
   );
 }
 
-const style = StyleSheet.create({
-  viewStyles: {
-    // marginHorizontal: 5,
-    width: 100,
-    height: 120,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+const style = StyleSheet.create({});

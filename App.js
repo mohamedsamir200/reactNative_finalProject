@@ -9,7 +9,7 @@ import BottomNavigation from "./Navigation/BottomNavigation";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Store from './Redux/Store';
 import { Provider } from 'react-redux';
-
+import Toast from 'react-native-toast-message';
 
 export default function App() {
   return (
@@ -23,7 +23,9 @@ export default function App() {
         {/* <DrawerNavigation></DrawerNavigation> */}
         {/* <TopNavigation></TopNavigation> */}
       </NavigationContainer>
+      <Toast ref={(ref) => Toast.setRef(ref)} /> 
       </GestureHandlerRootView>
+  
       </Provider>
     </>
   );

@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import React, { useEffect, useState } from "react";
-import Styles from "./../style";
+import styles from "./../style";
 import { Button, Card, Icon, MD2Colors, Snackbar } from "react-native-paper"; // إضافة Snackbar
 import { useNavigation } from "@react-navigation/native";
 import routes from "./../utilities/Routes";
@@ -19,17 +19,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../Redux/Slices/productSlice";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Toast from "react-native-toast-message";
-import { Searchbar } from "react-native-paper";
-
+import Toast from 'react-native-toast-message';
 export default function AllProducts() {
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.products);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState(products);
-  const [selectedCategory, setSelectedCategory] = useState("All");
   //==== get user ID  ====//
   const [userId, setUserId] = useState("");
   const [data, setData] = useState([]);
@@ -56,6 +51,7 @@ export default function AllProducts() {
       console.error("Error fetching user data: ", error);
     }
   };
+
 
   //==== get user ID  ====//
 
@@ -106,105 +102,28 @@ export default function AllProducts() {
         visibilityTime: 3000,
         autoHide: true,
       });
+    
     } catch (error) {
       console.error("Error adding to bag: ", error);
     }
   }
   //=== fun add To Bag ==//
 
-  //==== Search ===//
-
-  useEffect(() => {
-    let filtered = products;
-    if (searchTerm) {
-      filtered = filtered.filter((item) =>
-        item.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    if (selectedCategory !== "All") {
-      filtered = filtered.filter(
-        (item) => item.typeproduct === selectedCategory
-      );
-    }
-    setFilteredProducts(filtered);
-  }, [searchTerm, selectedCategory, products]);
-
-  async function getProduct() {
-    let arr;
-    onSnapshot(collection(db, "add product"), (snapshot) => {
-      arr = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
-      });
-      dispatch(setProducts([...arr]));
-    });
-  }
-
-  function handleSearch(term) {
-    setSearchTerm(term);
-  }
-
-  function handleCategorySelect(category) {
-    setSelectedCategory(category);
-  }
-  //==== Search ===//
-
   return (
+    <>
+         <View style={[styles.mainComponentAddress , {marginTop:50 , marginBottom:-5}]}>
+          <Text style={styles.mainText}>Product</Text>
+          <Text
+            style={styles.seeAllBtn}
+            onPress={() => navigate(routes.allProducts)}
+          >
+            SeeAll
+          </Text>
+        </View>
     <ScrollView
-      style={Styles.mainContainer}
+      style={styles.mainContainer}
       showsVerticalScrollIndicator={false}
     >
-      <Searchbar
-        placeholder="Search"
-        style={{
-          backgroundColor: "transparent",
-          borderWidth: 1,
-          borderColor: "grey",
-        }}
-        onChangeText={handleSearch}
-        value={searchTerm}
-      />
-      <ScrollView  horizontal  showsHorizontalScrollIndicator={false} style={{marginVertical:5}}>
-        <Button
-          mode={selectedCategory === "All" ? "contained" : "outlined"}
-          onPress={() => handleCategorySelect("All")}
-          style={styles.smallButton}
-          labelStyle={styles.buttonLabel}
-        >
-          All
-        </Button>
-        <Button
-          mode={selectedCategory === "Macramé" ? "contained" : "outlined"}
-          onPress={() => handleCategorySelect("Macramé")}
-          style={styles.smallButton}
-          labelStyle={styles.buttonLabel}
-        >
-          Macramé
-        </Button>
-        <Button
-          mode={selectedCategory === "Painting" ? "contained" : "outlined"}
-          onPress={() => handleCategorySelect("Painting")}
-          style={styles.smallButton}
-          labelStyle={styles.buttonLabel}
-        >
-          Painting
-        </Button>
-        <Button
-          mode={selectedCategory === "Pottery" ? "contained" : "outlined"}
-          onPress={() => handleCategorySelect("Pottery")}
-          style={styles.smallButton}
-          labelStyle={styles.buttonLabel}
-        >
-          Pottery
-        </Button>
-        <Button
-          mode={selectedCategory === "Wood carving" ? "contained" : "outlined"}
-          onPress={() => handleCategorySelect("Wood carving")}
-          style={styles.smallButton}
-          labelStyle={styles.buttonLabel}
-        >
-          Wood carving
-        </Button>
-      </ScrollView>
       <View
         style={{
           flexDirection: "row",
@@ -212,7 +131,7 @@ export default function AllProducts() {
           justifyContent: "space-between",
         }}
       >
-        {filteredProducts.map((item) => (
+        {products.slice(0,4).map((item) => (
           <View key={item.id}>
             <Card
               style={{
@@ -236,7 +155,7 @@ export default function AllProducts() {
                 <Card.Cover source={{ uri: item.img }} />
               </TouchableOpacity>
               <View style={{ marginTop: 5, padding: 10 }}>
-                <Text style={{fontWeight:700}}>{item.title}</Text>
+                <Text  style={{fontWeight:700}}>{item.title}</Text>
                 <Text
                   style={{ marginVertical: 5 }}
                   numberOfLines={isExpanded[item.id] ? undefined : 2}
@@ -272,28 +191,16 @@ export default function AllProducts() {
 
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </ScrollView>
+    </>
   );
 }
 
-const styles = StyleSheet.create({
+const Styles = StyleSheet.create({
   flexStyle: {
     gap: 5,
     marginVertical: 15,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-
-  smallButton: {
-    minWidth: 30,
-    height: 40,
-    marginVertical: 2,
-    marginHorizontal: 3,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonLabel: {
-    fontSize: 10,
   },
 });

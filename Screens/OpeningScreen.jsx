@@ -14,26 +14,28 @@ import routes from "./../utilities/Routes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MD2Colors } from "react-native-paper";
+import { ScrollView } from "react-native-gesture-handler";
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+// const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-const images = [
-  require("../assets/openingImages/opening-1.jpg"),
-  require("../assets/openingImages/opening-2.jpg"),
-  require("../assets/openingImages/opening-3.jpg"),
-];
+// const images = [
+//   require("../assets/openingImages/opening-1.jpg"),
+//   require("../assets/openingImages/opening-2.jpg"),
+//   require("../assets/openingImages/opening-3.jpg"),
+// ];
 
 export default function OpeningScreen() {
   // AsyncStorage.clear();
   const { navigate } = useNavigation();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const scrollX = useRef(new Animated.Value(0)).current;
 
-  const handleScroll = (event) => {
-    const offsetX = event.nativeEvent.contentOffset.x;
-    const index = Math.round(offsetX / screenWidth); // Using Math.round for better rounding
-    setActiveIndex(index);
-  };
+  // const [activeIndex, setActiveIndex] = useState(0);
+  // const scrollX = useRef(new Animated.Value(0)).current;
+
+  // const handleScroll = (event) => {
+  //   const offsetX = event.nativeEvent.contentOffset.x;
+  //   const index = Math.round(offsetX / screenWidth); // Using Math.round for better rounding
+  //   setActiveIndex(index);
+  // };
 
   // const renderDots = () => {
   //   return (
@@ -82,7 +84,7 @@ export default function OpeningScreen() {
     //   />
     //   {renderDots()}
     // </View>
-    <>
+    <ScrollView>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
           <View style={styles.imageWrapper}>
@@ -104,15 +106,33 @@ export default function OpeningScreen() {
           </View>
         </View>
         <Text style={styles.text} className="bg-red-500">
-          {" "}
-          <Text style={{ backgroundColor: "#704F38", color: "white" }}>M</Text>
-          ashrabiya
+          <Text style={{ backgroundColor: "#704F38", color: "white" }}>A</Text>
+          rtistain
+          <Text>
+            <Text style={{ backgroundColor: "#704F38", color: "white" ,}}>
+               C
+             </Text>
+            orner
+          </Text>
+        </Text>
+        <Text
+          style={{
+            textAlign: "center",
+            padding: 5,
+            marginVertical: 25,
+           
+            lineHeight: 20,
+          }}
+        >
+          Welcome to Artistain Corner! Artistain Corner is a hub for creativity,
+          showcasing unique handmade artworks from talented artisans. Discover,
+          connect, and celebrate artistry with us!
         </Text>
         <TouchableOpacity onPress={() => navigate(routes.mainScreen)}>
           <Text style={styles.btn}>Let's Get Started</Text>
         </TouchableOpacity>
       </SafeAreaView>
-    </>
+    </ScrollView>
   );
 }
 
@@ -201,9 +221,10 @@ const styles = StyleSheet.create({
 
   text: {
     textAlign: "center",
-    marginVertical: 20,
+    marginTop: 40,
     fontSize: 25,
-    letterSpacing: 10,
+    letterSpacing: 3,
+   
     fontWeight: "bold",
   },
   btn: {
@@ -214,7 +235,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 20,
-    color:"white", 
-   
+    color: "white",
   },
 });

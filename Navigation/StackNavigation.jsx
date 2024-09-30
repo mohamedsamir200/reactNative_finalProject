@@ -18,11 +18,18 @@ import EventOnline from "../Components/Events/EventOnline";
 import LoginScreen from "../Screens/Auth/LoginScreen";
 import IntroScreen from "../Screens/Auth/IntroScreen";
 import RegistrationScreen from "../Screens/Auth/RegistrationScreen";
-import ProductsScreen from "../Screens/ProductsScreen/ProductsScreen";
+import Home from "../Screens/Home";
+import Profile from "../Screens/ProductsScreen/profile/Profile";
+import Addproduct from "../Screens/ProductsScreen/profile/Addproduct";
+import AuctionScreen from "../Screens/Auctions/AuctionScreen";
+import ProposalsScreen from "../Screens/Auctions/components/ProposalsScreen";
+import ProductsScreen from './../Screens/ProductsScreen/ProductsScreen';
+import ProductBag from "../Screens/ProductBag";
+import Addausproduct from "../Screens/ProductsScreen/profile/Addausproduct";
 export default function StackNavigation() {
   const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
-  console.log(LoginScreen); // Should not be 'undefined'
+  // console.log(LoginScreen); // Should not be 'undefined'
 
   return (
     <Stack.Navigator initialRouteName={routes.IntroScreen}>
@@ -31,6 +38,7 @@ export default function StackNavigation() {
         component={LoginScreen}
         options={{ header: () => null }}
       />
+
       <Stack.Screen
         name={routes.RegistrationScreen}
         component={RegistrationScreen}
@@ -47,6 +55,12 @@ export default function StackNavigation() {
         component={OpeningScreen}
       />
       <Stack.Screen
+        options={{ header: () => null }}
+        name={routes.AuctionScreen}
+        component={AuctionScreen}
+      />
+      <Stack.Screen name={routes.ProposalsScreen} component={ProposalsScreen} />
+      <Stack.Screen
         options={{ headerTitle: "Products", headerTitleAlign: "center" }}
         name={routes.ProductsScreen}
         component={ProductsScreen}
@@ -57,7 +71,9 @@ export default function StackNavigation() {
           headerTitle: "",
           headerRight: () => {
             return (
-              <Text style={{ fontSize: 25, fontWeight: 500 }}>HandiCraft</Text>
+              <Text style={{ fontSize: 25, fontWeight: 500 }}>
+                Artistain Corner
+              </Text>
             );
           },
           headerLeft: () => {
@@ -65,7 +81,7 @@ export default function StackNavigation() {
               <IconButton
                 icon={"cart"}
                 size={30}
-                onPress={() => navigate(routes.cart)}
+                onPress={() => navigate(routes.productBag)}
               />
             );
           },
@@ -76,9 +92,12 @@ export default function StackNavigation() {
       <Stack.Screen name={routes.cart} component={MyCart} />
       <Stack.Screen name={routes.allProducts} component={AllProducts} />
       <Stack.Screen name={routes.details} component={Details} />
+      <Stack.Screen name={routes.productBag} component={ProductBag} />
       <Stack.Screen name={routes.EventOnline} component={EventOnline} />
       <Stack.Screen name={routes.EventOffline} component={EventOffline} />
-      {/* <Stack.Screen /> */}
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Addproduct" component={Addproduct} />
+      <Stack.Screen name="Addausproduct" component={Addausproduct} />
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
