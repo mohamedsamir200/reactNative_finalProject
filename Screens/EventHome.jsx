@@ -12,12 +12,12 @@ export default function EventHome() {
   return (
     <>
           <View style={[styles.mainComponentAddress , {  marginBottom:5}]}>
-          <Text style={styles.mainText}>Product</Text>
+          <Text style={styles.mainText}>Events</Text>
           <Text
             style={styles.seeAllBtn}
             onPress={() => navigate(routes.Events)}
           >
-            Events
+           All Events
           </Text>
         </View>
       <View style={{ padding: 10 }}>
