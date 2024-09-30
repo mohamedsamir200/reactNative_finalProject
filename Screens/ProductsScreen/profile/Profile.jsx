@@ -223,7 +223,7 @@ function Profile() {
                             closeMenu();
                             navigation.navigate(routes.addausproduct); 
                           }}
-                          title="Another Page"
+                          title="  Add Auction Product"
                         />
                       </Menu>
                     </View>
@@ -294,7 +294,8 @@ const styles = StyleSheet.create({
   },
   reviewsContainer: {
     marginTop: 20,
-    backgroundColor:"#fff"
+    backgroundColor:"#fff",
+    padding:20,
   },
   reviewsTitle: {
     fontWeight: "bold",
