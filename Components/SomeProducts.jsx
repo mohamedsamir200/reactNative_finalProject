@@ -198,7 +198,7 @@ export default function AllProducts() {
 const Styles = StyleSheet.create({
   flexStyle: {
     gap: 5,
-    marginVertical: 15,
+    marginTop: 15,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
