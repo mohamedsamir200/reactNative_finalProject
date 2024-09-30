@@ -12,11 +12,12 @@ export default function AuctionScreen() {
     <SafeAreaView style={styles.container}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
-          tabBarLabelStyle: { fontSize: 12 }, // Tab label size
-          tabBarActiveTintColor: "#8b4513", // Active tab color
+          tabBarLabelStyle: { fontSize: 12, fontWeight: "bold" }, // Tab label size
+          tabBarActiveTintColor: "white", // Active tab color
           tabBarInactiveTintColor: "gray", // Inactive tab color
-          tabBarIndicatorStyle: { backgroundColor: "#8b4513" }, // Indicator color
-          tabBarStyle: { backgroundColor: "#fff" }, // Tab bar background color
+          tabBarIndicatorStyle: { backgroundColor: "#344646" }, // Indicator color
+          tabBarStyle: { backgroundColor: "#344646" },
+          // Tab bar background color
           tabBarShowIcon: true, // Show icons on tabs
         })}
       >
@@ -31,6 +32,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 20, // Set a background color if needed
   },
 });

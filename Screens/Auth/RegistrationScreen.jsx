@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textAlign: "center",
     marginBottom: 10,
-    color: "#8b4513",
+    color: "#344646",
   },
   welcomeText: {
     fontSize: 14,
@@ -291,11 +291,11 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     textAlign: "right",
-    color: "#8b4513",
+    color: "#344646",
     marginBottom: 20,
   },
   signInButton: {
-    backgroundColor: "#8b4513",
+    backgroundColor: "#344646",
     padding: 15,
     borderRadius: 25,
     marginBottom: 20,
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
     color: "#777",
   },
   signUpLink: {
-    color: "#8b4513",
+    color: "#344646",
     fontWeight: "600",
   },
 });
