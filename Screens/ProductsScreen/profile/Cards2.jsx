@@ -5,9 +5,12 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from "react-na
 import Icon from 'react-native-vector-icons/FontAwesome'; // لاستخدام الأيقونات
 import db from "../../../Config/firebase";
 import { doc, deleteDoc } from "firebase/firestore";
-// import Editproduct from "./Editproduct"; // يفترض أنك حولت هذا المكون أيضًا إلى React Native
+import { useNavigation } from "@react-navigation/native";
+import routes from "../../../utilities/Routes"; // استيراد useNavigation
 
 function Cards2({ data, onDelete }) {
+  const navigation =useNavigation (); // استخدام التنقل
+
   const deleteItemFromFirebase = async (itemId) => {
     try {
       const itemRef = doc(db, "add product", itemId);
@@ -42,10 +45,16 @@ function Cards2({ data, onDelete }) {
     );
   };
 
+  
+  const handleEdit = () => {
+    navigation.navigate(routes.editProduct, { productData: data });
+    console.log(data); 
+  };
+
   return (
     <View style={styles.cardContainer}>
       <Image
-        source={{ uri: data.img }} // Updated to match the prop
+        source={{ uri: data.img }} // عرض صورة المنتج
         style={styles.cardImage}
       />
       <View style={styles.overlay}>
@@ -57,13 +66,13 @@ function Cards2({ data, onDelete }) {
           <TouchableOpacity onPress={() => deleteItem(data.id)}>
             <Icon name="trash" size={30} color="red" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => deleteItem(data.id)}>
-            <Icon name="trash" size={30} color="red" />
+          <TouchableOpacity onPress={handleEdit}>
+            <Icon name="edit" size={30} color="red" />
           </TouchableOpacity>
-          {/* <Editproduct data={data} /> */}
         </View>
       </View>
     </View>
+  
   );
 }
 

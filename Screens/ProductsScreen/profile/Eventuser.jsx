@@ -6,10 +6,11 @@ import db from "../../../Config/firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FAB } from 'react-native-paper';
-
+import { useNavigation } from "@react-navigation/native";
+import routes from "../../../utilities/Routes";
 function Eventuser() {
   const [events, setEvents] = useState([]);
-
+  const navigation = useNavigation();
   useEffect(() => {
     const fetchUserId = async () => {
       try {
@@ -55,7 +56,7 @@ function Eventuser() {
       <FAB
         icon="plus"
         style={styles.fab}
-        onPress={() =>   <Addproduct />}
+        onPress={() => navigation.navigate(routes.addevent)}  // Navigate to the AddEvent page
       />
     </ScrollView>
 

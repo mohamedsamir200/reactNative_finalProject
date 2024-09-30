@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-
 import StackNavigation from "./Navigation/StackNavigation";
 import DrawerNavigation from "./Navigation/DrawerNavigation";
 import TopNavigation from "./Navigation/TopNavigation";

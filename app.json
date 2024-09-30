@@ -15,6 +15,14 @@
       "supportsTablet": true
     },
     "android": {
+   
+  
+        "permissions": [
+          "CAMERA",
+          "RECORD_AUDIO",
+          "INTERNET"
+        ]
+  ,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
