@@ -98,14 +98,13 @@ function AddProduct() {
         onChangeText={(text) => setData1({ ...data1, price: text })}
       />
        <View style={styles.container}>
-      <Text style={styles.label}>Type Product</Text>
       <View style={styles.pickerContainer}>
         <Picker
-          selectedValue={selectedType}
+          selectedValue={data1.typeproduct}
           onValueChange={(itemValue, itemIndex) =>setData1(itemValue)}
           style={styles.picker}
         >
-          <Picker.Item label="Select" value="" />
+          <Picker.Item label="Type Product" value="" />
           <Picker.Item label="Macramé" value="Macramé" />
           <Picker.Item label="Painting" value="Painting" />
           <Picker.Item label="Wood carving" value="Wood carving" />
@@ -159,6 +158,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingHorizontal: 10,
     borderRadius: 10,
+    marginHorizontal:10,
   },
   bott: {
     backgroundColor: "red",
@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 8,
     overflow: 'hidden',
+    marginHorizontal:11,
   },
   picker: {
     height: 50,

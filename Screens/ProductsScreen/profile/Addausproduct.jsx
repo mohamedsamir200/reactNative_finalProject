@@ -17,9 +17,20 @@ function Addausproduct() {
         title: "",
         description: "",
         initPrice: "",
-        startDate: "",
-        endDate: "",
+        startDate: new Date(), 
+        endDate: new Date()
       });
+      const onStartDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || aucData.startDate;
+        setShowStartDatePicker(Platform.OS === 'ios');
+        setAucData({ ...aucData, startDate: currentDate });
+      };
+    
+      const onEndDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || aucData.endDate;
+        setShowEndDatePicker(Platform.OS === 'ios');
+        setAucData({ ...aucData, endDate: currentDate });
+      };
       const [imgurl, setImgurl] = useState(null);
       const [percent, setPercent] = useState(0);
       const save = async () => {
@@ -71,7 +82,7 @@ function Addausproduct() {
       };
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>Add Product</Text>
+      <Text style={styles.header}>  Add Auction Product</Text>
       <TextInput
         placeholder="Title"
         style={styles.input}
