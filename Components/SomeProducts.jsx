@@ -112,7 +112,7 @@ export default function AllProducts() {
   return (
     <>
          <View style={[styles.mainComponentAddress , {marginTop:50 , marginBottom:-5}]}>
-          <Text style={styles.mainText}>Category</Text>
+          <Text style={styles.mainText}>Product</Text>
           <Text
             style={styles.seeAllBtn}
             onPress={() => navigate(routes.allProducts)}
@@ -155,7 +155,7 @@ export default function AllProducts() {
                 <Card.Cover source={{ uri: item.img }} />
               </TouchableOpacity>
               <View style={{ marginTop: 5, padding: 10 }}>
-                <Text>{item.title}</Text>
+                <Text  style={{fontWeight:700}}>{item.title}</Text>
                 <Text
                   style={{ marginVertical: 5 }}
                   numberOfLines={isExpanded[item.id] ? undefined : 2}

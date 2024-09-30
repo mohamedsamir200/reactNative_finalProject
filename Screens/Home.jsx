@@ -11,13 +11,15 @@ import routes from "./../utilities/Routes";
 import { TouchableOpacity } from "react-native";
 import SomeProducts from "../Components/SomeProducts";
 
+import EventHome from "./EventHome";
+
 export default function Home() {
   return (
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
         <CategoryImage />
         <SomeProducts />
-        
+       <EventHome/>
         {/* <ScrollView><Products/></ScrollView> */}
       </ScrollView>
     </>
