@@ -131,7 +131,7 @@ export default function AllProducts() {
           justifyContent: "space-between",
         }}
       >
-        {products.slice(0,4).map((item) => (
+        {products.slice(0,6).map((item) => (
           <View key={item.id}>
             <Card
               style={{
