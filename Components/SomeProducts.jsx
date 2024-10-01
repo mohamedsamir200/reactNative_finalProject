@@ -131,11 +131,12 @@ export default function AllProducts() {
           justifyContent: "space-between",
         }}
       >
-        {products.slice(0,4).map((item) => (
+        {products.slice(0,6).map((item) => (
           <View key={item.id}>
             <Card
               style={{
                 width: 165,
+                height:300,
                 backgroundColor: "white",
                 marginVertical: 5,
               }}
@@ -156,13 +157,13 @@ export default function AllProducts() {
               </TouchableOpacity>
               <View style={{ marginTop: 5, padding: 10 }}>
                 <Text  style={{fontWeight:700}}>{item.title}</Text>
-                <Text
+                {/* <Text
                   style={{ marginVertical: 5 }}
                   numberOfLines={isExpanded[item.id] ? undefined : 2}
                 >
                   {item.description}
-                </Text>
-                <Text
+                </Text> */}
+                {/* <Text
                   style={{ color: MD2Colors.indigo500 }}
                   onPress={(e) => {
                     e.stopPropagation();
@@ -170,9 +171,10 @@ export default function AllProducts() {
                   }}
                 >
                   {isExpanded[item.id] ? "Show Less" : "Show More"}
-                </Text>
+                </Text> */}
                 <View
                   style={{
+                    marginTop:20 ,
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
@@ -198,7 +200,7 @@ export default function AllProducts() {
 const Styles = StyleSheet.create({
   flexStyle: {
     gap: 5,
-    marginVertical: 15,
+    marginTop: 15,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

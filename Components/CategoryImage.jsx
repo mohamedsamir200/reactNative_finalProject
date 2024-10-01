@@ -56,6 +56,36 @@ export default function CategoryImage() {
               </TouchableOpacity>
               <Text>TEXTILE</Text>
             </View>
+            <View style={style.viewStyles}>
+              <TouchableOpacity onPress={() => navigate(routes.allProducts)}>
+                <Image
+                  style={style.imgStyle}
+                  source={require("../assets/category-images/woodCarving .png")}
+                />
+              </TouchableOpacity>
+              <Text>wood carving </Text>
+            </View>
+
+            <View style={style.viewStyles}>
+              <TouchableOpacity onPress={() => navigate(routes.allProducts)}>
+                <Image
+                  style={style.imgStyle}
+                  source={require("../assets/category-images/pottery.png")}
+                />
+              </TouchableOpacity>
+              <Text>pottery </Text>
+            </View>
+
+            <View style={style.viewStyles}>
+              <TouchableOpacity onPress={() => navigate(routes.allProducts)}>
+                <Image
+                  style={style.imgStyle}
+                  source={require("../assets/category-images/macrame product.png")}
+                />
+              </TouchableOpacity>
+              <Text>macrame </Text>
+            </View>
+            
           </View>
         </ScrollView>
    

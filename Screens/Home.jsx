@@ -12,6 +12,7 @@ import { TouchableOpacity } from "react-native";
 import SomeProducts from "../Components/SomeProducts";
 
 import EventHome from "./EventHome";
+import ArtistHome from "./ArtistHome";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
         <CategoryImage />
         <SomeProducts />
        <EventHome/>
+       {/* <ArtistHome/> */}
         {/* <ScrollView><Products/></ScrollView> */}
       </ScrollView>
     </>

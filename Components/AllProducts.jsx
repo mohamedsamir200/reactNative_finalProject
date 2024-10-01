@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import Styles from "./../style";
-import { Button, Card, Icon, MD2Colors, Snackbar } from "react-native-paper"; // إضافة Snackbar
+import { Button, Card, Icon, MD2Colors, Snackbar } from "react-native-paper"; 
 import { useNavigation } from "@react-navigation/native";
 import routes from "./../utilities/Routes";
 import {
@@ -36,6 +36,7 @@ export default function AllProducts() {
   const fetchUser = async () => {
     try {
       const userUID = await AsyncStorage.getItem("id");
+      // alert(userUID)
       if (userUID) {
         setUserId(userUID);
         const usersCollection = collection(db, "users");
@@ -163,10 +164,15 @@ export default function AllProducts() {
         onChangeText={handleSearch}
         value={searchTerm}
       />
-      <ScrollView  horizontal  showsHorizontalScrollIndicator={false} style={{marginVertical:5}}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={{ marginVertical: 5 }}
+      >
         <Button
           mode={selectedCategory === "All" ? "contained" : "outlined"}
           onPress={() => handleCategorySelect("All")}
+          buttonColor={selectedCategory === "All" ? "#344646" : "transparent"}
           style={styles.smallButton}
           labelStyle={styles.buttonLabel}
         >
@@ -175,6 +181,9 @@ export default function AllProducts() {
         <Button
           mode={selectedCategory === "Macramé" ? "contained" : "outlined"}
           onPress={() => handleCategorySelect("Macramé")}
+          buttonColor={
+            selectedCategory === "Macramé" ? "#344646" : "transparent"
+          }
           style={styles.smallButton}
           labelStyle={styles.buttonLabel}
         >
@@ -184,6 +193,9 @@ export default function AllProducts() {
           mode={selectedCategory === "Painting" ? "contained" : "outlined"}
           onPress={() => handleCategorySelect("Painting")}
           style={styles.smallButton}
+          buttonColor={
+            selectedCategory === "Painting" ? "#344646" : "transparent"
+          }
           labelStyle={styles.buttonLabel}
         >
           Painting
@@ -192,6 +204,9 @@ export default function AllProducts() {
           mode={selectedCategory === "Pottery" ? "contained" : "outlined"}
           onPress={() => handleCategorySelect("Pottery")}
           style={styles.smallButton}
+          buttonColor={
+            selectedCategory === "Pottery" ? "#344646" : "transparent"
+          }
           labelStyle={styles.buttonLabel}
         >
           Pottery
@@ -200,6 +215,9 @@ export default function AllProducts() {
           mode={selectedCategory === "Wood carving" ? "contained" : "outlined"}
           onPress={() => handleCategorySelect("Wood carving")}
           style={styles.smallButton}
+          buttonColor={
+            selectedCategory === "Wood carving" ? "#344646" : "transparent"
+          }
           labelStyle={styles.buttonLabel}
         >
           Wood carving
@@ -217,6 +235,7 @@ export default function AllProducts() {
             <Card
               style={{
                 width: 165,
+                height:300,
                 backgroundColor: "white",
                 marginVertical: 5,
               }}
@@ -236,14 +255,14 @@ export default function AllProducts() {
                 <Card.Cover source={{ uri: item.img }} />
               </TouchableOpacity>
               <View style={{ marginTop: 5, padding: 10 }}>
-                <Text style={{fontWeight:700}}>{item.title}</Text>
-                <Text
+                <Text style={{ fontWeight: 700 }}>{item.title}</Text>
+                {/* <Text
                   style={{ marginVertical: 5 }}
                   numberOfLines={isExpanded[item.id] ? undefined : 2}
                 >
                   {item.description}
-                </Text>
-                <Text
+                </Text> */}
+                {/* <Text
                   style={{ color: MD2Colors.indigo500 }}
                   onPress={(e) => {
                     e.stopPropagation();
@@ -251,9 +270,10 @@ export default function AllProducts() {
                   }}
                 >
                   {isExpanded[item.id] ? "Show Less" : "Show More"}
-                </Text>
+                </Text> */}
                 <View
                   style={{
+                    marginTop:20,
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",

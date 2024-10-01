@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,17 +9,38 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import Icon from "react-native-vector-icons/Feather"; // Feather icons
+import Icon from "react-native-vector-icons/Feather";
+// import {
+//   GoogleSignin,
+//   statusCodes,
+// } from "@react-native-google-signin/google-signin";
+// import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+// import auth from "@react-native-firebase/auth";
+
+// Feather icons
 import {
   signInWithEmailAndPassword,
   sendEmailVerification,
-  signInWithPopup,
 } from "firebase/auth";
 import db, { auth, provider } from "../../Config/firebase";
 import { useNavigation } from "@react-navigation/native"; // Navigation
 import AsyncStorage from "@react-native-async-storage/async-storage";
+//////////////////////
+import * as WebBrowser from "expo-web-browser"; //auth_Testing
+import * as Google from "expo-auth-session/providers/google"; //auth_Testing
 
+WebBrowser.maybeCompleteAuthSession(); //auth_Testing
 export default function LoginScreen() {
+  // GoogleSignin.configure({
+  //   webClientId:
+  //     "95741196127-tobu2n4u03mimd29r9ld07rjr73p0g70.apps.googleusercontent.com", // Get this from Firebase
+  // });
+  const [userInfo, setUserInfo] = useState(null);
+  const [request, response, prompAsync] = Google.useAuthRequest({
+    androidClientId:
+      "95741196127-tobu2n4u03mimd29r9ld07rjr73p0g70.apps.googleusercontent.com",
+  });
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -67,11 +88,76 @@ export default function LoginScreen() {
         Alert.alert("Login Failed", err.message);
       });
   };
-  function loginWithGoolge() {
-    signInWithPopup(auth, provider).then((data) => {
-      storeUserID(data.user.uid);
-    });
-  } //functions
+  async function onGoogleButtonPress() {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  // const signInWithGoogle = async () => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const userInfo = await GoogleSignin.signIn();
+
+  //     // Create a Firebase credential with the Google ID token
+  //     const googleCredential = GoogleAuthProvider.credential(userInfo.idToken);
+
+  //     // Sign in with Firebase using the credential
+  //     const userCredential = await signInWithCredential(auth, googleCredential);
+
+  //     // Successfully signed in with Google
+  //     console.log("User signed in with Google:", userCredential.user);
+  //     storeUserID(userCredential.user.uid);
+  //     navigation.replace("OpeningScreen"); // Navigate after Google login
+  //   } catch (error) {
+  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       console.log("User cancelled the login");
+  //     } else if (error.code === statusCodes.IN_PROGRESS) {
+  //       console.log("Sign-in is in progress already");
+  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //       console.log("Play services not available");
+  //     } else {
+  //       console.log("Some other error happened", error);
+  //       Alert.alert("Google Sign-In Failed", error.message);
+  //     }
+  //   }
+  // };
+  //functions
+
+  useEffect(() => {
+    handeSignInWithGoogle();
+  }, [response]);
+  async function handeSignInWithGoogle() {
+    const userID = await AsyncStorage.getItem("@user");
+    if (!userID) {
+      if (response.type === "success") {
+        await getUserInfo(response.authentication.accessToken);
+      }
+    } else {
+      setUserInfo(userID);
+    }
+  }
+  const getUserInfo = async (token) => {
+    if (!token) return;
+    try {
+      const response = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        { headers: { authorization: `Bearer ${token}` } }
+      );
+      const user = await response.json();
+      await AsyncStorage.setItem("@user", JSON.stringify(user));
+      setUserInfo(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <View style={styles.container}>
       {/* Sign In Text */}
@@ -146,7 +232,8 @@ export default function LoginScreen() {
         <TouchableOpacity
           style={styles.socialButton}
           onPress={() => {
-            loginWithGoolge();
+            // onGoogleButtonPress();}
+            prompAsync();
           }}
         >
           <Image
@@ -169,6 +256,7 @@ export default function LoginScreen() {
           Sign Up
         </Text>
       </Text>
+      <Text>{JSON.stringify(userInfo)}</Text>
     </View>
   );
 }
@@ -185,7 +273,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textAlign: "center",
     marginBottom: 10,
-    color: "#8b4513",
+    color: "#344646",
   },
   welcomeText: {
     fontSize: 14,
@@ -228,11 +316,11 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     textAlign: "right",
-    color: "#8b4513",
+    color: "#344646",
     marginBottom: 20,
   },
   signInButton: {
-    backgroundColor: "#8b4513",
+    backgroundColor: "#344646",
     padding: 15,
     borderRadius: 25,
     marginBottom: 20,
@@ -287,7 +375,7 @@ const styles = StyleSheet.create({
     color: "#777",
   },
   signUpLink: {
-    color: "#8b4513",
+    color: "#344646",
     fontWeight: "600",
   },
 });
