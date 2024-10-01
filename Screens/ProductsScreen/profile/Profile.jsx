@@ -29,6 +29,7 @@ function Profile() {
     console.log("Menu opened");
     setVisible(true);
   };
+  
 
   const closeMenu = () => {
     console.log("Menu closed");
@@ -116,13 +117,19 @@ function Profile() {
               <Side activeItem={activeItem} onItemClick={handleItemClick} />
             </View>
           )}
-
           {/* Profile Section */}
           <View style={styles.profileSection}>
             {activeItem === "profile" && (
               <View>
                 {data.length > 0 && data.map((item, index) => (
                   <View key={index} style={styles.profileContainer}>
+                             {data.length > 0 && data[0].accountType !== "Artist" && (
+        <View>
+          <TouchableOpacity onPress={() => navigation.navigate('AddDetailsprofile')}>
+          <Icon name="edit" size={30} color="black" style={{marginRight:320}}/>
+          </TouchableOpacity>
+        </View>
+      )}
                     <Image
                       source={{ uri: item.profilePic || "avatar-1299805_1280.png" }}
                       style={styles.profilePic}
@@ -183,7 +190,7 @@ function Profile() {
                 {data.length > 0 && data[0].accountType !== "Customer" && (
                   <>
                     <View style={{ marginTop: 16, marginLeft: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Products</Text>
+                      <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Product</Text>
                     </View>
 
                     <ScrollView style={{ marginTop: 20 }}>

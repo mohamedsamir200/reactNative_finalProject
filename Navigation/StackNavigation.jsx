@@ -28,6 +28,8 @@ import ProductBag from "../Screens/ProductBag";
 import Addausproduct from "../Screens/ProductsScreen/profile/Addausproduct";
 import EditProduct from "../Screens/ProductsScreen/profile/Editproduct";
 import Addevent from "../Screens/ProductsScreen/profile/Addevent";
+import EditEvent from "../Screens/ProductsScreen/profile/Editeevent";
+import AddDetailsprofile from "../Screens/ProductsScreen/profile/AddDeitalsprofile";
 export default function StackNavigation() {
   const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
@@ -102,6 +104,8 @@ export default function StackNavigation() {
       <Stack.Screen name="Addausproduct" component={Addausproduct} />
       <Stack.Screen name="EditProduct" component={ EditProduct} />
       <Stack.Screen name="Addevent" component={Addevent} />
+      <Stack.Screen name="EditEvent" component={EditEvent} />
+      <Stack.Screen name="AddDetailsprofile" component={AddDetailsprofile} />
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}

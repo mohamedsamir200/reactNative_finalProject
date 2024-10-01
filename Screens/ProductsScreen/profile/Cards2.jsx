@@ -67,7 +67,7 @@ function Cards2({ data, onDelete }) {
             <Icon name="trash" size={30} color="red" />
           </TouchableOpacity>
           <TouchableOpacity onPress={handleEdit}>
-            <Icon name="edit" size={30} color="red" />
+            <Icon name="edit" size={30} color="green" />
           </TouchableOpacity>
         </View>
       </View>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     width:280,
-    marginLeft:30
+    marginLeft:50
   },
   cardImage: {
     width: "100%",

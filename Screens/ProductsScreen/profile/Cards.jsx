@@ -5,9 +5,11 @@ import db from "../../../Config/firebase";
 import { doc, deleteDoc } from "firebase/firestore";
 import Icon from 'react-native-vector-icons/FontAwesome'; // لاستخدام الأيقونات
 
-// import Editeevent from "./Editeevent";
+import { useNavigation } from "@react-navigation/native";
+import routes from "../../../utilities/Routes"; // استيراد useNavigation
 
 function Cards({ data }) {
+  const navigation =useNavigation (); // استخدام التنقل
   const deleteItemFromFirebase = async (itemId) => {
     try {
       const itemRef = doc(db, "add event", itemId);
@@ -17,6 +19,10 @@ function Cards({ data }) {
       console.error("Error deleting item: ", error);
       Alert.alert("Error", "There was an error deleting the item.");
     }
+  };
+  const handleEdit = () => {
+    navigation.navigate(routes.editEvent, { productData: data });
+    console.log(data); 
   };
 
   const deleteItem = (itemId) => {
@@ -47,16 +53,17 @@ function Cards({ data }) {
         </View>
       </View>
 
-      <View style={styles.buttonContainer}>
+      <View style={styles.actionsContainer}>
       <TouchableOpacity onPress={() => deleteItem(data.id)}>
             <Icon name="trash" size={30} color="red" />
           </TouchableOpacity>      
-            {/* <Editeevent data={data} /> */}
+          <TouchableOpacity onPress={handleEdit}>
+            <Icon name="edit" size={30} color="green" />
+          </TouchableOpacity>
       </View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
@@ -98,11 +105,10 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  actionsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginTop: 10,
-  marginLeft:250
   },
 });
 
