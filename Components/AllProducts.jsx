@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import Styles from "./../style";
-import { Button, Card, Icon, MD2Colors, Snackbar } from "react-native-paper"; // إضافة Snackbar
+import { Button, Card, Icon, MD2Colors, Snackbar } from "react-native-paper"; 
 import { useNavigation } from "@react-navigation/native";
 import routes from "./../utilities/Routes";
 import {
@@ -36,6 +36,7 @@ export default function AllProducts() {
   const fetchUser = async () => {
     try {
       const userUID = await AsyncStorage.getItem("id");
+      // alert(userUID)
       if (userUID) {
         setUserId(userUID);
         const usersCollection = collection(db, "users");
@@ -234,6 +235,7 @@ export default function AllProducts() {
             <Card
               style={{
                 width: 165,
+                height:300,
                 backgroundColor: "white",
                 marginVertical: 5,
               }}
@@ -254,13 +256,13 @@ export default function AllProducts() {
               </TouchableOpacity>
               <View style={{ marginTop: 5, padding: 10 }}>
                 <Text style={{ fontWeight: 700 }}>{item.title}</Text>
-                <Text
+                {/* <Text
                   style={{ marginVertical: 5 }}
                   numberOfLines={isExpanded[item.id] ? undefined : 2}
                 >
                   {item.description}
-                </Text>
-                <Text
+                </Text> */}
+                {/* <Text
                   style={{ color: MD2Colors.indigo500 }}
                   onPress={(e) => {
                     e.stopPropagation();
@@ -268,9 +270,10 @@ export default function AllProducts() {
                   }}
                 >
                   {isExpanded[item.id] ? "Show Less" : "Show More"}
-                </Text>
+                </Text> */}
                 <View
                   style={{
+                    marginTop:20,
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",

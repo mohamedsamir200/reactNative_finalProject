@@ -25,7 +25,7 @@ import { ScrollView } from "react-native-gesture-handler";
 // ];
 
 export default function OpeningScreen() {
-  AsyncStorage.clear();
+  // AsyncStorage.clear();
   const { navigate } = useNavigation();
 
   // const [activeIndex, setActiveIndex] = useState(0);
