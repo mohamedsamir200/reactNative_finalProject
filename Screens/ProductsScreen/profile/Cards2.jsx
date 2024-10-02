@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     width:280,
-    marginLeft:50
+    marginLeft:25
   },
   cardImage: {
     width: "100%",
