@@ -12,77 +12,88 @@ import { collection, addDoc } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import db, { storage } from "../../../Config/firebase";
-function Addausproduct() {
-    const [aucData, setAucData] = useState({
+import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+function Addausproduct({ navigation }) {
+  const [aucData, setAucData] = useState({
+    title: "",
+    description: "",
+    initPrice: "",
+    startDate: "",
+    endDate: ""
+  });
+  const [imgurl, setImgurl] = useState(null);
+  const [percent, setPercent] = useState(0);
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync();
+    if (!result.canceled) {
+      setImgurl(result.assets[0]);
+    }
+  };
+
+  const save = async () => {
+    if (imgurl) {
+      const fileName = imgurl.fileName || `image_${Date.now()}.jpg`;
+      const storageRef = ref(storage, `productimg/${fileName}`);
+      const uploadTask = uploadBytesResumable(storageRef, {
+        uri: imgurl.uri,
+        name: fileName,
+      });
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const bits = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setPercent(bits);
+        },
+        (error) => {
+          Alert.alert("Error", error.message);
+        },
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          const ownerID = await AsyncStorage.getItem("id");
+
+          if (aucData.title && aucData.description) {
+            const collectionRef = collection(db, "auctionProduct");
+            await addDoc(collectionRef, {
+              title: aucData.title,
+              description: aucData.description,
+              initPrice: Number(aucData.initPrice),
+              img: downloadURL,
+              ownerID,
+              startDate: aucData.startDate,
+              endDate: aucData.endDate,
+              members: [],
+              proposals: [],
+            });
+
+            // الانتقال إلى صفحة المنتجات بعد الحفظ
+            navigation.navigate("Profile")
+          }
+        }
+      );
+
+      // إعادة تعيين البيانات بعد الحفظ
+      setAucData({
         title: "",
         description: "",
         initPrice: "",
-        startDate: new Date(), 
-        endDate: new Date()
+        startDate: "",
+        endDate: "",
       });
-      const onStartDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || aucData.startDate;
-        setShowStartDatePicker(Platform.OS === 'ios');
-        setAucData({ ...aucData, startDate: currentDate });
-      };
-    
-      const onEndDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || aucData.endDate;
-        setShowEndDatePicker(Platform.OS === 'ios');
-        setAucData({ ...aucData, endDate: currentDate });
-      };
-      const [imgurl, setImgurl] = useState(null);
-      const [percent, setPercent] = useState(0);
-      const save = async () => {
-        if (imgurl) {
-          const storageRef = ref(storage, `productimg/${imgurl.name}`);
-          const uploadTask = uploadBytesResumable(storageRef, imgurl);
-    
-          uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-              const bits = Math.round(
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-              );
-              setPercent(bits);
-            },
-            (error) => {
-              Alert.alert("Error", error.message);
-            },
-            async () => {
-              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-              const ownerID = await AsyncStorage.getItem("id");
-               if (aucData.title && aucData.description) {
-                const collectionRef = collection(db, "auctionProduct");
-                await addDoc(collectionRef, {
-                  title: aucData.title,
-                  description: aucData.description,
-                  initPrice: Number(aucData.initPrice),
-                  img: downloadURL,
-                  ownerID,
-                  startDate: aucData.startDate,
-                  endDate: aucData.endDate,
-                  members: [],
-                  proposals: [],
-                });
-              }
-            }
-          );
-          setAucData({
-            title: "",
-            description: "",
-            initPrice: "",
-            startDate: "",
-            endDate: "",
-          });
-          setImgurl(null);
-        } else {
-          Alert.alert("Error", "Please upload an image.");
-        }
-      };
+      setImgurl(null);
+    } else {
+      Alert.alert("Error", "Please upload an image.");
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>  Add Auction Product</Text>
+      <Text style={styles.header}>Add Auction Product</Text>
       <TextInput
         placeholder="Title"
         style={styles.input}
@@ -96,30 +107,30 @@ function Addausproduct() {
         onChangeText={(text) => setAucData({ ...aucData, description: text })}
       />
       <TextInput
-        placeholder="initPrice"
+        placeholder="Initial Price"
         style={styles.input}
         value={aucData.initPrice}
         keyboardType="numeric"
         onChangeText={(text) => setAucData({ ...aucData, initPrice: text })}
       />
       <TextInput
-        placeholder="startDate  YYYY-MM-DD"
+        placeholder="Start Date (YYYY-MM-DD)"
         style={styles.input}
         value={aucData.startDate}
-        keyboardType="numeric"
         onChangeText={(text) => setAucData({ ...aucData, startDate: text })}
       />
-     <TextInput
-        placeholder=" endDate  YYYY-MM-DD"
+      <TextInput
+        placeholder="End Date (YYYY-MM-DD)"
         style={styles.input}
-        value={aucData. endDate}
-        keyboardType="numeric"
-        onChangeText={(text) => setAucData({ ...aucData,  endDate: text })}
+        value={aucData.endDate}
+        onChangeText={(text) => setAucData({ ...aucData, endDate: text })}
       />
 
       {/* زر لرفع الصورة */}
-      <TouchableOpacity style={styles.bott} onPress={() => {/* Upload image logic */}}>
-        <Text style={styles.bottText}>Upload Product Image</Text>
+      <TouchableOpacity style={styles.bott1} onPress={pickImage}>
+      <View style={styles.iconContainer}>
+          <Icon name="camera" size={30} color="#fff" />
+        </View>
       </TouchableOpacity>
 
       {/* زر الحفظ */}
@@ -128,44 +139,61 @@ function Addausproduct() {
       </TouchableOpacity>
 
       {/* زر الإلغاء */}
-      <TouchableOpacity style={styles.bott} onPress={() => {/* Handle cancel logic */}}>
+      <TouchableOpacity style={styles.bott} onPress={() => navigation.goBack()}>
         <Text style={styles.bottText}>Cancel</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 }
+
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 20,
-      backgroundColor: "#fff",
-    },
-    header: {
-      fontSize: 24,
-      marginBottom: 20,
-      textAlign: "center",
-    },
-    input: {
-      height: 50,
-      borderColor: "gray",
-      borderWidth: 1,
-      marginBottom: 15,
-      paddingHorizontal: 10,
-      borderRadius: 10,
-    },
-    bott: {
-      backgroundColor: "red",
-      padding: 5,
-      borderRadius: 10,
-      alignItems: "center",
-      marginVertical: 10,
-      width:90,
-      marginLeft:260,
-    },
-    bottText: {
-      color: "#fff",
-      fontSize: 16,
-      fontWeight: "bold",
-    },
-  });
-export default Addausproduct
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#fff",
+  },
+  header: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  input: {
+    height: 50,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 15,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+  },
+  bott: {
+    backgroundColor: "red",
+    padding: 5,
+    borderRadius: 10,
+    alignItems: "center",
+    marginVertical: 10,
+    width: 90,
+    marginLeft: 260,
+  },
+  bottText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  bott1: {
+    backgroundColor: "gray",
+    padding: 5,
+    borderRadius: 50,
+    alignItems: "center",
+    width: 90,
+    alignSelf: 'center',
+    height:90,
+  },
+  iconContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop:25
+  },
+});
+
+export default Addausproduct;

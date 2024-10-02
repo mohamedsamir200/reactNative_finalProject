@@ -14,6 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import db, { storage } from "../../../Config/firebase";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 function AddProduct({ navigation }) {
   const [data1, setData1] = useState({
@@ -62,8 +63,7 @@ function AddProduct({ navigation }) {
               typeproduct: data1.typeproduct,
               ownerID,
             });
-            // الانتقال لصفحة Profile مع تمرير عنوان URL للصورة
-            navigation.navigate("Profile", { imageUrl: downloadURL })
+            navigation.navigate("Profile")
           }
         }
       );
@@ -124,8 +124,10 @@ function AddProduct({ navigation }) {
         keyboardType="numeric"
         onChangeText={(text) => setData1({ ...data1, productquantity: Number(text) })}
       />
-      <TouchableOpacity style={styles.bott} onPress={pickImage}>
-        <Text style={styles.bottText}>Upload Product Image</Text>
+      <TouchableOpacity style={styles.bott1} onPress={pickImage}>
+      <View style={styles.iconContainer}>
+          <Icon name="camera" size={30} color="#fff" />
+        </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.bott} onPress={save}>
         <Text style={styles.bottText}>Done</Text>
@@ -162,13 +164,28 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     marginVertical: 10,
-    width: 200,
-    alignSelf: 'center',
+    width: 90,
+    marginLeft: 260,
   },
   bottText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  bott1: {
+    backgroundColor: "gray",
+    padding: 5,
+    borderRadius: 50,
+    alignItems: "center",
+    width: 90,
+    alignSelf: 'center',
+    height:90,
+  },
+  iconContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop:25
   },
   pickerContainer: {
     borderWidth: 1,
