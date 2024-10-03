@@ -106,12 +106,12 @@ export default function OpeningScreen() {
           </View>
         </View>
         <Text style={styles.text} className="bg-red-500">
-          <Text style={{ backgroundColor: "#704F38", color: "white" }}>A</Text>
+          <Text style={{ backgroundColor: "#344646", color: "white" }}>A</Text>
           rtistain
           <Text>
-            <Text style={{ backgroundColor: "#704F38", color: "white" ,}}>
-               C
-             </Text>
+            <Text style={{ backgroundColor: "#344646", color: "white" }}>
+              C
+            </Text>
             orner
           </Text>
         </Text>
@@ -120,7 +120,7 @@ export default function OpeningScreen() {
             textAlign: "center",
             padding: 5,
             marginVertical: 25,
-           
+
             lineHeight: 20,
           }}
         >
@@ -224,12 +224,12 @@ const styles = StyleSheet.create({
     marginTop: 40,
     fontSize: 25,
     letterSpacing: 3,
-   
+
     fontWeight: "bold",
   },
   btn: {
     textAlign: "center",
-    backgroundColor: "#704F38",
+    backgroundColor: "#344646",
     width: 200,
     margin: "auto",
     paddingHorizontal: 20,

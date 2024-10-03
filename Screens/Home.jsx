@@ -21,7 +21,7 @@ export default function Home() {
         <CategoryImage />
         <SomeProducts />
        <EventHome/>
-       <ArtistHome/>
+       {/* <ArtistHome/> */}
         {/* <ScrollView><Products/></ScrollView> */}
       </ScrollView>
     </>

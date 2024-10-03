@@ -1,176 +1,108 @@
-// import React, { useState } from 'react';
-// import { StyleSheet, View, Text, Button, Alert } from 'react-native';
-// import paypalApi from '../payment/paypalApi';
-// import queryString from 'query-string';
-
-// function EventOnline({ route }) {
-//   const { event } = route.params;
-//   const [cardInfo, setCardInfo] = useState(null);
-//   const [isLoading, setLoading] = useState(false);
-//   const [paypalUrl, setPaypalUrl] = useState(null);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//   const [accessToken, setAccessToken] = useState(null);
-
-//   const fetchCardDetail = (cardDetail) => {
-//     if (cardDetail.complete) {
-//       setCardInfo(cardDetail);
-//     } else {
-//       setCardInfo(null);
-//     }
-//   };
-
-//   const Payment = async () => {
-//     setLoading(true);
-//     try {
-//       const token = await paypalApi.generateToken();
-//       const res = await paypalApi.createOrder(token);
-//       setAccessToken(token);
-//       setLoading(false);
+// // import React, { useState } from 'react';
+// // import { StyleSheet, View, Text, Button, Alert } from 'react-native';
+// // import paypalApi from '../payment/paypalApi';
+// // import queryString from 'query-string';
+
+// // function EventOnline({ route }) {
+// //   const { event } = route.params;
+// //   const [cardInfo, setCardInfo] = useState(null);
+// //   const [isLoading, setLoading] = useState(false);
+// //   const [paypalUrl, setPaypalUrl] = useState(null);
+
+// //   const [accessToken, setAccessToken] = useState(null);
+
+// //   const fetchCardDetail = (cardDetail) => {
+// //     if (cardDetail.complete) {
+// //       setCardInfo(cardDetail);
+// //     } else {
+// //       setCardInfo(null);
+// //     }
+// //   };
+
+// //   const Payment = async () => {
+// //     setLoading(true);
+// //     try {
+// //       const token = await paypalApi.generateToken();
+// //       const res = await paypalApi.createOrder(token);
+// //       setAccessToken(token);
+// //       setLoading(false);
       
-//       if (res?.links) {
-//         const findUrl = res.links.find(data => data?.rel === "approve");
-//         if (findUrl) {
-//           setPaypalUrl(findUrl.href);
-//         }
-//       }
-//     } catch (error) {
-//       console.log("Error:", error);
-//       setLoading(false);
-//     }
-//   };
+// //       if (res?.links) {
+// //         const findUrl = res.links.find(data => data?.rel === "approve");
+// //         if (findUrl) {
+// //           setPaypalUrl(findUrl.href);
+// //         }
+// //       }
+// //     } catch (error) {
+// //       console.log("Error:", error);
+// //       setLoading(false);
+// //     }
+// //   };
 
-//   const onUrlChange = (webviewState) => {
-//     console.log("webviewState:", webviewState);
-//     if (webviewState.url.includes('https://example.com/cancel')) {
-//       clearPaypalState();
-//       return;
-//     }
-//     if (webviewState.url.includes('https://example.com/return')) {
-//       const urlValues = queryString.parseUrl(webviewState.url);
-//       const { token } = urlValues.query;
-//       if (token) {
-//         paymentSuccess(token);
-//       }
-//     }
-//   };
-//   const capturePayment = async (orderId) => {
-//     try {
-//         const captureResponse = await paypalApi.capturePayment(orderId, accessToken);
-//         console.log("Payment captured:", captureResponse);
-//     } catch (error) {
-//         console.error("Error capturing payment:", error);
-//     }
-// };
-//   const paymentSuccess = async (id) => {
-//     try {
-//       const res = await paypalApi.capturePayment(id, accessToken);
-//       console.log("capturePayment res:", res);
-//       Alert.alert("Payment successful!");
-//       clearPaypalState();
-//     } catch (error) {
-//       console.log("Error raised in payment capture:", error);
-//     }
-//   };
+// //   const onUrlChange = (webviewState) => {
+// //     console.log("webviewState:", webviewState);
+// //     if (webviewState.url.includes('https://example.com/cancel')) {
+// //       clearPaypalState();
+// //       return;
+// //     }
+// //     if (webviewState.url.includes('https://example.com/return')) {
+// //       const urlValues = queryString.parseUrl(webviewState.url);
+// //       const { token } = urlValues.query;
+// //       if (token) {
+// //         paymentSuccess(token);
+// //       }
+// //     }
+// //   };
+// //   const capturePayment = async (orderId) => {
+// //     try {
+// //         const captureResponse = await paypalApi.capturePayment(orderId, accessToken);
+// //         console.log("Payment captured:", captureResponse);
+// //     } catch (error) {
+// //         console.error("Error capturing payment:", error);
+// //     }
+// // };
+// //   const paymentSuccess = async (id) => {
+// //     try {
+// //       const res = await paypalApi.capturePayment(id, accessToken);
+// //       console.log("capturePayment res:", res);
+// //       Alert.alert("Payment successful!");
+// //       clearPaypalState();
+// //     } catch (error) {
+// //       console.log("Error raised in payment capture:", error);
+// //     }
+// //   };
 
-//   const clearPaypalState = () => {
-//     setPaypalUrl(null);
-//     setAccessToken(null);
-//   };
+// //   const clearPaypalState = () => {
+// //     setPaypalUrl(null);
+// //     setAccessToken(null);
+// //   };
 
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.eventName}>{event.name}</Text>
-//       <Text style={styles.eventType}>{event.eventtype}</Text>
-//       <Text style={styles.description}>{event.description}</Text>
-//       <Button onPress={Payment} title="Pay" color="red" />
+// //   return (
+// //     <View style={styles.container}>
+// //       <Text style={styles.eventName}>{event.name}</Text>
+// //       <Text style={styles.eventType}>{event.eventtype}</Text>
+// //       <Text style={styles.description}>{event.description}</Text>
+// //       <Button onPress={Payment} title="Pay" color="red" />
       
-//     </View>
-//   );
-// }
+// //     </View>
+// //   );
+// // }
 
-// export default EventOnline;
+// // export default EventOnline;
 
-// const styles = StyleSheet.create({
-//   container: {
-//     padding: 20,
-//   },
-//   eventName: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//   },
-//   eventType: {
-//     fontSize: 18,
-//     marginVertical: 10,
-//   },
-// });
+// // const styles = StyleSheet.create({
+// //   container: {
+// //     padding: 20,
+// //   },
+// //   eventName: {
+// //     fontSize: 24,
+// //     fontWeight: 'bold',
+// //   },
+// //   eventType: {
+// //     fontSize: 18,
+// //     marginVertical: 10,
+// //   },
+// // });
 
 
 
@@ -184,7 +116,7 @@
 // import emailjs from '@emailjs/react-native';
 // import { getFirestore, doc, getDoc, query, collection, getDocs, where } from "firebase/firestore";
 
-// function EventOnline({ route }) {
+// function EventOnline({ route,navigation  }) {
 //   const { event } = route.params; 
 //   const [accessToken, setAccessToken] = useState(null);
 //   const [organizerName, setOrganizerName] = useState('');
@@ -318,6 +250,18 @@
 //     }
 //   };
 
+
+//   const handleTicketClick = (event) => {
+//     if (event) {
+//       navigation.navigate("onlineRoom", { event });
+//     } else {
+//       console.error("Event data is missing.");
+//     }
+//   };
+
+
+  
+  
 //   const eventDate = event.date ? new Date(event.date) : new Date();
 
 //   return (
@@ -359,6 +303,9 @@
 //             onPress={sendEmail}  // New button to send email without payment
 //             color='#ff6347'
 //           />
+//           <Button
+//           title='join'
+//           onPress={handleTicketClick(event)}/>
 //         </View>
 //       </SafeAreaView>
 //     </Card>
@@ -669,118 +616,152 @@
 
 
 
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Button, Alert, SafeAreaView, Text, TextInput } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
-import paypalApi from '../payment/paypalApi'; // Assuming this handles PayPal integration
-import Icon from 'react-native-vector-icons/Ionicons';
-import { Card } from 'react-native-paper';
-import db from '../../Config/firebase'; // Assuming this is your Firebase configuration
-import emailjs from '@emailjs/react-native';
-import { getFirestore, doc, getDoc, query, collection, getDocs, where } from "firebase/firestore";
+// import React, { useState, useEffect } from 'react';
+// import { StyleSheet, View, Button, Alert, SafeAreaView, Text, TextInput } from 'react-native';
+// import * as WebBrowser from 'expo-web-browser';
+// import paypalApi from '../payment/paypalApi';
+// import Icon from 'react-native-vector-icons/Ionicons';
+// import { Card } from 'react-native-paper';
+// import db from '../../Config/firebase';
+// import {EmailJSResponseStatus,send} from '@emailjs/react-native';
+// import { getFirestore, doc, getDoc, query, collection, getDocs, where } from "firebase/firestore";
+// const YOUR_PUBLIC_KEY = "1_CwPxJFoAvU6MWAd"; // Replace with your actual public key
 
-// Initialize EmailJS with your PUBLIC KEY (replace with yours)
-emailjs.init("YzBCueRBgIlDlOxi5"); // Replace with your actual EmailJS public key
+// export default function EventOnline({ route }) {
+//   const { event } = route.params;
+//   console.log(YOUR_PUBLIC_KEY);
+  
+// //   emailjs.init(YOUR_PUBLIC_KEY); 
+// //   // **Crucial Step: Initialize EmailJS with your PUBLIC KEY**
+// // // Call this before any email sending operations
 
-export default function EventOnline({ route }) {
-  const { event } = route.params;
-  const [accessToken, setAccessToken] = useState(null);
-  const [organizerName, setOrganizerName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [ticketImageUrl, setTicketImageUrl] = useState('');
-  const eventId = event.id;
+//   const [accessToken, setAccessToken] = useState(null);
+//   const [organizerName, setOrganizerName] = useState('');
+//   const [userEmail, setUserEmail] = useState('');
+//   const [ticketImageUrl, setTicketImageUrl] = useState('');
+//   const eventId = event.id;
 
-  const fetchOrganizer = async (organizer) => {
+//   const fetchOrganizer = async (organizer) => {
+//     // ... (unchanged logic to fetch organizer data)
+//   };
+
+//   useEffect(() => {
+//     if (event.organizer) {
+//       fetchOrganizer(event.organizer);
+//     }
+//   }, [event.organizer]);
+
+//   useEffect(() => {
+//     if (eventId) {
+//       const ticketDocRef = doc(db, "add event", eventId);
+//       // ... (unchanged logic to fetch ticket image URL)
+
+//       const emailQuery = query(
+//         collection(db, "sendTicket"),
+//         where("eventId", "==", eventId) // Filter for specific event email
+//       );
+
+//       // ... (unchanged logic to fetch email from Firestore)
+//     }
+//   }, [eventId]);
+
+//   const sendEmail = async () => {
+//     if (!userEmail) {
+//       Alert.alert('Error', 'Please enter your email address.');
+//       return;
+//     }
+
+//     try {
+//       await send(
+//         'YOUR_SERVICE_ID',
+//         'YOUR_TEMPLATE_ID',
+//         {
+//           name,
+//           email,
+//           message: 'This is a static message',
+//         },
+//         {
+//           publicKey: 'YOUR_PUBLIC_KEY',
+//         },
+//       );
+//       };
+
+//       await emailjs.send('service_0q4y7cx', 'template_fjy76b1', templateParams);
+
+//       Alert.alert('Email Sent', 'The email has been successfully sent.');
+//     } catch (error) {
+//       console.error('Error sending email:', error);
+//       Alert.alert('Error', 'Failed to send the email.');
+//     }
+//   };
+
+//   // ... rest of your component logic for payment and event details
+
+//   return (
+//     <Card >
+//       {/* ... your component rendering logic */}
+//       <TextInput
+//         // style={styles.input}
+//         placeholder="Enter your email"
+//         value={userEmail}
+//         onChangeText={setUserEmail}
+//       />
+//       <Button title="Send Email" onPress={sendEmail} color='#ff6347' />
+//     </Card>
+//   );
+// }
+
+
+import { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { send, EmailJSResponseStatus } from '@emailjs/react-native';
+
+export default function  EventOnline  ({route}) {
+  const [email, setEmail] = useState();
+  const [name, setName] = useState();
+
+  const onSubmit = async () => {
     try {
-      const organizerDoc = await db.collection('users').doc(organizer).get();
-      if (organizerDoc.exists) {
-        const organizerData = organizerDoc.data();
-        const fullName = `${organizerData.firstname} ${organizerData.lastname}`;
-        setOrganizerName(fullName);
-      } else {
-        console.log('No such document!');
-      }
-    } catch (error) {
-      console.log('Error fetching organizer:', error);
-    }
-  };
-
-  useEffect(() => {
-    if (event.organizer) {
-      fetchOrganizer(event.organizer);
-    }
-  }, [event.organizer]);
-
-  useEffect(() => {
-    if (eventId) {
-      const ticketDocRef = doc(db, "add event", eventId);
-      getDoc(ticketDocRef)
-        .then((docSnap) => {
-          if (docSnap.exists) {
-            const ticketImg = docSnap.data().ticketImg;
-            setTicketImageUrl(ticketImg);
-          } else {
-            console.error("No such document!");
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching ticket image URL: ", error);
-        });
-
-      const emailQuery = query(
-        collection(db, "sendTicket"),
-        where("eventId", "==", eventId) // Filter for specific event email
+      await send(
+        'service_0q4y7cx',
+        'template_fjy76b1',
+        {
+          name,
+          email,
+          message: 'This is a static message',
+        },
+        {
+          publicKey: '1_CwPxJFoAvU6MWAd',
+        },
       );
 
-      getDocs(emailQuery)
-        .then((querySnapshot) => {
-          if (!querySnapshot.empty) {
-            const userDoc = querySnapshot.docs[0];
-            setUserEmail(userDoc.data().email);
-          } else {
-            console.error("No email found for this event.");
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching email from Firestore:", error);
-        });
-    }
-  }, [eventId]);
+      console.log('SUCCESS!');
+    } catch (err) {
+      if (err instanceof EmailJSResponseStatus) {
+        console.log('EmailJS Request Failed...', err);
+      }
 
-  const sendEmail = async () => {
-    if (!userEmail) {
-      Alert.alert('Error', 'Please enter your email address.');
-      return;
-    }
-
-    try {
-      const templateParams = {
-        to_name: organizerName,
-        event_name: event.name,
-        total_price: event.pricetTcket,
-        to_email: userEmail,
-        ticket_image_url: ticketImageUrl, // Include ticket image URL if available
-      };
-
-      await emailjs.send('service_0j6gsa6', 'template_fjy76b1', templateParams, 'YzBCueRBgIlDlOxi5');
-
-      Alert.alert('Email Sent', 'The email has been successfully sent.');
-    } catch (error) {
-      console.error('Error sending email:', error);
-      Alert.alert('Error', 'Failed to send the email.');
+      console.log('ERROR', err);
     }
   };
 
-  // ... rest of your component logic for payment and event details
-
   return (
-    <Card >
-      {/* ... your component rendering logic */}
+    <View>
       <TextInput
-            // style={styles.input}
-            placeholder="Enter your email"
-            value={userEmail}
-            onChangeText={setUserEmail}
-          />
-      <Button title="Send Email" onPress={sendEmail} color='#ff6347' />
-    </Card>)}
+        inputMode="email"
+        keyboardType="email-address"
+        textContentType="emailAddress"
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <TextInput
+        inputMode="text"
+        placeholder="Name"
+        value={name}
+        onChangeText={setName}
+      />
+      <Button title="Submit" onPress={onSubmit} />
+    </View>
+  );
+};

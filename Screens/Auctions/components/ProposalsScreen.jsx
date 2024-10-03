@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   timerActive: {
-    backgroundColor: "#ff6347",
+    backgroundColor: "#344646",
   },
   timerEnded: {
     backgroundColor: "#808080",
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
   submitButton: {
     padding: 12,
     borderRadius: 8,
-    backgroundColor: "#007bff",
+    backgroundColor: "#344646",
   },
   submitButtonText: {
     color: "#fff",

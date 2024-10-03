@@ -38,7 +38,7 @@ function Eventuser() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Events</Text>
+        <Text style={styles.header}>Event</Text>
         {/* <Addevent /> */}
       </View>
 

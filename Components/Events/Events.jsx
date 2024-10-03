@@ -80,7 +80,7 @@ function Events({ navigation }) {
 
   const handleTicketClick = (event) => {
     if (event.eventtype === "online") {
-      navigation.navigate("EventOnline", { event });
+      navigation.navigate("EventOnline", { event ,navigation });
     } else if (event.eventtype === "offline") {
       navigation.navigate("EventOffline", { event });
     } else {

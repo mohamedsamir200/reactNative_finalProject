@@ -46,12 +46,12 @@ export default function EventHome() {
         <Text style={{ marginTop: 10, lineHeight: 22, fontWeight: "600" }}>
           Join us for exclusive handmade events, online or in person. Discover
           the art of handmade creations and be part of a creative community!
-          {"       "}
+          {"   "}
           <Text
             onPress={() => navigate(routes.Events)}
             style={{ marginLeft: 20, color: MD2Colors.indigo500 }}
           >
-            Let's Go <Text style={{ fontSize: 25 }}>→</Text>{" "}
+            Let's Go <Text style={{ fontSize: 16 }}>→</Text>
           </Text>
         </Text>
       </View>

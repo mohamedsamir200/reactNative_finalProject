@@ -22,5 +22,6 @@ export default routes = Object.freeze({
   addausproduct:"Addausproduct",
   editProduct:"EditProduct",
   addevent:"Addevent",
+  editEvent:"EditEvent",
   onlinRoom:"onlineRoom"
 });
