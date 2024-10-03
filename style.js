@@ -25,6 +25,15 @@ export default  Styles = StyleSheet.create({
  mainText :{
    fontWeight: "medium", 
    fontSize: 18 
+ }, 
+
+ drawerViewStyle : {
+  backgroundColor:"white",
+  paddingHorizontal:10, 
+  paddingVertical:15,
+  marginVertical:8,
+  borderRadius:10,
  }
+
 }) 
 

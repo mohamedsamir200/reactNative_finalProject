@@ -33,6 +33,8 @@ import RightDrawerNavigator from "../Navigation/DrawerNavigation"; // Import the
 import EditEvent from "../Screens/ProductsScreen/profile/Editeevent";
 import AddDetailsprofile from "../Screens/ProductsScreen/profile/AddDeitalsprofile";
 import onlineRoom from "../Components/Events/OnlinRoom";
+import Drawer from "../Components/Drawer/Drawer";
+import { TouchableOpacity } from "react-native";
 export default function StackNavigation() {
   const { navigate } = useNavigation();
   const Stack = createNativeStackNavigator();
@@ -59,9 +61,10 @@ export default function StackNavigation() {
       />
 
       <Stack.Screen
-        options={{ header: () => null }}
+        // options={{ header: () => null }}
         name={routes.AuctionScreen}
         component={AuctionScreen}
+        options={{headerTitle:"Auctions"}}
       />
 
       <Stack.Screen
@@ -101,22 +104,9 @@ export default function StackNavigation() {
                   /* Handle notification press */
                 }}
               />
-              <IconButton
-                icon={({ size, color }) => (
-                  <Image
-                    source={{
-                      uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuL6TBF6f4OmR3C6yj7pffvMkM13n9j6Prpg&s",
-                    }}
-                    style={{
-                      width: size,
-                      height: size,
-                      borderRadius: size / 2,
-                    }}
-                  />
-                )}
-                size={30}
-                onPress={() => navigation.openDrawer()} // Use the navigation prop to open the drawer
-              />
+              <TouchableOpacity onPress={()=>navigate(routes.drawer)}>
+                <Icon source={"menu"} size={30}/>
+              </TouchableOpacity>
             </View>
           ),
         })}
@@ -136,6 +126,7 @@ export default function StackNavigation() {
       <Stack.Screen name="Addevent" component={Addevent} />
       <Stack.Screen name="EditEvent" component={EditEvent} />
       <Stack.Screen name="AddDetailsprofile" component={AddDetailsprofile} />
+      <Stack.Screen name={routes.drawer} component={Drawer} options={{headerTitle:"Menu"}}/>
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
       {/* <Stack.Screen /> */}
