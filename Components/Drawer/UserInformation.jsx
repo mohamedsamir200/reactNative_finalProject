@@ -74,7 +74,7 @@ export default function UserInformation() {
     <View style={Styles.drawerViewStyle}>
       {data.map((item) => (
       <TouchableOpacity  onPress={() => navigate(routes.profile)}>
-        <View style={{ flexDirection: "row" }}>
+        <View key={item.id} style={{ flexDirection: "row" }}>
           <View style={styles.divImageStyle}>
             <Image
               source={{
