@@ -6,10 +6,15 @@ import Styles from './../../style';
 // import { Icon } from 'react-native-paper';
 import routes from './../../utilities/Routes';
 import Icon from "react-native-vector-icons/MaterialIcons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function UserLogout() {
     const { navigate } = useNavigation();
+    function handleLogout () {
+      navigate(routes.LoginScreen);
+       AsyncStorage.clear();
+    }
   return (
-    <TouchableOpacity onPress={()=>navigate(routes.LoginScreen)}>
+    <TouchableOpacity onPress={()=>handleLogout()}>
       <View
         style={[
           Styles.drawerViewStyle,
