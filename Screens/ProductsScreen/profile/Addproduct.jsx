@@ -12,9 +12,11 @@ import { collection, addDoc } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import db, { storage } from "../../../Config/firebase";
-import { Picker } from "@react-native-picker/picker"; // استيراد Picker
+import { Picker } from "@react-native-picker/picker";
+import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-function AddProduct() {
+function AddProduct({ navigation }) {
   const [data1, setData1] = useState({
     title: "",
     description: "",
@@ -25,6 +27,12 @@ function AddProduct() {
   const [imgurl, setImgurl] = useState(null);
   const [percent, setPercent] = useState(0);
 
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync();
+    if (!result.canceled) {
+      setImgurl(result.assets[0]);
+    }
+  };
   const save = async () => {
     if (imgurl) {
       const storageRef = ref(storage, `productimg/${imgurl.name}`);
@@ -33,9 +41,7 @@ function AddProduct() {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          const bits = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
+          const bits = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
           setPercent(bits);
         },
         (error) => {
@@ -57,7 +63,8 @@ function AddProduct() {
               typeproduct: data1.typeproduct,
               ownerID,
             });
-          } 
+            navigation.navigate("Profile")
+          }
         }
       );
 
@@ -97,11 +104,10 @@ function AddProduct() {
         keyboardType="numeric"
         onChangeText={(text) => setData1({ ...data1, price: text })}
       />
-       <View style={styles.container}>
       <View style={styles.pickerContainer}>
         <Picker
           selectedValue={data1.typeproduct}
-          onValueChange={(itemValue, itemIndex) =>setData1(itemValue)}
+          onValueChange={(itemValue) => setData1({ ...data1, typeproduct: itemValue })}
           style={styles.picker}
         >
           <Picker.Item label="Type Product" value="" />
@@ -111,29 +117,22 @@ function AddProduct() {
           <Picker.Item label="Pottery" value="Pottery" />
         </Picker>
       </View>
-    </View>
       <TextInput
         placeholder="Product Quantity"
         style={styles.input}
         value={String(data1.productquantity)}
         keyboardType="numeric"
-        onChangeText={(text) =>
-          setData1({ ...data1, productquantity: Number(text) })
-        }
+        onChangeText={(text) => setData1({ ...data1, productquantity: Number(text) })}
       />
-
-      {/* زر لرفع الصورة */}
-      <TouchableOpacity style={styles.bott} onPress={() => {/* Upload image logic */}}>
-        <Text style={styles.bottText}>Upload Product Image</Text>
+      <TouchableOpacity style={styles.bott1} onPress={pickImage}>
+      <View style={styles.iconContainer}>
+          <Icon name="camera" size={30} color="#fff" />
+        </View>
       </TouchableOpacity>
-
-      {/* زر الحفظ */}
       <TouchableOpacity style={styles.bott} onPress={save}>
         <Text style={styles.bottText}>Done</Text>
       </TouchableOpacity>
-
-      {/* زر الإلغاء */}
-      <TouchableOpacity style={styles.bott} onPress={() => {/* Handle cancel logic */}}>
+      <TouchableOpacity style={styles.bott} onPress={() => navigation.goBack()}>
         <Text style={styles.bottText}>Cancel</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -158,7 +157,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingHorizontal: 10,
     borderRadius: 10,
-    marginHorizontal:10,
   },
   bott: {
     backgroundColor: "red",
@@ -166,27 +164,35 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     marginVertical: 10,
-    width:90,
-    marginLeft:260,
+    width: 90,
+    marginLeft: 260,
   },
   bottText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
   },
-  container: {
-    marginBottom: 20,
+  bott1: {
+    backgroundColor: "gray",
+    padding: 5,
+    borderRadius: 50,
+    alignItems: "center",
+    width: 90,
+    alignSelf: 'center',
+    height:90,
   },
-  label: {
-    fontSize: 20,
-    marginBottom: 10,
+  iconContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop:25
   },
   pickerContainer: {
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
     overflow: 'hidden',
-    marginHorizontal:11,
+    marginBottom: 20,
   },
   picker: {
     height: 50,

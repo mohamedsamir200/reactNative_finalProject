@@ -186,27 +186,12 @@ function Profile() {
 
             {/* Products Section */}
             {activeItem === "products" && accountType !== "Customer" && (
-              <View style={{ backgroundColor: '#fff'}}>
+              <View style={styles.container3}>
                 {data.length > 0 && data[0].accountType !== "Customer" && (
                   <>
-                    <View style={{ marginTop: 16, marginLeft: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View style={{ marginTop: 16, marginLeft: 5, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Product</Text>
-                    </View>
-
-                    <ScrollView style={{ marginTop: 20 }}>
-                      {products.length ? (
-                        <View style={styles.cardsContainer}>
-                          {products.map((item, index) => (
-                            <Cards2 data={item} key={index} style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, borderRadius: 10 }} />
-                          ))}
-                        </View>
-                      ) : (
-                        <Text>No products available</Text>
-                      )}
-                    </ScrollView>
-
-                    {/* Floating Action Button (FAB) for Add Product */}
-                    <View style={styles.container2}>
+                         <View style={styles.container2}>
                       <Menu
                         visible={visible}
                         onDismiss={closeMenu}
@@ -234,6 +219,21 @@ function Profile() {
                         />
                       </Menu>
                     </View>
+                    </View>
+
+                    <ScrollView style={{ marginTop: 20 }}>
+                      {products.length ? (
+                        <View style={styles.cardsContainer}>
+                          {products.map((item, index) => (
+                            <Cards2 data={item} key={index} style={{ shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.25, shadowRadius: 3.84, borderRadius: 10 }} />
+                          ))}
+                        </View>
+                      ) : (
+                        <Text>No products available</Text>
+                      )}
+                    </ScrollView>
+
+                    {/* Floating Action Button (FAB) for Add Product */}
                   </>
                 )}
               </View>
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     margin:10,
   },
   profileContainer: {
-    marginVertical: 20,
+    marginVertical: 10,
     padding: 20,
     backgroundColor: "#fff",
     borderRadius: 10,
@@ -298,11 +298,21 @@ const styles = StyleSheet.create({
   },
   about: {
     marginTop: 20,
+   textAlign:"center"
   },
   reviewsContainer: {
-    marginTop: 20,
+    marginTop: 5,
     backgroundColor:"#fff",
     padding:20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   reviewsTitle: {
     fontWeight: "bold",
@@ -319,7 +329,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 16,
     right:5,
+    
   },
+  container3:{
+    backgroundColor:"#fff",
+    padding:20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  }
 });
 
 export default Profile;

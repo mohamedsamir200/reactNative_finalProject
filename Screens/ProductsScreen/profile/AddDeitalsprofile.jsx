@@ -8,10 +8,11 @@ import {
   Alert,
   ScrollView,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native"; // تأكد من استخدام react-navigation
-import AsyncStorage from '@react-native-async-storage/async-storage'; // استيراد AsyncStorage
+import { useNavigation } from "@react-navigation/native";
+import routes from "../../../utilities/Routes"; // استيراد useNavigation
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import db from "../../../Config/firebase";
 import {
   getDocs,
@@ -21,18 +22,16 @@ import {
   doc,
   updateDoc,
 } from "firebase/firestore";
-import { storage} from "../../../Config/firebase";
+import { storage } from "../../../Config/firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker"; // استيراد Picker
-import Icon from 'react-native-vector-icons/FontAwesome'; // لاستخدام الأيقونات
+import Icon from "react-native-vector-icons/FontAwesome"; // لاستخدام الأيقونات
 
 function AddDetailsProfile() {
   const [data, setData] = useState([]);
   const [imgurl, setImgUrl] = useState(null);
-  const [coverImgUrl, setCoverImgUrl] = useState(null);
   const [storedImageUrl, setStoredImageUrl] = useState(null);
-  const [storedCoverImageUrl, setStoredCoverImageUrl] = useState(null);
   const [percent, setPercent] = useState(0);
   const [userId, setUserId] = useState(null);
   const navigation = useNavigation();
@@ -49,7 +48,6 @@ function AddDetailsProfile() {
           const userData = doc.data();
           setData([userData]);
           setStoredImageUrl(userData.profilePic);
-          setStoredCoverImageUrl(userData.coverPic);
           setUserId(doc.id);
         });
       } else {
@@ -73,16 +71,24 @@ function AddDetailsProfile() {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          const bits = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          const bits = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
           setPercent(bits);
         },
         (error) => {
-          Alert.alert("Error", error.message);
-          reject(error);
+          console.error("Upload error:", error); // قم بطباعة الخطأ
+          Alert.alert("Error", error.message); // عرض رسالة الخطأ للمستخدم
+          reject(error); // رفض الوعد (Promise)
         },
         async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve(downloadURL);
+          try {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            resolve(downloadURL); // إعادة رابط التنزيل في حال نجاح الرفع
+          } catch (err) {
+            console.error("Error getting download URL:", err); // معالجة الخطأ في حالة فشل الحصول على رابط التحميل
+            reject(err); // رفض الوعد (Promise)
+          }
         }
       );
     });
@@ -90,23 +96,19 @@ function AddDetailsProfile() {
 
   async function save() {
     let profileImageUrl = storedImageUrl;
-    let coverImageUrl = storedCoverImageUrl;
 
     if (imgurl) {
-      profileImageUrl = await uploadImageToStorage(imgurl, `profileimg/${imgurl.name}`);
+      profileImageUrl = await uploadImageToStorage(
+        imgurl,
+        `profileimg/${imgurl.split('/').pop()}` // تأكد من استخدام اسم الملف الصحيح
+      );
     }
-
-    if (coverImgUrl) {
-      coverImageUrl = await uploadImageToStorage(coverImgUrl, `coverimg/${coverImgUrl.name}`);
-    }
-
     if (userId) {
       const itemRef = doc(db, "users", userId);
       await updateDoc(itemRef, {
         firstname: data[0].firstname,
         about: data[0].about,
         profilePic: profileImageUrl,
-        coverPic: coverImageUrl,
         lastname: data[0].lastname,
         email: data[0].email,
         accountType: data[0].accountType,
@@ -114,33 +116,34 @@ function AddDetailsProfile() {
         instgram: data[0].instgram,
         linkedin: data[0].linkedin,
       });
-      navigation.navigate("Profile", { data });
+      navigation.navigate(routes.profile, { Data: data });
+      console.log(data);
+      
     } else {
       console.error("User ID is not defined.");
     }
   }
 
   async function pickImage(setImage) {
-    // طلب إذن الوصول إلى مكتبة الصور
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    
-    if (status !== 'granted') {
-      Alert.alert('نحتاج إلى إذن للوصول إلى الصور!');
+    if (status !== "granted") {
+      Alert.alert("نحتاج إلى إذن للوصول إلى الصور!");
       return;
     }
-  
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-  
+
     if (!result.cancelled) {
-      setImage(result.uri);
+      setImage(result.uri); // حفظ الصورة التي تم اختيارها
+    } else {
+      Alert.alert("لم يتم اختيار صورة.");
     }
   }
-  
 
   return (
     <ScrollView style={styles.container}>
@@ -191,13 +194,13 @@ function AddDetailsProfile() {
           </View>
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Profile Img</Text>
-            {storedImageUrl && <Image source={{ uri: storedImageUrl }} style={styles.image} />}
-            <Button title="Select Profile Image" onPress={() => pickImage(setImgUrl)} />
-          </View>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Cover Img</Text>
-            {storedCoverImageUrl && <Image source={{ uri: storedCoverImageUrl }} style={styles.image} />}
-            <Button title="Select Cover Image" onPress={() => pickImage(setCoverImgUrl)} />
+            {storedImageUrl && (
+              <Image source={{ uri: storedImageUrl }} style={styles.image} />
+            )}
+            <Button
+              title="Select Profile Image"
+              onPress={() => pickImage(setImgUrl)}
+            />
           </View>
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Email</Text>
@@ -216,21 +219,30 @@ function AddDetailsProfile() {
             />
           </View>
           <View style={styles.inputGroup}>
-  <Text style={styles.label}>Account Type</Text>
-  <Picker
-    selectedValue={item.accountType}
-    onValueChange={(itemValue) => {
-      setData((prevData) => [{ ...prevData[0], accountType: itemValue }]);
-    }}
-    style={styles.picker} // إضافة تنسيق لمكون Picker
-  >
-    <Picker.Item label="Select" value="" />
-    <Picker.Item label="Artist" value="Artist" />
-    <Picker.Item label="Customer" value="Customer" />
-  </Picker>
-</View>
-          {/* <Button title="DONE" onPress={save} style={{backgroundColor:"green"}}/> */}
-          <TouchableOpacity onPress={save} style={{borderWidth: 1, borderRadius:50,width:90,alignItems:"center",marginLeft:250,marginTop:40}}>
+            <Text style={styles.label}>Account Type</Text>
+            <Picker
+              selectedValue={item.accountType}
+              onValueChange={(itemValue) =>
+                setData((prevData) => [{ ...prevData[0], accountType: itemValue }])
+              }
+              style={styles.picker}
+            >
+              <Picker.Item label="Select" value="" />
+              <Picker.Item label="Artist" value="Artist" />
+              <Picker.Item label="Customer" value="Customer" />
+            </Picker>
+          </View>
+          <TouchableOpacity
+            onPress={save}
+            style={{
+              borderWidth: 1,
+              borderRadius: 50,
+              width: 90,
+              alignItems: "center",
+              marginLeft: 250,
+              marginTop: 40,
+            }}
+          >
             <Icon name="check" size={40} color="black" />
           </TouchableOpacity>
         </View>
@@ -242,12 +254,21 @@ function AddDetailsProfile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor:'white',
+    backgroundColor:"#fff",
+    padding:20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   title: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   form: {
@@ -262,31 +283,27 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 10,
     borderRadius: 5,
-    height:40
+    height: 40,
   },
   textArea: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 10,
     borderRadius: 5,
-    height: 100,
-    textAlignVertical: 'top', // لتجعل النص يبدأ من الأعلى
+    textAlignVertical: "top",
   },
   image: {
     width: 100,
     height: 100,
+    borderRadius: 50,
     marginBottom: 10,
   },
   picker: {
-    height: 50,
-    borderColor: '#ccc',
-    borderWidth: 2,
-    borderRadius: 5,
-    marginTop: 5,
-    padding: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
   },
 });
 
