@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Button, Alert } from 'react-native';
-import paypalApi from '../payment/paypalApi';
-import queryString from 'query-string';
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Button, Alert, Image } from "react-native";
+import paypalApi from "../payment/paypalApi";
+import queryString from "query-string";
+import { auth } from "../../Config/firebase";
+import Icon from "react-native-vector-icons/Ionicons";
 
-function EventOnline({ route }) {
+function EventOnline({ route, navigation }) {
   const { event } = route.params;
   const [cardInfo, setCardInfo] = useState(null);
   const [isLoading, setLoading] = useState(false);
@@ -26,9 +28,9 @@ function EventOnline({ route }) {
       const res = await paypalApi.createOrder(token);
       setAccessToken(token);
       setLoading(false);
-      
+
       if (res?.links) {
-        const findUrl = res.links.find(data => data?.rel === "approve");
+        const findUrl = res.links.find((data) => data?.rel === "approve");
         if (findUrl) {
           setPaypalUrl(findUrl.href);
         }
@@ -41,11 +43,11 @@ function EventOnline({ route }) {
 
   const onUrlChange = (webviewState) => {
     console.log("webviewState:", webviewState);
-    if (webviewState.url.includes('https://example.com/cancel')) {
+    if (webviewState.url.includes("https://example.com/cancel")) {
       clearPaypalState();
       return;
     }
-    if (webviewState.url.includes('https://example.com/return')) {
+    if (webviewState.url.includes("https://example.com/return")) {
       const urlValues = queryString.parseUrl(webviewState.url);
       const { token } = urlValues.query;
       if (token) {
@@ -55,12 +57,15 @@ function EventOnline({ route }) {
   };
   const capturePayment = async (orderId) => {
     try {
-        const captureResponse = await paypalApi.capturePayment(orderId, accessToken);
-        console.log("Payment captured:", captureResponse);
+      const captureResponse = await paypalApi.capturePayment(
+        orderId,
+        accessToken
+      );
+      console.log("Payment captured:", captureResponse);
     } catch (error) {
-        console.error("Error capturing payment:", error);
+      console.error("Error capturing payment:", error);
     }
-};
+  };
   const paymentSuccess = async (id) => {
     try {
       const res = await paypalApi.capturePayment(id, accessToken);
@@ -77,14 +82,65 @@ function EventOnline({ route }) {
     setAccessToken(null);
   };
 
+  // online room function
+  const goOnline = () => {
+    navigation.navigate("onlineRoom");
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.eventName}>{event.name}</Text>
-      <Text style={styles.eventType}>{event.eventtype}</Text>
-      <Text style={styles.description}>{event.description}</Text>
-      <Button onPress={Payment} title="Pay" color="red" />
-      
-    </View>
+    <>
+      <View style={styles.container}>
+      <View style={styles.card}>
+
+        <View style={styles.eventHeader}>
+          <Image
+            source={{ uri: event.eventImg }}
+            style={styles.eventImage}
+            resizeMode="cover"
+          />
+        </View>
+
+          <View style={styles.namecon}>
+            <Text style={styles.eventName}>{event.name}</Text>
+            <Text style={styles.eventType}>{event.eventtype}</Text>
+          </View>
+
+          <View style={styles.namecon}>
+            <View style={styles.namecon}>
+              <Icon
+                name="calendar-outline"
+                size={20}
+                color="black"
+                style={styles.iconPadding}
+              />
+              <Text style={styles.date}> {event.date}</Text>
+            </View>
+
+            <View style={styles.namecon}>
+              <Icon
+                name="time-outline"
+                size={20}
+                color="black"
+                style={styles.iconPadding}
+              />
+              <Text> {event.time} PM</Text>
+            </View>
+
+          </View>
+
+          <View>
+            <Text style={styles.description}>{event.description}</Text>
+          </View>
+          <Text style={styles.price}>Ticket Price: {event.pricetTcket} $</Text>
+          <View>
+            {/* <Button onPress={Payment} title="Pay" color="red" /> */}
+            <Text onPress={goOnline} style={styles.Button}>
+              Join Meet {event.pricetTcket} $
+            </Text>
+          </View>
+        </View>
+      </View>
+    </>
   );
 }
 
@@ -93,44 +149,97 @@ export default EventOnline;
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    backgroundColor: "#f3f3f4",
+    borderTopEndRadius: 40,
+    borderTopStartRadius: 40,
+  },
+  namecon: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   eventName: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: "bold",
   },
   eventType: {
     fontSize: 18,
+    padding: 4,
+    paddingHorizontal: 8,
+    borderRadius: 30,
     marginVertical: 10,
+    color: "red",
+    backgroundColor: "#dabebe",
+  },
+  eventHeader: {
+    width: "100%",
+    height: 250,
+    position: "relative",
+  },
+  eventImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 40,
+  },
+  Button: {
+    borderRadius: 30,
+    color: "#6e6d7a",
+    backgroundColor: "#b2d1c9",
+    padding: 10,
+    width: 180,
+    textAlign: "center",
+    margin: "auto",
+  },
+  price: {
+    fontWeight: '500',
+    fontSize: 16
+  },
+  card: {
+    padding: 15,
+    height: 550,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    backgroundColor: "#FCFCFC",
+    padding: 20,
+    borderRadius: 10,
+    elevation: 3,
+  },
+  date: {
+    fontWeight: "bold",
+    color: "#6e6d7a",
+  },
+  description: {
+    color: "#1d2719",
   },
 });
 
-
-
 // import React, { useState, useEffect } from 'react';
 // import { StyleSheet, View, Button, Alert, SafeAreaView, Text, TextInput } from 'react-native';
-// import * as WebBrowser from 'expo-web-browser'; 
-// import paypalApi from '../payment/paypalApi'; 
+// import * as WebBrowser from 'expo-web-browser';
+// import paypalApi from '../payment/paypalApi';
 // import Icon from 'react-native-vector-icons/Ionicons';
 // import { Card } from 'react-native-paper';
-// import db from '../../Config/firebase'; 
+// import db from '../../Config/firebase';
 // import emailjs from '@emailjs/react-native';
 // import { getFirestore, doc, getDoc, query, collection, getDocs, where } from "firebase/firestore";
 
 // function EventOnline({ route,navigation  }) {
-//   const { event } = route.params; 
+//   const { event } = route.params;
 //   const [accessToken, setAccessToken] = useState(null);
 //   const [organizerName, setOrganizerName] = useState('');
 //   const [userEmail, setUserEmail] = useState('');
 //   const [ticketImageUrl, setTicketImageUrl] = useState('');
-//   const eventId = event.id; 
+//   const eventId = event.id;
 
 //   const fetchOrganizer = async (organizer) => {
 //     try {
-//       const organizerDoc = await db.collection('users').doc(organizer).get(); 
+//       const organizerDoc = await db.collection('users').doc(organizer).get();
 //       if (organizerDoc.exists) {
 //         const organizerData = organizerDoc.data();
-//         const fullName = `${organizerData.firstname} ${organizerData.lastname}`; 
-//         setOrganizerName(fullName); 
+//         const fullName = `${organizerData.firstname} ${organizerData.lastname}`;
+//         setOrganizerName(fullName);
 //       } else {
 //         console.log('No such document!');
 //       }
@@ -141,7 +250,7 @@ const styles = StyleSheet.create({
 
 //   useEffect(() => {
 //     if (event.organizer) {
-//       fetchOrganizer(event.organizer); 
+//       fetchOrganizer(event.organizer);
 //     }
 //   }, [event.organizer]);
 
@@ -216,9 +325,9 @@ const styles = StyleSheet.create({
 
 //     try {
 //       const token = await paypalApi.generateToken();
-//       const res = await paypalApi.createOrder(token, event.name, event.pricetTcket);  
+//       const res = await paypalApi.createOrder(token, event.name, event.pricetTcket);
 //       setAccessToken(token);
-      
+
 //       if (res?.links) {
 //         const findUrl = res.links.find(data => data?.rel === "approve");
 //         if (findUrl) {
@@ -250,7 +359,6 @@ const styles = StyleSheet.create({
 //     }
 //   };
 
-
 //   const handleTicketClick = (event) => {
 //     if (event) {
 //       navigation.navigate("onlineRoom", { event });
@@ -259,9 +367,6 @@ const styles = StyleSheet.create({
 //     }
 //   };
 
-
-  
-  
 //   const eventDate = event.date ? new Date(event.date) : new Date();
 
 //   return (
@@ -269,7 +374,7 @@ const styles = StyleSheet.create({
 //       <SafeAreaView style={styles.con}>
 //         <View style={styles.content}>
 //           <Text style={styles.name}>{event.name}</Text>
-//           <Text style={styles.nam}>Organizer: {organizerName}</Text>          
+//           <Text style={styles.nam}>Organizer: {organizerName}</Text>
 //           <View style={styles.eventMeta}>
 //             <View style={styles.metaRow}>
 //               <Icon name="calendar-outline" size={20} color="black" style={styles.iconPadding} />
@@ -283,7 +388,7 @@ const styles = StyleSheet.create({
 
 //           <Text style={{textAlign:"center"}}>{event.description}</Text>
 //           <Text style={{textAlign:"center", marginTop:30, fontWeight:"bold", fontSize:17}}>Total Price: {event.pricetTcket}</Text>
-          
+
 //           <TextInput
 //             style={styles.input}
 //             placeholder="Enter your email"
@@ -291,7 +396,7 @@ const styles = StyleSheet.create({
 //             onChangeText={setUserEmail}
 //           />
 //         </View>
-       
+
 //         <View style={{ padding: 16 }}>
 //           <Button
 //             title="Pay"
@@ -357,11 +462,11 @@ const styles = StyleSheet.create({
 
 // import React, { useState, useEffect } from 'react';
 // import { StyleSheet, View, Button, Alert, SafeAreaView, Text, TextInput } from 'react-native';
-// import * as WebBrowser from 'expo-web-browser'; 
-// import paypalApi from '../payment/paypalApi'; 
+// import * as WebBrowser from 'expo-web-browser';
+// import paypalApi from '../payment/paypalApi';
 // import Icon from 'react-native-vector-icons/Ionicons';
 // import { Card } from 'react-native-paper';
-// import db from '../../Config/firebase'; 
+// import db from '../../Config/firebase';
 // import emailjs from '@emailjs/react-native';
 // import { getFirestore, doc, getDoc, query, collection, getDocs, where } from "firebase/firestore";
 
@@ -369,21 +474,21 @@ const styles = StyleSheet.create({
 // emailjs.init("YzBCueRBgIlDlOxi5");
 
 // function EventOnline({ route }) {
-//   const { event } = route.params; 
+//   const { event } = route.params;
 //   const [accessToken, setAccessToken] = useState(null);
 //   const [organizerName, setOrganizerName] = useState('');
 //   const [userEmail, setUserEmail] = useState('');
 //   const [ticketImageUrl, setTicketImageUrl] = useState('');
-//   const eventId = event.id; 
+//   const eventId = event.id;
 //   emailjs.init("YzBCueRBgIlDlOxi5");
 
 //   const fetchOrganizer = async (organizer) => {
 //     try {
-//       const organizerDoc = await db.collection('users').doc(organizer).get(); 
+//       const organizerDoc = await db.collection('users').doc(organizer).get();
 //       if (organizerDoc.exists) {
 //         const organizerData = organizerDoc.data();
-//         const fullName = `${organizerData.firstname} ${organizerData.lastname}`; 
-//         setOrganizerName(fullName); 
+//         const fullName = `${organizerData.firstname} ${organizerData.lastname}`;
+//         setOrganizerName(fullName);
 //       } else {
 //         console.log('No such document!');
 //       }
@@ -394,7 +499,7 @@ const styles = StyleSheet.create({
 
 //   useEffect(() => {
 //     if (event.organizer) {
-//       fetchOrganizer(event.organizer); 
+//       fetchOrganizer(event.organizer);
 //     }
 //   }, [event.organizer]);
 
@@ -438,7 +543,7 @@ const styles = StyleSheet.create({
 //       Alert.alert('Error', 'No email address available to send the email.');
 //       return;
 //     }
-  
+
 //     try {
 //       const templateParams = {
 //         to_name: organizerName,
@@ -447,17 +552,16 @@ const styles = StyleSheet.create({
 //         to_email: userEmail,
 //         ticket_image_url: ticketImageUrl,
 //       };
-  
+
 //       // استخدام المعرف الصحيح للخدمة والقالب
 //       await emailjs.send('service_0j6gsa6', 'template_fjy76b1', templateParams, 'YzBCueRBgIlDlOxi5');
-  
+
 //       Alert.alert('Email Sent', 'The email has been successfully sent.');
 //     } catch (error) {
 //       console.error('Error sending email:', error);
 //       Alert.alert('Error', 'Failed to send the email.');
 //     }
 //   };
-  
 
 //   const Payment = async () => {
 //     if (!userEmail) {
@@ -467,9 +571,9 @@ const styles = StyleSheet.create({
 
 //     try {
 //       const token = await paypalApi.generateToken();
-//       const res = await paypalApi.createOrder(token, event.name, event.pricetTcket);  
+//       const res = await paypalApi.createOrder(token, event.name, event.pricetTcket);
 //       setAccessToken(token);
-      
+
 //       if (res?.links) {
 //         const findUrl = res.links.find(data => data?.rel === "approve");
 //         if (findUrl) {
@@ -513,7 +617,7 @@ const styles = StyleSheet.create({
 //       <SafeAreaView style={styles.con}>
 //         <View style={styles.content}>
 //           <Text style={styles.name}>{event.name}</Text>
-//           <Text style={styles.nam}>Organizer: {organizerName}</Text>          
+//           <Text style={styles.nam}>Organizer: {organizerName}</Text>
 //           <View style={styles.eventMeta}>
 //             <View style={styles.metaRow}>
 //               <Icon name="calendar-outline" size={20} color="black" style={styles.iconPadding} />
@@ -529,7 +633,7 @@ const styles = StyleSheet.create({
 //           <Text style={{ textAlign: "center", marginTop: 30, fontWeight: "bold", fontSize: 17 }}>
 //             Total Price: {event.pricetTcket}
 //           </Text>
-          
+
 //           <TextInput
 //             style={styles.input}
 //             placeholder="Enter your email"
@@ -537,7 +641,7 @@ const styles = StyleSheet.create({
 //             onChangeText={setUserEmail}
 //           />
 //         </View>
-       
+
 //         <View style={{ padding: 16 }}>
 //           <Button
 //             title="Pay"
@@ -614,8 +718,6 @@ const styles = StyleSheet.create({
 //   },
 // });
 
-
-
 // import React, { useState, useEffect } from 'react';
 // import { StyleSheet, View, Button, Alert, SafeAreaView, Text, TextInput } from 'react-native';
 // import * as WebBrowser from 'expo-web-browser';
@@ -630,8 +732,8 @@ const styles = StyleSheet.create({
 // export default function EventOnline({ route }) {
 //   const { event } = route.params;
 //   console.log(YOUR_PUBLIC_KEY);
-  
-// //   emailjs.init(YOUR_PUBLIC_KEY); 
+
+// //   emailjs.init(YOUR_PUBLIC_KEY);
 // //   // **Crucial Step: Initialize EmailJS with your PUBLIC KEY**
 // // // Call this before any email sending operations
 
@@ -710,7 +812,6 @@ const styles = StyleSheet.create({
 //     </Card>
 //   );
 // }
-
 
 // import { useState } from 'react';
 // import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
