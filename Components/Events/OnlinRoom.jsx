@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, View, StyleSheet } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 
-const onlineRoom = ({route}) => {
+const OnlineRoom = ({route}) => {
   const { event } = route.params || {};
   const handleStartMeeting = async () => {
     const result = await WebBrowser.openBrowserAsync('https://meet.jit.si/MyCustomRoom');
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default onlineRoom;
+export default OnlineRoom;

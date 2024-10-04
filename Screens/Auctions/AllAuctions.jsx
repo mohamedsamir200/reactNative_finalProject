@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import db from "../../Config/firebase";
 import Card from "./components/Card";
 import { View, Text, FlatList } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AllAuctions = () => {
   // Dummy data for auctions
