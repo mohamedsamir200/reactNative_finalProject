@@ -1,108 +1,108 @@
-// // import React, { useState } from 'react';
-// // import { StyleSheet, View, Text, Button, Alert } from 'react-native';
-// // import paypalApi from '../payment/paypalApi';
-// // import queryString from 'query-string';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Button, Alert } from 'react-native';
+import paypalApi from '../payment/paypalApi';
+import queryString from 'query-string';
 
-// // function EventOnline({ route }) {
-// //   const { event } = route.params;
-// //   const [cardInfo, setCardInfo] = useState(null);
-// //   const [isLoading, setLoading] = useState(false);
-// //   const [paypalUrl, setPaypalUrl] = useState(null);
+function EventOnline({ route }) {
+  const { event } = route.params;
+  const [cardInfo, setCardInfo] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+  const [paypalUrl, setPaypalUrl] = useState(null);
 
-// //   const [accessToken, setAccessToken] = useState(null);
+  const [accessToken, setAccessToken] = useState(null);
 
-// //   const fetchCardDetail = (cardDetail) => {
-// //     if (cardDetail.complete) {
-// //       setCardInfo(cardDetail);
-// //     } else {
-// //       setCardInfo(null);
-// //     }
-// //   };
+  const fetchCardDetail = (cardDetail) => {
+    if (cardDetail.complete) {
+      setCardInfo(cardDetail);
+    } else {
+      setCardInfo(null);
+    }
+  };
 
-// //   const Payment = async () => {
-// //     setLoading(true);
-// //     try {
-// //       const token = await paypalApi.generateToken();
-// //       const res = await paypalApi.createOrder(token);
-// //       setAccessToken(token);
-// //       setLoading(false);
+  const Payment = async () => {
+    setLoading(true);
+    try {
+      const token = await paypalApi.generateToken();
+      const res = await paypalApi.createOrder(token);
+      setAccessToken(token);
+      setLoading(false);
       
-// //       if (res?.links) {
-// //         const findUrl = res.links.find(data => data?.rel === "approve");
-// //         if (findUrl) {
-// //           setPaypalUrl(findUrl.href);
-// //         }
-// //       }
-// //     } catch (error) {
-// //       console.log("Error:", error);
-// //       setLoading(false);
-// //     }
-// //   };
+      if (res?.links) {
+        const findUrl = res.links.find(data => data?.rel === "approve");
+        if (findUrl) {
+          setPaypalUrl(findUrl.href);
+        }
+      }
+    } catch (error) {
+      console.log("Error:", error);
+      setLoading(false);
+    }
+  };
 
-// //   const onUrlChange = (webviewState) => {
-// //     console.log("webviewState:", webviewState);
-// //     if (webviewState.url.includes('https://example.com/cancel')) {
-// //       clearPaypalState();
-// //       return;
-// //     }
-// //     if (webviewState.url.includes('https://example.com/return')) {
-// //       const urlValues = queryString.parseUrl(webviewState.url);
-// //       const { token } = urlValues.query;
-// //       if (token) {
-// //         paymentSuccess(token);
-// //       }
-// //     }
-// //   };
-// //   const capturePayment = async (orderId) => {
-// //     try {
-// //         const captureResponse = await paypalApi.capturePayment(orderId, accessToken);
-// //         console.log("Payment captured:", captureResponse);
-// //     } catch (error) {
-// //         console.error("Error capturing payment:", error);
-// //     }
-// // };
-// //   const paymentSuccess = async (id) => {
-// //     try {
-// //       const res = await paypalApi.capturePayment(id, accessToken);
-// //       console.log("capturePayment res:", res);
-// //       Alert.alert("Payment successful!");
-// //       clearPaypalState();
-// //     } catch (error) {
-// //       console.log("Error raised in payment capture:", error);
-// //     }
-// //   };
+  const onUrlChange = (webviewState) => {
+    console.log("webviewState:", webviewState);
+    if (webviewState.url.includes('https://example.com/cancel')) {
+      clearPaypalState();
+      return;
+    }
+    if (webviewState.url.includes('https://example.com/return')) {
+      const urlValues = queryString.parseUrl(webviewState.url);
+      const { token } = urlValues.query;
+      if (token) {
+        paymentSuccess(token);
+      }
+    }
+  };
+  const capturePayment = async (orderId) => {
+    try {
+        const captureResponse = await paypalApi.capturePayment(orderId, accessToken);
+        console.log("Payment captured:", captureResponse);
+    } catch (error) {
+        console.error("Error capturing payment:", error);
+    }
+};
+  const paymentSuccess = async (id) => {
+    try {
+      const res = await paypalApi.capturePayment(id, accessToken);
+      console.log("capturePayment res:", res);
+      Alert.alert("Payment successful!");
+      clearPaypalState();
+    } catch (error) {
+      console.log("Error raised in payment capture:", error);
+    }
+  };
 
-// //   const clearPaypalState = () => {
-// //     setPaypalUrl(null);
-// //     setAccessToken(null);
-// //   };
+  const clearPaypalState = () => {
+    setPaypalUrl(null);
+    setAccessToken(null);
+  };
 
-// //   return (
-// //     <View style={styles.container}>
-// //       <Text style={styles.eventName}>{event.name}</Text>
-// //       <Text style={styles.eventType}>{event.eventtype}</Text>
-// //       <Text style={styles.description}>{event.description}</Text>
-// //       <Button onPress={Payment} title="Pay" color="red" />
+  return (
+    <View style={styles.container}>
+      <Text style={styles.eventName}>{event.name}</Text>
+      <Text style={styles.eventType}>{event.eventtype}</Text>
+      <Text style={styles.description}>{event.description}</Text>
+      <Button onPress={Payment} title="Pay" color="red" />
       
-// //     </View>
-// //   );
-// // }
+    </View>
+  );
+}
 
-// // export default EventOnline;
+export default EventOnline;
 
-// // const styles = StyleSheet.create({
-// //   container: {
-// //     padding: 20,
-// //   },
-// //   eventName: {
-// //     fontSize: 24,
-// //     fontWeight: 'bold',
-// //   },
-// //   eventType: {
-// //     fontSize: 18,
-// //     marginVertical: 10,
-// //   },
-// // });
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+  },
+  eventName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  eventType: {
+    fontSize: 18,
+    marginVertical: 10,
+  },
+});
 
 
 
@@ -712,56 +712,56 @@
 // }
 
 
-import { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
-import { send, EmailJSResponseStatus } from '@emailjs/react-native';
+// import { useState } from 'react';
+// import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+// import { send, EmailJSResponseStatus } from '@emailjs/react-native';
 
-export default function  EventOnline  ({route}) {
-  const [email, setEmail] = useState();
-  const [name, setName] = useState();
+// export default function  EventOnline  ({route}) {
+//   const [email, setEmail] = useState();
+//   const [name, setName] = useState();
 
-  const onSubmit = async () => {
-    try {
-      await send(
-        'service_0q4y7cx',
-        'template_fjy76b1',
-        {
-          name,
-          email,
-          message: 'This is a static message',
-        },
-        {
-          publicKey: '1_CwPxJFoAvU6MWAd',
-        },
-      );
+//   const onSubmit = async () => {
+//     try {
+//       await send(
+//         'service_0q4y7cx',
+//         'template_fjy76b1',
+//         {
+//           name,
+//           email,
+//           message: 'This is a static message',
+//         },
+//         {
+//           publicKey: '1_CwPxJFoAvU6MWAd',
+//         },
+//       );
 
-      console.log('SUCCESS!');
-    } catch (err) {
-      if (err instanceof EmailJSResponseStatus) {
-        console.log('EmailJS Request Failed...', err);
-      }
+//       console.log('SUCCESS!');
+//     } catch (err) {
+//       if (err instanceof EmailJSResponseStatus) {
+//         console.log('EmailJS Request Failed...', err);
+//       }
 
-      console.log('ERROR', err);
-    }
-  };
+//       console.log('ERROR', err);
+//     }
+//   };
 
-  return (
-    <View>
-      <TextInput
-        inputMode="email"
-        keyboardType="email-address"
-        textContentType="emailAddress"
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        inputMode="text"
-        placeholder="Name"
-        value={name}
-        onChangeText={setName}
-      />
-      <Button title="Submit" onPress={onSubmit} />
-    </View>
-  );
-};
+//   return (
+//     <View>
+//       <TextInput
+//         inputMode="email"
+//         keyboardType="email-address"
+//         textContentType="emailAddress"
+//         placeholder="Email"
+//         value={email}
+//         onChangeText={setEmail}
+//       />
+//       <TextInput
+//         inputMode="text"
+//         placeholder="Name"
+//         value={name}
+//         onChangeText={setName}
+//       />
+//       <Button title="Submit" onPress={onSubmit} />
+//     </View>
+//   );
+// };
