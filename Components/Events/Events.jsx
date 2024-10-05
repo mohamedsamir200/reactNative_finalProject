@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
-import { View, Text, TextInput, ScrollView, Button, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { collection, onSnapshot } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import db from "../../Config/firebase";
 import Cards from "./Cards";
-import Icon from 'react-native-vector-icons/Ionicons'; 
+import Icon from "react-native-vector-icons/Ionicons";
+
 function Events({ navigation }) {
   let [events, setEvents] = useState([]);
   let [filteredEvents, setFilteredEvents] = useState([]);
@@ -18,9 +26,7 @@ function Events({ navigation }) {
 
   const storage = getStorage();
 
-  const paginatedEvents = filteredEvents.slice(
-
-  );
+  const paginatedEvents = filteredEvents.slice();
 
   const fetchEventData = (collectionName) => {
     return new Promise((resolve, reject) => {
@@ -54,7 +60,6 @@ function Events({ navigation }) {
       try {
         const addEventData = await fetchEventData("add event");
 
-
         const allEvents = [...addEventData];
         setEvents(allEvents);
       } catch (error) {
@@ -68,7 +73,9 @@ function Events({ navigation }) {
   useEffect(() => {
     let filtered = events;
     if (filter !== "All") {
-      filtered = filtered.filter((event) => event.eventtype === filter.toLowerCase());
+      filtered = filtered.filter(
+        (event) => event.eventtype === filter.toLowerCase()
+      );
     }
     if (searchTerm) {
       filtered = filtered.filter((event) =>
@@ -80,24 +87,25 @@ function Events({ navigation }) {
 
   const handleTicketClick = (event) => {
     if (event.eventtype === "online") {
-      navigation.navigate("EventOnline", { event ,navigation });
+      navigation.navigate("EventOnline", { event, navigation });
     } else if (event.eventtype === "offline") {
       navigation.navigate("EventOffline", { event });
     } else {
       console.log("Unknown event type:", event.eventtype);
     }
   };
-  
+
   const renderCheckBox = (checked) => (
-    <Icon name={checked ? "checkbox" : "ellipse-outline"} size={24} color="#D7A182" />
+    <Icon
+      name={checked ? "checkbox" : "ellipse-outline"}
+      size={24}
+      color="#D7A182"
+    />
   );
-  
 
   return (
     <ScrollView style={{ padding: 20 }}>
-   
-
-      <View >
+      <View>
         <TextInput
           placeholder="Search events..."
           style={{
@@ -113,36 +121,60 @@ function Events({ navigation }) {
       </View>
 
       {/* Filter Buttons */}
-      <View style={{ flexDirection: "row", justifyContent: "space-around", marginBottom: 20 }}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-around",
+          marginBottom: 20,
+        }}
+      >
         <TouchableOpacity onPress={() => setFilter("All")}>
-          {renderCheckBox(filter === "All")}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            {renderCheckBox(filter === "All")}
+            <Text
+              style={{
+                fontSize: 18,
+                marginLeft: 5,
+                color: filter === "All" ? "#b22222" : "#000",
+              }}
+            >
+              All Events
+            </Text>
+          </View>
         </TouchableOpacity>
-        <Text style={{ fontSize: 18, marginLeft: 5, color: filter === "All" ? "#b22222" : "#000" }}>
-          All Events
-        </Text>
-      </View>
 
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <TouchableOpacity onPress={() => setFilter("online")}>
-          {renderCheckBox(filter === "online")}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            {renderCheckBox(filter === "online")}
+            <Text
+              style={{
+                fontSize: 18,
+                marginLeft: 5,
+                color: filter === "online" ? "#b22222" : "#000",
+              }}
+            >
+              Online
+            </Text>
+          </View>
         </TouchableOpacity>
-        <Text style={{ fontSize: 18, marginLeft: 5, color: filter === "online" ? "#b22222" : "#000" }}>
-          Online
-        </Text>
-      </View>
 
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <TouchableOpacity onPress={() => setFilter("offline")}>
-          {renderCheckBox(filter === "offline")}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            {renderCheckBox(filter === "offline")}
+            <Text
+              style={{
+                fontSize: 18,
+                marginLeft: 5,
+                color: filter === "offline" ? "#b22222" : "#000",
+              }}
+            >
+              Offline
+            </Text>
+          </View>
         </TouchableOpacity>
-        <Text style={{ fontSize: 18, marginLeft: 5, color: filter === "offline" ? "#b22222" : "#000" }}>
-          Offline
-        </Text>
       </View>
-    </View>
 
-      <View style={{ }}>
+      <View style={{}}>
         {paginatedEvents.map((event) => (
           <Cards
             key={event.id}

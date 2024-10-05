@@ -1,3 +1,6 @@
+
+
+
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Button, Alert, Image } from "react-native";
 import paypalApi from "../payment/paypalApi";
@@ -135,7 +138,7 @@ function EventOnline({ route, navigation }) {
           <View>
             {/* <Button onPress={Payment} title="Pay" color="red" /> */}
             <Text onPress={goOnline} style={styles.Button}>
-              Join Meet {event.pricetTcket} $
+              Join Meet
             </Text>
           </View>
         </View>
@@ -164,7 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   eventType: {
-    fontSize: 18,
+    fontSize: 14,
     padding: 4,
     paddingHorizontal: 8,
     borderRadius: 30,
@@ -184,12 +187,13 @@ const styles = StyleSheet.create({
   },
   Button: {
     borderRadius: 30,
-    color: "#6e6d7a",
+    // color: "#6e6d7a",
     backgroundColor: "#b2d1c9",
     padding: 10,
     width: 180,
     textAlign: "center",
     margin: "auto",
+    fontSize: 15
   },
   price: {
     fontWeight: '500',
