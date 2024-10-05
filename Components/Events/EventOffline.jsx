@@ -195,7 +195,6 @@
 //           </View>
 
 //         </View>
-// {/* //!Counter */}
 //         <View style={styles.ticketCounter}>
 //           <TouchableOpacity onPress={decreaseCount} disabled={soldOut}>
 //             <Text style={styles.counterButton}>-</Text>
@@ -291,6 +290,13 @@
 
 // export default EventOffline;
 
+
+
+
+
+
+
+
 // Event online code
 
 import React, { useState } from "react";
@@ -298,7 +304,7 @@ import {
   StyleSheet,
   View,
   Text,
-  Button,
+  TextInput,
   Alert,
   Image,
   ScrollView,
@@ -413,6 +419,51 @@ function EventOnline({ route, navigation }) {
   const [total, setTotal] = useState(ticketPrice);
   const [soldOut, setSoldOut] = useState(false);
 
+  // handel payment
+
+  const handlePayment = async () => {
+    if (soldOut) {
+      Alert.alert("Sold Out", "This event is sold out.");
+      return;
+    }
+
+    const emailSubmitted = await handleEmailSubmission();
+    if (!emailSubmitted) return;
+
+    Alert.alert("Payment Success", `Paying ${total} EGP with Visa`);
+    navigation.navigate("TicketConfirmation", { eventId: event.id });
+  };
+ 
+  // hadle email
+
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleEmailSubmission = async () => {
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email.");
+      return false;
+    }
+    try {
+      await addDoc(collection(db, "sendTicket"), {
+        email: email,
+        eventId: event.id,
+      });
+      console.log("Email saved to Firestore successfully!");
+      return true;
+    } catch (error) {
+      console.error("Error adding email to Firestore:", error);
+      return false;
+    }
+  };
+
+
   return (
     <>
       <ScrollView>
@@ -480,9 +531,21 @@ function EventOnline({ route, navigation }) {
             <Text style={styles.price}>Cost: {total} EGP</Text>
             {/* <Button onPress={Payment} title="Pay" color="red" /> */}
             </View>
+
+
+            <TextInput
+          placeholder="Enter your email"
+          value={email}
+          onChangeText={setEmail}
+          style={[styles.input, emailError && { borderColor: "red" }]}
+        />
+        {emailError && <Text style={styles.errorText}>{emailError}</Text>}
+
+
+
             <View>
 
-            <Text onPress={goOnline} style={styles.Button}>Join Meet</Text>
+            <Text onPress={handlePayment} style={styles.Button}>Pay</Text>
             </View>
           </View>
         </View>
@@ -547,7 +610,7 @@ const styles = StyleSheet.create({
   },
   card: {
     padding: 15,
-    height: 550,
+    height: 650,
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
@@ -579,4 +642,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderRadius: 50,
   },
+    input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    marginVertical: 10,
+    borderRadius: 5,
+  },
+  errorText: { color: "red" },
 });
