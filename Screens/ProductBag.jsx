@@ -96,15 +96,16 @@ export default function ProductBag() {
         >
           <Text> {bags.length} items Found</Text>
 
-          <Text
+          {/* <Text
             style={[
               styles.payment,
               { display: bags.length == 0 ? "none" : "block" },
             ]}
-            onPress={() => navigate(routes.cart)}
+            // onPress={() => navigate(routes.payment)}
+            onPress={() => navigate(routes.payment)}
           >
             Continue To Payment
-          </Text>
+          </Text> */}
         </View>
         {bags.length > 0 ? (
           bags.map((item) => (

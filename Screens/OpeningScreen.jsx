@@ -106,13 +106,10 @@ export default function OpeningScreen() {
           </View>
         </View>
         <Text style={styles.text} className="bg-red-500">
-          <Text style={{ backgroundColor: "#344646", color: "white" }}>A</Text>
-          rtistain
+          <Text style={{ backgroundColor: "#344646", color: "white" , }}>A</Text>
+          LKhan
           <Text>
-            <Text style={{ backgroundColor: "#344646", color: "white" }}>
-              C
-            </Text>
-            orner
+           
           </Text>
         </Text>
         <Text
@@ -124,7 +121,7 @@ export default function OpeningScreen() {
             lineHeight: 20,
           }}
         >
-          Welcome to Artistain Corner! Artistain Corner is a hub for creativity,
+          Welcome to AlKhan! AlKhan is a hub for creativity,
           showcasing unique handmade artworks from talented artisans. Discover,
           connect, and celebrate artistry with us!
         </Text>
@@ -224,7 +221,9 @@ const styles = StyleSheet.create({
     marginTop: 40,
     fontSize: 25,
     letterSpacing: 3,
+    fontFamily: 'monospace',
 
+fontStyle: 'italic',
     fontWeight: "bold",
   },
   btn: {
