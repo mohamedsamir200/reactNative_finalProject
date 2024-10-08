@@ -88,7 +88,7 @@ export default function AllProducts() {
       await addDoc(collectionRef, {
         image: item.img,
         quantity: 1,
-        name: item.title,
+        title: item.title,
         description: item.description,
         basePrice: item.price,
         price: item.price,

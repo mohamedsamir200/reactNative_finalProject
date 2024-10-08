@@ -73,7 +73,7 @@ export default function Details() {
     const doc = await addDoc(collectionRef, {
       image: image,
       quantity: count,
-      name : title ,
+      title : title ,
       description: desc,
       price: price * count,
       basePrice: price,

@@ -115,7 +115,7 @@ export default function ProductBag() {
                 <Image style={styles.image} source={{ uri: item.image }} />
 
                 <View>
-                  <Text>{item.name}</Text>
+                  <Text>{item.title}</Text>
                   <Text style={{ marginVertical: 10 }}>
                   {item.price} $
                   </Text>
