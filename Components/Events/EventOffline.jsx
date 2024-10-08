@@ -312,8 +312,9 @@ import {
 } from "react-native";
 import paypalApi from "../payment/paypalApi";
 import queryString from "query-string";
-import { auth } from "../../Config/firebase";
+import db, { auth } from "../../Config/firebase";
 import Icon from "react-native-vector-icons/Ionicons";
+import { addDoc, collection } from 'firebase/firestore';
 
 function EventOnline({ route, navigation }) {
   const { event } = route.params;
